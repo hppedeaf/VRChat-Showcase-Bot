@@ -1853,3 +1853,58 @@ Traceback (most recent call last):
 jinja2.exceptions.UndefinedError: 'stats' is undefined
 2025-03-18 20:12:47,082 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:12:47] "[35m[1mGET /dashboard HTTP/1.1[0m" 500 -
 2025-03-18 20:13:03,337 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:13:03] "[32mGET /callback?code=m5OifCCd5blJpHXRvuTCpWxAyr2ddV HTTP/1.1[0m" 302 -
+2025-03-18 20:13:05,886 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 20:13:05,886 - discord.client - INFO - logging in using static token
+2025-03-18 20:13:06,447 - vrchat_bot - INFO - Persistent views registered
+2025-03-18 20:13:06,451 - vrchat_bot - INFO - Cogs loaded
+2025-03-18 20:13:06,855 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: c878deb99b12b65e92822b639c047d29).
+2025-03-18 20:13:07,167 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.8:8080
+2025-03-18 20:13:07,168 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 20:13:08,883 - vrchat_bot - INFO - Logged in as VRC World Helper
+2025-03-18 20:13:10,229 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:13:10] "[32mGET / HTTP/1.1[0m" 302 -
+2025-03-18 20:13:10,588 - server - ERROR - Exception on /dashboard [GET]
+Traceback (most recent call last):
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\developpeur\VRChat-World-Showcase-Bot\web_dashboard.py", line 179, in dashboard
+    return render_template('dashboard.html',
+                          user=session,
+                          guilds=bot_guilds,
+                          bot_invite_url=BOT_INVITE_URL)  # Pass the bot invite URL to the template
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\web\templates\dashboard.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "D:\developpeur\VRChat-World-Showcase-Bot\web\templates\base.html", line 90, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^
+  File "D:\developpeur\VRChat-World-Showcase-Bot\web\templates\dashboard.html", line 104, in block 'content'
+    <div class="text-3xl font-bold text-gray-800">{{ stats.server_count|default('0') }}</div>
+    ^^^^^^^^^
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\jinja2\environment.py", line 490, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: 'stats' is undefined
+2025-03-18 20:13:10,595 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:13:10] "[35m[1mGET /dashboard HTTP/1.1[0m" 500 -
+2025-03-18 20:13:45,412 - vrchat_bot - INFO - Synced 12 command(s)
+2025-03-18 20:13:45,412 - vrchat_bot - INFO - Setting up database: database\vrchat_worlds.db
+2025-03-18 20:13:45,414 - vrchat_bot - INFO - Database setup completed successfully
+2025-03-18 20:13:45,676 - vrchat_bot - INFO - Button already exists in thread 1351622713034145852
+2025-03-18 20:13:45,886 - vrchat_bot - INFO - Button already exists in thread 1351593964280610856
+2025-03-18 20:13:45,887 - vrchat_bot - INFO - All threads have been checked and world buttons added where needed.
