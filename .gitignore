@@ -3,3 +3,6 @@ __pycache__
 venv
 logs
 logs/bot.log
+database/vrchat_worlds.db
+database/vrchat_worlds.db-shm
+database/vrchat_worlds.db-wal

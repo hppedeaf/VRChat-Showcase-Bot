@@ -258,60 +258,91 @@ def add_missing_columns():
     Add any missing columns to existing tables that were added in schema updates.
     This allows for non-breaking schema changes.
     """
+    # Check if PostgreSQL is being used
+    is_postgres = hasattr(config, 'DATABASE_URL') and config.DATABASE_URL and config.DATABASE_URL.startswith("postgres")
+    
+    # If not using PostgreSQL, skip this method
+    if not is_postgres:
+        config.logger.info("Skipping add_missing_columns - not using PostgreSQL")
+        return
+    
+    conn = None
     try:
-        conn = get_postgres_connection()
+        # Get database URL from environment or config
+        db_url = os.getenv("DATABASE_URL") or getattr(config, 'DATABASE_URL', None)
+        
+        # Validate database URL
+        if not db_url:
+            config.logger.warning("No DATABASE_URL found. Skipping add_missing_columns.")
+            return
+        
+        # Establish connection
+        conn = psycopg2.connect(
+            db_url,
+            connect_timeout=10,
+            application_name="VRChat World Showcase Bot"
+        )
+        conn.autocommit = False
+        
         with conn.cursor() as cursor:
             # Check and add missing columns for vrchat_worlds
-            try:
-                cursor.execute("SELECT capacity FROM vrchat_worlds LIMIT 1")
-            except psycopg2.errors.UndefinedColumn:
-                cursor.execute("ALTER TABLE vrchat_worlds ADD COLUMN capacity INTEGER")
-                config.logger.info("Added missing column: capacity to vrchat_worlds")
-                
-            try:
-                cursor.execute("SELECT visit_count FROM vrchat_worlds LIMIT 1")
-            except psycopg2.errors.UndefinedColumn:
-                cursor.execute("ALTER TABLE vrchat_worlds ADD COLUMN visit_count INTEGER")
-                config.logger.info("Added missing column: visit_count to vrchat_worlds")
-                
-            try:
-                cursor.execute("SELECT favorites_count FROM vrchat_worlds LIMIT 1")
-            except psycopg2.errors.UndefinedColumn:
-                cursor.execute("ALTER TABLE vrchat_worlds ADD COLUMN favorites_count INTEGER")
-                config.logger.info("Added missing column: favorites_count to vrchat_worlds")
-                
-            try:
-                cursor.execute("SELECT last_updated FROM vrchat_worlds LIMIT 1")
-            except psycopg2.errors.UndefinedColumn:
-                cursor.execute("ALTER TABLE vrchat_worlds ADD COLUMN last_updated TIMESTAMP")
-                config.logger.info("Added missing column: last_updated to vrchat_worlds")
-                
-            try:
-                cursor.execute("SELECT platform_type FROM vrchat_worlds LIMIT 1")
-            except psycopg2.errors.UndefinedColumn:
-                cursor.execute("ALTER TABLE vrchat_worlds ADD COLUMN platform_type TEXT")
-                config.logger.info("Added missing column: platform_type to vrchat_worlds")
-                
-            try:
-                cursor.execute("SELECT world_size_bytes FROM vrchat_worlds LIMIT 1")
-            except psycopg2.errors.UndefinedColumn:
-                cursor.execute("ALTER TABLE vrchat_worlds ADD COLUMN world_size_bytes BIGINT")
-                config.logger.info("Added missing column: world_size_bytes to vrchat_worlds")
-                
+            column_checks = [
+                ("capacity", "INTEGER"),
+                ("visit_count", "INTEGER"),
+                ("favorites_count", "INTEGER"),
+                ("last_updated", "TIMESTAMP"),
+                ("platform_type", "TEXT"),
+                ("world_size_bytes", "BIGINT")
+            ]
+            
+            for column_name, column_type in column_checks:
+                try:
+                    # Check if column exists
+                    cursor.execute(f"SELECT {column_name} FROM vrchat_worlds LIMIT 1")
+                except psycopg2.errors.UndefinedColumn:
+                    # Add missing column
+                    try:
+                        cursor.execute(f"ALTER TABLE vrchat_worlds ADD COLUMN {column_name} {column_type}")
+                        config.logger.info(f"Added missing column: {column_name} to vrchat_worlds")
+                    except Exception as add_column_error:
+                        config.logger.error(f"Error adding column {column_name}: {add_column_error}")
+                    
+                    # Reset any existing error state
+                    conn.rollback()
+            
             # Check and add missing columns for bot_activity_log
             try:
                 cursor.execute("SELECT user_id FROM bot_activity_log LIMIT 1")
             except psycopg2.errors.UndefinedColumn:
-                cursor.execute("ALTER TABLE bot_activity_log ADD COLUMN user_id BIGINT")
-                config.logger.info("Added missing column: user_id to bot_activity_log")
+                try:
+                    cursor.execute("ALTER TABLE bot_activity_log ADD COLUMN user_id BIGINT")
+                    config.logger.info("Added missing column: user_id to bot_activity_log")
+                except Exception as user_id_error:
+                    config.logger.error(f"Error adding user_id column: {user_id_error}")
                 
+                # Reset any existing error state
+                conn.rollback()
+            
+            # Commit changes
             conn.commit()
-            config.logger.info("All missing columns added successfully")
+            config.logger.info("Successfully completed add_missing_columns")
+    
     except Exception as e:
-        conn.rollback()
-        config.logger.error(f"Error adding missing columns: {e}")
+        config.logger.error(f"Error in add_missing_columns: {e}")
+        # Attempt to rollback if connection exists
+        if conn:
+            try:
+                conn.rollback()
+            except Exception as rollback_error:
+                config.logger.error(f"Error during rollback: {rollback_error}")
+    
     finally:
-        conn.close()
+        # Ensure connection is closed
+        if conn:
+            try:
+                conn.close()
+            except Exception as close_error:
+                config.logger.error(f"Error closing connection: {close_error}")
 
 def migrate_data_from_sqlite():
     """
