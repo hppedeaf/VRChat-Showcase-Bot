@@ -10,7 +10,7 @@ from typing import Optional, List, Dict, Tuple
 import bot.config as config
 from database.models import ServerChannels, ServerTags
 from database.db import log_activity
-from utils.api import extract_world_id
+from utils.api import extract_world_id, VRChatAPI
 from ui.buttons import WorldButton
 import bot.config as config
 from database.models import ServerChannels, WorldPosts, ServerTags
@@ -295,11 +295,13 @@ class AdminCommands(commands.Cog):
                     )
                 
                 # Scan active threads in the forum and add them to the database
-                await interaction.followup.send("⏳ Scanning existing forum posts for VRChat worlds...")
+                await interaction.followup.send("📊 Scanning existing forum posts for VRChat worlds...")
                 worlds_found, unknown_threads = await self._scan_forum_threads(interaction.guild.id, forum_channel)
                 
                 await interaction.followup.send(
-                    f"✅ Scan complete! Found and indexed {worlds_found} VRChat worlds in existing posts."
+                    f"✅ Scan complete! Found and indexed {worlds_found} VRChat worlds in existing posts.\n" +
+                    f"• {len(unknown_threads)} threads without identifiable VRChat worlds were skipped.\n" +
+                    f"• All world IDs have been added to the database."
                 )
             
             # Create the welcome embed first
@@ -469,7 +471,7 @@ class AdminCommands(commands.Cog):
     
     @app_commands.command(
         name="sync", 
-        description="Sync bot commands (admin only)"
+        description="Sync slash commands (admin only)"
     )
     @app_commands.default_permissions(administrator=True)
     async def sync_slash(self, interaction: discord.Interaction):
@@ -505,6 +507,8 @@ class AdminCommands(commands.Cog):
         """
         worlds_found = 0
         unknown_threads = []
+        duplicates_found = 0
+        updates_made = 0
         
         # Get all threads in the forum
         threads = [thread for thread in forum_channel.threads]
@@ -519,11 +523,21 @@ class AdminCommands(commands.Cog):
         from utils.api import extract_world_id, VRChatAPI
         vrchat_api = VRChatAPI(config.AUTH)
         
+        # Log the scanning process
+        config.logger.info(f"Scanning {len(threads)} threads in forum channel {forum_channel.id} for server {server_id}")
+        
         # Process each thread
         for thread in threads:
             try:
                 # Skip the control thread
-                if thread.name == "Please post here to provide information and display it to the world":
+                if thread.name == "Please post here to provide information and display it to the world" or thread.name == "Share Your VRChat World Here!":
+                    continue
+                    
+                # Check if this thread already has a world ID in our database
+                existing_world_id = WorldPosts.get_world_for_thread(server_id, thread.id)
+                if existing_world_id:
+                    # This thread already has a world entry - count it and skip
+                    worlds_found += 1
                     continue
                     
                 # Get the first 3 messages (original post + possible follow-ups)
@@ -565,6 +579,7 @@ class AdminCommands(commands.Cog):
                     
                     if existing_thread and existing_thread != thread.id:
                         # This is a duplicate - the same world exists in another thread
+                        duplicates_found += 1
                         unknown_threads.append({
                             "thread_id": thread.id,
                             "thread_name": thread.name,
@@ -583,6 +598,20 @@ class AdminCommands(commands.Cog):
                             world_link=world_url or f"https://vrchat.com/home/world/{world_id}"
                         )
                         worlds_found += 1
+                        
+                        # Also try to fetch VRChat world details to store them in our VRChatWorlds table
+                        try:
+                            from database.models import VRChatWorlds
+                            world_details = vrchat_api.get_world_info(world_id)
+                            if world_details:
+                                VRChatWorlds.add_world(
+                                    world_id=world_id,
+                                    world_name=world_details.get('name', 'Unknown World'),
+                                    author_name=world_details.get('authorName', 'Unknown Author'),
+                                    image_url=world_details.get('imageUrl', None)
+                                )
+                        except Exception as e:
+                            config.logger.error(f"Error fetching world details for {world_id}: {e}")
                 else:
                     # No world ID found - check if it might be a valid thread we just can't parse
                     # This would be a candidate for manual review
@@ -595,6 +624,9 @@ class AdminCommands(commands.Cog):
             except Exception as e:
                 config.logger.error(f"Error processing thread {thread.id}: {e}")
                 continue
+        
+        # Log the scan results
+        config.logger.info(f"Scan completed: Found {worlds_found} worlds, {duplicates_found} duplicates, and {len(unknown_threads)} threads with issues")
         
         return worlds_found, unknown_threads
     
@@ -690,7 +722,7 @@ class AdminCommands(commands.Cog):
             for thread in threads:
                 try:
                     # Skip the control thread
-                    if thread.name == "Please post here to provide information and display it to the world":
+                    if thread.name == "Please post here to provide information and display it to the world" or thread.name == "Share Your VRChat World Here!":
                         continue
                     
                     # Check if this thread already has a world link
