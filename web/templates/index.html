@@ -1,248 +1,98 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VRChat World Showcase Bot</title>
-    <link rel="stylesheet" href="../static/css/styles.css">
-    <meta name="description" content="Create a beautiful, organized gallery for VRChat worlds in your Discord server with automatic world information, tags, and more.">
-    <meta property="og:title" content="VRChat World Showcase Bot">
-    <meta property="og:description" content="Showcase VRChat Worlds in Your Discord with automatic world information, tags, and more.">
-    <meta property="og:image" content="https://cdn.discordapp.com/avatars/1156538533876613121/8acb3d0ce2c328987ad86355e0d0b528.png">
-</head>
-<body>
-    <header>
-        <nav>
-            <div class="logo">
-                <span>🌎</span> VRChat World Showcase Bot
-            </div>
-            <div class="nav-links">
-                <a href="#features">Features</a>
-                <a href="#commands">Commands</a>
-                <a href="#howto">How To Use</a>
-            </div>
-            <a href="https://discord.com/oauth2/authorize?client_id=1156538533876613121&scope=bot&permissions=8" class="btn">Add to Discord</a>
-        </nav>
-    </header>
-    
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Showcase VRChat Worlds in Your Discord</h1>
-            <p>Create a beautiful, organized gallery for VRChat worlds in your Discord server with automatic world information, tags, and more.</p>
-            <div class="cta-buttons">
-                <a href="https://discord.com/oauth2/authorize?client_id=1156538533876613121&scope=bot&permissions=8" class="btn">Add to Discord</a>
-                <a href="#features" class="btn btn-secondary">Learn More</a>
-            </div>
-        </div>
-    </section>
-    
-    <section class="section" id="features">
-        <div class="section-header">
-            <h2>Key Features</h2>
-            <p>Everything you need to create an amazing VRChat world showcase experience</p>
-        </div>
-        
-        <div class="features">
-            <div class="feature-card">
-                <div class="feature-icon">🏷️</div>
-                <h3>Organized World Tags</h3>
-                <p>Sort worlds by type with customizable tags like Game, Adventure, Roleplaying, Horror, and more.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">🤖</div>
-                <h3>Auto-Fetch World Info</h3>
-                <p>Automatically extracts world details from VRChat (size, platform, capacity, etc.) without manual input.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">🔒</div>
-                <h3>Spam Protection</h3>
-                <p>Built-in duplicate prevention ensures each world is only posted once, keeping your showcase clean.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">🔍</div>
-                <h3>Gallery View</h3>
-                <p>Images and world details presented in an attractive gallery style for easy browsing.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">📊</div>
-                <h3>Maintenance Tools</h3>
-                <p>Advanced scan and repair tools help keep your showcase in perfect condition with minimal effort.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">💻</div>
-                <h3>Easy Setup</h3>
-                <p>Simple commands to create or configure your showcase channel with proper permissions automatically.</p>
-            </div>
-        </div>
-    </section>
-    
-    <section class="commands" id="commands">
-        <div class="command-container">
-            <div class="section-header">
-                <h2>Bot Commands</h2>
-                <p>Powerful slash commands to manage your VRChat world showcase</p>
-            </div>
-            
-            <div class="command-list">
-                <div class="command-card">
-                    <div class="command-name">/world-create</div>
-                    <div class="command-desc">Create a new forum channel specifically designed for VRChat worlds with proper permissions and tags.</div>
-                </div>
-                
-                <div class="command-card">
-                    <div class="command-name">/world-set</div>
-                    <div class="command-desc">Set up an existing forum channel for VRChat worlds with automatic tagging.</div>
-                </div>
-                
-                <div class="command-card">
-                    <div class="command-name">/world</div>
-                    <div class="command-desc">Create a VRChat world submission button in the current channel.</div>
-                </div>
-                
-                <div class="command-card">
-                    <div class="command-name">/scan</div>
-                    <div class="command-desc">Scan the forum for issues and provide options to automatically fix them.</div>
-                </div>
-                
-                <div class="command-card">
-                    <div class="command-name">/clean-db</div>
-                    <div class="command-desc">Clean the database by removing references to deleted channels.</div>
-                </div>
-                
-                <div class="command-card">
-                    <div class="command-name">/repair-threads</div>
-                    <div class="command-desc">Fix threads that don't have proper world links in the database.</div>
-                </div>
-                
-                <div class="command-card">
-                    <div class="command-name">/about</div>
-                    <div class="command-desc">Learn what this bot does and how to use it.</div>
-                </div>
-                
-                <div class="command-card">
-                    <div class="command-name">/help</div>
-                    <div class="command-desc">Show available commands and their usage.</div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <section class="section" id="howto">
-        <div class="section-header">
-            <h2>How To Use</h2>
-            <p>Get started with VRChat World Showcase Bot in just a few simple steps</p>
-        </div>
-        
-        <div class="steps">
-            <div class="step-card">
-                <div class="step-number"></div>
-                <div class="step-content">
-                    <h3>Add the Bot to Your Server</h3>
-                    <p>Click the "Add to Discord" button and select your server. Make sure the bot has proper permissions to manage channels and threads.</p>
-                </div>
-            </div>
-            
-            <div class="step-card">
-                <div class="step-number"></div>
-                <div class="step-content">
-                    <h3>Create Your Showcase Channel</h3>
-                    <p>Use the <code>/world-create</code> command to set up a new forum channel with proper permissions and tags, or use <code>/world-set</code> to configure an existing forum.</p>
-                </div>
-            </div>
-            
-            <div class="step-card">
-                <div class="step-number"></div>
-                <div class="step-content">
-                    <h3>Share with Your Community</h3>
-                    <p>Let your community know they can submit VRChat worlds by clicking the "World" button in the pinned post and pasting their world link.</p>
-                </div>
-            </div>
-            
-            <div class="step-card">
-                <div class="step-number"></div>
-                <div class="step-content">
-                    <h3>Keep Your Showcase Clean</h3>
-                    <p>Periodically use the <code>/scan</code> command to check for issues and fix them automatically. You can also use <code>/repair-threads</code> to fix any corrupted data.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <section class="section" id="bot-links">
-        <div class="section-header">
-            <h2>Bot Resources</h2>
-            <p>Important links and documentation</p>
-        </div>
-        
-        <div class="link-cards">
-            <div class="link-card">
-                <h3>Discord Support Server</h3>
-                <p>Join our community for help, updates, and suggestions.</p>
-                <a href="https://discord.gg/vrchat-world-showcase" class="link-btn">Join Server</a>
-            </div>
-            
-            <div class="link-card">
-                <h3>Command Documentation</h3>
-                <p>Detailed guide to all bot commands and features.</p>
-                <a href="#commands" class="link-btn">View Commands</a>
-            </div>
-            
-            <div class="link-card">
-                <h3>Terms of Service</h3>
-                <p>Read our terms of service for using the VRChat World Showcase Bot.</p>
-                <a href="terms.html" class="link-btn">Read Terms</a>
-            </div>
-            
-            <div class="link-card">
-                <h3>Privacy Policy</h3>
-                <p>Learn how we handle your data and privacy.</p>
-                <a href="privacy.html" class="link-btn">Read Policy</a>
-            </div>
-        </div>
-    </section>
-    
-    <footer>
-        <div class="footer-content">
-            <div class="logo">
-                <span>🌎</span> VRChat World Showcase Bot
-            </div>
-            <div class="footer-links">
-                <a href="#features">Features</a>
-                <a href="#commands">Commands</a>
-                <a href="#howto">How To Use</a>
-                <a href="#bot-links">Bot Resources</a>
-                <a href="https://discord.com/oauth2/authorize?client_id=1156538533876613121&scope=bot&permissions=8">Add to Discord</a>
-            </div>
-            <div class="copyright">
-                &copy; 2025 VRChat World Showcase Bot. Created by Hppedeaf. All rights reserved.
-            </div>
-        </div>
-    </footer>
+{% extends "base.html" %}
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Smooth scrolling for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    if (targetId === '#') return;
-                    
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        window.scrollTo({
-                            top: targetElement.offsetTop - 80,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
-        });
-    </script>
-</body>
-</html>
+{% block title %}VRChat World Showcase Manager - Home{% endblock %}
+
+{% block content %}
+<div class="bg-discord-dark text-white py-20">
+    <div class="container mx-auto px-4 text-center">
+        <h1 class="text-4xl md:text-5xl font-bold mb-6">VRChat World Showcase Manager</h1>
+        <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">Manage your Discord server's VRChat world showcase with an intuitive web dashboard.</p>
+        <a href="/login" class="bg-discord hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg text-lg inline-flex items-center">
+            <i class="fab fa-discord mr-2"></i>
+            <span>Login with Discord</span>
+        </a>
+    </div>
+</div>
+
+<div class="container mx-auto px-4 py-16">
+    <h2 class="text-3xl font-bold text-center mb-12">Features</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+            <div class="text-discord text-4xl mb-4">
+                <i class="fas fa-server"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-2">Server Management</h3>
+            <p class="text-gray-600">Manage your Discord server's VRChat world showcase settings from anywhere.</p>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+            <div class="text-discord text-4xl mb-4">
+                <i class="fas fa-globe"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-2">World Management</h3>
+            <p class="text-gray-600">View, organize and manage all VRChat worlds in your server's showcase.</p>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+            <div class="text-discord text-4xl mb-4">
+                <i class="fas fa-tags"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-2">Tag Management</h3>
+            <p class="text-gray-600">Customize your world showcase tags for better organization.</p>
+        </div>
+    </div>
+</div>
+
+<div class="bg-gray-100 py-16">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-12">How It Works</h2>
+        
+        <div class="max-w-4xl mx-auto">
+            <div class="flex flex-col md:flex-row items-center mb-12">
+                <div class="w-full md:w-1/3 text-center mb-6 md:mb-0">
+                    <div class="bg-discord text-white rounded-full h-20 w-20 flex items-center justify-center text-2xl mx-auto">
+                        1
+                    </div>
+                </div>
+                <div class="w-full md:w-2/3">
+                    <h3 class="text-xl font-bold mb-2">Login with Discord</h3>
+                    <p class="text-gray-600">Securely authenticate using your Discord account. No password required.</p>
+                </div>
+            </div>
+            
+            <div class="flex flex-col md:flex-row items-center mb-12">
+                <div class="w-full md:w-1/3 text-center mb-6 md:mb-0">
+                    <div class="bg-discord text-white rounded-full h-20 w-20 flex items-center justify-center text-2xl mx-auto">
+                        2
+                    </div>
+                </div>
+                <div class="w-full md:w-2/3">
+                    <h3 class="text-xl font-bold mb-2">Choose Your Server</h3>
+                    <p class="text-gray-600">Select one of your Discord servers where you have administrator permissions.</p>
+                </div>
+            </div>
+            
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="w-full md:w-1/3 text-center mb-6 md:mb-0">
+                    <div class="bg-discord text-white rounded-full h-20 w-20 flex items-center justify-center text-2xl mx-auto">
+                        3
+                    </div>
+                </div>
+                <div class="w-full md:w-2/3">
+                    <h3 class="text-xl font-bold mb-2">Manage Your Showcase</h3>
+                    <p class="text-gray-600">Configure your VRChat world showcase, manage worlds, and customize tags.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mx-auto px-4 py-16 text-center">
+    <h2 class="text-3xl font-bold mb-8">Ready to get started?</h2>
+    <a href="/login" class="bg-discord hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg text-lg inline-flex items-center">
+        <i class="fab fa-discord mr-2"></i>
+        <span>Login with Discord</span>
+    </a>
+</div>
+{% endblock %}
