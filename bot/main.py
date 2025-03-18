@@ -7,6 +7,33 @@ from discord.ext import commands
 import config
 from database.db import setup_database
 
+# Add these imports for Flask
+from flask import Flask, request, jsonify
+import threading
+import os
+
+# Flask app setup
+app = Flask(__name__)
+
+@app.route('/api/interactions', methods=['POST'])
+def interactions():
+    # Handle Discord interactions
+    return jsonify({"type": 1})
+
+@app.route('/api/verify', methods=['GET', 'POST'])
+def verify():
+    # Handle role verification
+    return jsonify({"success": True})
+
+# Add this route to serve your website's main page
+@app.route('/')
+def index():
+    return app.send_static_file('index.html')
+
+def run_flask():
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host='0.0.0.0', port=port)
+    
 # Discord Bot setup
 intents = discord.Intents.default()
 intents.message_content = True

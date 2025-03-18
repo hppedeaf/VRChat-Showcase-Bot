@@ -3,3 +3,6 @@ python-dotenv
 requests
 aiosqlite
 asyncio
+flask
+gunicorn
+setuptools

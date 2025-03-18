@@ -18,9 +18,16 @@ if not TOKEN:
 AUTH = os.getenv("VRCHAT_AUTH")
 API_KEY = os.getenv("VRCHAT_API_KEY")
 
-# Database
-DATABASE_PATH = Path("database") / "vrchat_worlds.db"
-DATABASE_FILE = str(DATABASE_PATH)
+# If DATABASE_URL is provided by Railway, use PostgreSQL
+DATABASE_URL = os.getenv("DATABASE_URL")
+if DATABASE_URL:
+    # Using PostgreSQL
+    DATABASE_FILE = DATABASE_URL
+else:
+    # Local SQLite fallback
+    DATABASE_PATH = Path("database") / "vrchat_worlds.db"
+    DATABASE_FILE = str(DATABASE_PATH)
+    DATABASE_PATH.parent.mkdir(exist_ok=True)
 
 # Ensure database directory exists
 DATABASE_PATH.parent.mkdir(exist_ok=True)

@@ -6,21 +6,23 @@ import sqlite3
 from typing import Dict, Any, List, Tuple, Optional
 import config
 
-def get_connection() -> sqlite3.Connection:
+def get_connection():
     """
-    Get a connection to the SQLite database with proper settings.
-    
-    Returns:
-        sqlite3.Connection: Database connection
+    Get a connection to the database.
     """
-    conn = sqlite3.connect(config.DATABASE_FILE)
-    conn.row_factory = sqlite3.Row  # Enable dictionary-like access to rows
-    
-    # Enable foreign key constraints
-    cursor = conn.cursor()
-    cursor.execute("PRAGMA foreign_keys = ON")
-    
-    return conn
+    if config.DATABASE_URL and config.DATABASE_URL.startswith("postgres"):
+        import psycopg2
+        conn = psycopg2.connect(config.DATABASE_URL)
+        # Set up psycopg2 to use dictionary-like access
+        conn.cursor_factory = psycopg2.extras.DictCursor
+        return conn
+    else:
+        # SQLite fallback for local development
+        conn = sqlite3.connect(config.DATABASE_FILE)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        cursor.execute("PRAGMA foreign_keys = ON")
+        return conn
 
 def setup_database() -> None:
     """
