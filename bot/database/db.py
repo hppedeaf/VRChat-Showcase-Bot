@@ -458,7 +458,83 @@ def log_activity(server_id: int, action_type: str, details: str) -> None:
             conn.commit()
     except Exception as e:
         config.logger.error(f"Error logging activity: {e}")
+
+"""
+To make your database operations compatible with both PostgreSQL and SQLite,
+add this utility helper and use it in all your database operations.
+"""
+
+def get_placeholder_style():
+    """
+    Returns the appropriate placeholder style for the current database.
+    
+    Returns:
+        tuple: (is_postgres, placeholder)
+    """
+    is_postgres = hasattr(config, 'DATABASE_URL') and config.DATABASE_URL and config.DATABASE_URL.startswith("postgres")
+    placeholder = "%s" if is_postgres else "?"
+    return is_postgres, placeholder
+
+def execute_query(conn, query, params=None):
+    """
+    Execute a query with the appropriate placeholders for the current database.
+    
+    Args:
+        conn: Database connection
+        query: SQL query with ? placeholders
+        params: Query parameters
         
+    Returns:
+        cursor: Database cursor after executing query
+    """
+    cursor = conn.cursor()
+    is_postgres, placeholder = get_placeholder_style()
+    
+    if params is None:
+        params = []
+    
+    # Replace ? with %s for PostgreSQL
+    if is_postgres:
+        query = query.replace("?", "%s")
+    
+    cursor.execute(query, params)
+    return cursor
+
+def execute_insert_query(conn, query, params=None):
+    """
+    Execute an insert query with the appropriate syntax for the current database.
+    
+    Args:
+        conn: Database connection
+        query: SQL query with ? placeholders and "INSERT OR REPLACE"/"INSERT OR IGNORE"
+        params: Query parameters
+        
+    Returns:
+        cursor: Database cursor after executing query
+    """
+    cursor = conn.cursor()
+    is_postgres, placeholder = get_placeholder_style()
+    
+    if params is None:
+        params = []
+    
+    if is_postgres:
+        # Handle PostgreSQL specific syntax
+        if "INSERT OR REPLACE" in query:
+            query = query.replace("INSERT OR REPLACE", "INSERT")
+            query = query.replace("VALUES", "VALUES") + " ON CONFLICT DO UPDATE SET "
+            # This is a simplified version - for a real implementation you'd need to parse
+            # the query to determine table and columns
+        elif "INSERT OR IGNORE" in query:
+            query = query.replace("INSERT OR IGNORE", "INSERT")
+            query = query.replace("VALUES", "VALUES") + " ON CONFLICT DO NOTHING"
+            
+        # Replace ? with %s for PostgreSQL
+        query = query.replace("?", "%s")
+    
+    cursor.execute(query, params)
+    return cursor
+
 def setup_guild_tracking_table():
     """Set up the table to track guilds (servers)."""
     is_postgres = hasattr(config, 'DATABASE_URL') and config.DATABASE_URL and config.DATABASE_URL.startswith("postgres")

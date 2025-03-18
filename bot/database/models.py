@@ -197,16 +197,27 @@ class ThreadWorldLinks:
         """
         with get_connection() as conn:
             cursor = conn.cursor()
-            cursor.execute(
-                "SELECT thread_id FROM thread_world_links WHERE server_id=? AND world_id=?",
-                (server_id, world_id)
-            )
+            
+            # Check if we're using PostgreSQL
+            is_postgres = hasattr(config, 'DATABASE_URL') and config.DATABASE_URL and config.DATABASE_URL.startswith("postgres")
+            
+            if is_postgres:
+                cursor.execute(
+                    "SELECT thread_id FROM thread_world_links WHERE server_id=%s AND world_id=%s",
+                    (server_id, world_id)
+                )
+            else:
+                cursor.execute(
+                    "SELECT thread_id FROM thread_world_links WHERE server_id=? AND world_id=?",
+                    (server_id, world_id)
+                )
+                
             result = cursor.fetchone()
             
             if result:
                 return result['thread_id']
             return None
-    
+
     @staticmethod
     def get_world_for_thread(server_id: int, thread_id: int) -> Optional[str]:
         """
@@ -221,10 +232,21 @@ class ThreadWorldLinks:
         """
         with get_connection() as conn:
             cursor = conn.cursor()
-            cursor.execute(
-                "SELECT world_id FROM thread_world_links WHERE server_id=? AND thread_id=?",
-                (server_id, thread_id)
-            )
+            
+            # Check if we're using PostgreSQL
+            is_postgres = hasattr(config, 'DATABASE_URL') and config.DATABASE_URL and config.DATABASE_URL.startswith("postgres")
+            
+            if is_postgres:
+                cursor.execute(
+                    "SELECT world_id FROM thread_world_links WHERE server_id=%s AND thread_id=%s",
+                    (server_id, thread_id)
+                )
+            else:
+                cursor.execute(
+                    "SELECT world_id FROM thread_world_links WHERE server_id=? AND thread_id=?",
+                    (server_id, thread_id)
+                )
+                
             result = cursor.fetchone()
             
             if result:
@@ -556,16 +578,27 @@ class WorldPosts:
         # First check the thread_world_links table
         with get_connection() as conn:
             cursor = conn.cursor()
-            cursor.execute(
-                "SELECT thread_id FROM thread_world_links WHERE server_id=? AND world_id=?",
-                (server_id, world_id)
-            )
+            
+            # Check if we're using PostgreSQL
+            is_postgres = hasattr(config, 'DATABASE_URL') and config.DATABASE_URL and config.DATABASE_URL.startswith("postgres")
+            
+            if is_postgres:
+                cursor.execute(
+                    "SELECT thread_id FROM thread_world_links WHERE server_id=%s AND world_id=%s",
+                    (server_id, world_id)
+                )
+            else:
+                cursor.execute(
+                    "SELECT thread_id FROM thread_world_links WHERE server_id=? AND world_id=?",
+                    (server_id, world_id)
+                )
+                
             result = cursor.fetchone()
             
             if result:
                 return result['thread_id']
             return None
-    
+
     @staticmethod
     def get_world_for_thread(server_id: int, thread_id: int) -> Optional[str]:
         """
@@ -580,10 +613,21 @@ class WorldPosts:
         """
         with get_connection() as conn:
             cursor = conn.cursor()
-            cursor.execute(
-                "SELECT world_id FROM thread_world_links WHERE server_id=? AND thread_id=?",
-                (server_id, thread_id)
-            )
+            
+            # Check if we're using PostgreSQL
+            is_postgres = hasattr(config, 'DATABASE_URL') and config.DATABASE_URL and config.DATABASE_URL.startswith("postgres")
+            
+            if is_postgres:
+                cursor.execute(
+                    "SELECT world_id FROM thread_world_links WHERE server_id=%s AND thread_id=%s",
+                    (server_id, thread_id)
+                )
+            else:
+                cursor.execute(
+                    "SELECT world_id FROM thread_world_links WHERE server_id=? AND thread_id=?",
+                    (server_id, thread_id)
+                )
+                
             result = cursor.fetchone()
             
             if result:
