@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /dashboard
+Disallow: /guild/
+Disallow: /callback
+Disallow: /login
+Disallow: /logout
+
+Sitemap: https://vrchat-world-showcase.example.com/sitemap.xml

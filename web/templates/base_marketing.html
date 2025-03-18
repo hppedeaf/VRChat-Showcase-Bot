@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}VRChat World Showcase Bot{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/marketing-styles.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}" type="image/x-icon">
     {% block head %}{% endblock %}
 </head>
 <body>
@@ -14,9 +15,9 @@
                 <span>🌎</span> VRChat World Showcase Bot
             </div>
             <div class="nav-links">
-                <a href="#features">Features</a>
-                <a href="#commands">Commands</a>
-                <a href="#howto">How To Use</a>
+                <a href="/#features">Features</a>
+                <a href="/#commands">Commands</a>
+                <a href="/#howto">How To Use</a>
             </div>
             <div class="nav-buttons">
                 {% if user %}
@@ -38,10 +39,10 @@
                 <span>🌎</span> VRChat World Showcase Bot
             </div>
             <div class="footer-links">
-                <a href="#features">Features</a>
-                <a href="#commands">Commands</a>
-                <a href="#howto">How To Use</a>
-                <a href="#bot-links">Bot Resources</a>
+                <a href="/#features">Features</a>
+                <a href="/#commands">Commands</a>
+                <a href="/#howto">How To Use</a>
+                <a href="/#bot-links">Bot Resources</a>
                 <a href="{{ bot_invite_url }}">Add to Discord</a>
                 {% if user %}
                 <a href="/dashboard">Dashboard</a>
@@ -50,11 +51,14 @@
                 {% endif %}
             </div>
             <div class="copyright">
-                &copy; {{ current_year }} VRChat World Showcase Bot. All rights reserved.
+                &copy; {{ current_year|default('2025') }} VRChat World Showcase Bot. All rights reserved.
             </div>
         </div>
     </footer>
     
+    <a href="#" class="back-to-top" id="backToTop">↑</a>
+    
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     {% block scripts %}{% endblock %}
 </body>
 </html>

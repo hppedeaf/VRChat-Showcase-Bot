@@ -1,134 +1,84 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terms of Service - VRChat World Showcase Bot</title>
-    <link rel="stylesheet" href="styles.css">
-    <meta name="description" content="Terms of Service for the VRChat World Showcase Discord Bot">
-</head>
-<body>
-    <header>
-        <nav>
-            <div class="logo">
-                <span>🌎</span> VRChat World Showcase Bot
-            </div>
-            <div class="nav-links">
-                <a href="index.html#features">Features</a>
-                <a href="index.html#commands">Commands</a>
-                <a href="index.html#howto">How To Use</a>
-            </div>
-            <a href="index.html" class="btn">Back to Home</a>
-        </nav>
-    </header>
-    
-    <section class="section">
-        <div class="section-header">
-            <h2>Terms of Service</h2>
-            <p>Please read these terms carefully before using our bot</p>
-        </div>
-        
-        <div class="terms-container">
-            <p class="last-updated">Last Updated: March 18, 2025</p>
-            
-            <p>Welcome to the VRChat World Showcase Bot ("Bot"). By adding this Bot to your Discord server or using any of its features, you agree to be bound by the following Terms of Service ("Terms").</p>
-            
-            <h2>1. Acceptance of Terms</h2>
-            <p>By using the VRChat World Showcase Bot, you agree to these Terms. If you do not agree to these Terms, please do not use the Bot.</p>
-            
-            <h2>2. Description of Service</h2>
-            <p>The VRChat World Showcase Bot is designed to create and manage a showcase of VRChat worlds in Discord servers. It provides features including but not limited to:</p>
-            <ul>
-                <li>Creating and configuring forum channels for VRChat world posts</li>
-                <li>Fetching VRChat world information via the VRChat API</li>
-                <li>Managing world posts, tags, and related data</li>
-                <li>Maintaining database entries of world information</li>
-            </ul>
-            
-            <h2>3. User Requirements and Conduct</h2>
-            <h3>3.1 Discord Terms</h3>
-            <p>Users must comply with Discord's Terms of Service and Community Guidelines when using our Bot.</p>
-            
-            <h3>3.2 VRChat Terms</h3>
-            <p>All content shared through our Bot must comply with VRChat's Terms of Service and Community Guidelines.</p>
-            
-            <h3>3.3 Prohibited Activities</h3>
-            <p>When using our Bot, you must not:</p>
-            <ul>
-                <li>Use the Bot to share inappropriate, offensive, or illegal content</li>
-                <li>Attempt to exploit, hack, or modify the Bot's code or functionality</li>
-                <li>Use the Bot to spam or disrupt Discord servers</li>
-                <li>Impersonate the Bot developer or other users</li>
-                <li>Attempt to use the Bot in ways that it was not intended to be used</li>
-            </ul>
-            
-            <h2>4. Data Storage and Privacy</h2>
-            <p>Our Bot stores certain data necessary for its functioning, including:</p>
-            <ul>
-                <li>Discord server IDs, channel IDs, and thread IDs</li>
-                <li>VRChat world IDs and related information</li>
-                <li>User IDs associated with world submissions</li>
-                <li>Tag preferences and choices</li>
-            </ul>
-            <p>For more information about our data practices, please refer to our <a href="privacy.html" style="color: var(--primary);">Privacy Policy</a>.</p>
-            
-            <h2>5. Intellectual Property</h2>
-            <p>The VRChat World Showcase Bot, including its code, design, and functionality, is the intellectual property of Hppedeaf. The Bot is provided for use as-is, and you may not copy, modify, distribute, or create derivative works based on our Bot without explicit permission.</p>
-            
-            <h2>6. Limitation of Liability</h2>
-            <p>The VRChat World Showcase Bot is provided "as is" without any warranties of any kind. We are not responsible for any damages or issues that may arise from the use of our Bot, including but not limited to:</p>
-            <ul>
-                <li>Service interruptions or failures</li>
-                <li>Data loss or inaccuracies</li>
-                <li>Issues related to Discord or VRChat API changes</li>
-                <li>Misuse or unauthorized access to the Bot</li>
-            </ul>
-            
-            <h2>7. Modifications to the Service and Terms</h2>
-            <p>We reserve the right to modify or discontinue the Bot at any time without notice. We may also update these Terms at any time. Continued use of the Bot after any changes constitutes acceptance of the new Terms.</p>
-            
-            <h2>8. Termination</h2>
-            <p>We reserve the right to terminate or restrict your access to our Bot for violations of these Terms or for any other reason at our discretion.</p>
-            
-            <h2>9. Contact Information</h2>
-            <p>If you have any questions about these Terms, please contact us through our Discord support server or via email at <a href="mailto:contact@vrchat-showcase-bot.com" style="color: var(--primary);">contact@vrchat-showcase-bot.com</a>.</p>
-        </div>
-    </section>
-    
-    <footer>
-        <div class="footer-content">
-            <div class="logo">
-                <span>🌎</span> VRChat World Showcase Bot
-            </div>
-            <div class="footer-links">
-                <a href="index.html">Home</a>
-                <a href="privacy.html">Privacy Policy</a>
-                <a href="https://discord.gg/vrchat-world-showcase">Discord Support</a>
-            </div>
-            <div class="copyright">
-                &copy; 2025 VRChat World Showcase Bot. Created by Hppedeaf. All rights reserved.
-            </div>
-        </div>
-    </footer>
+{% extends "base_marketing.html" %}
 
-    <a href="#" class="back-to-top" id="backToTop">↑</a>
+{% block title %}Terms of Service - VRChat World Showcase Bot{% endblock %}
 
-    <script>
-        // Back to top button functionality
-        const backToTopButton = document.getElementById('backToTop');
+{% block content %}
+<section class="section">
+    <div class="section-header">
+        <h2>Terms of Service</h2>
+        <p>Please read these terms carefully before using our bot</p>
+    </div>
+    
+    <div class="terms-container">
+        <p class="last-updated">Last Updated: March 18, 2025</p>
         
-        window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 300) {
-                backToTopButton.classList.add('visible');
-            } else {
-                backToTopButton.classList.remove('visible');
-            }
-        });
+        <p>Welcome to the VRChat World Showcase Bot ("Bot"). By adding this Bot to your Discord server or using any of its features, you agree to be bound by the following Terms of Service ("Terms").</p>
         
-        backToTopButton.addEventListener('click', (e) => {
-            e.preventDefault();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-    </script>
-</body>
-</html>
+        <h2>1. Acceptance of Terms</h2>
+        <p>By using the VRChat World Showcase Bot, you agree to these Terms. If you do not agree to these Terms, please do not use the Bot.</p>
+        
+        <h2>2. Description of Service</h2>
+        <p>The VRChat World Showcase Bot is designed to create and manage a showcase of VRChat worlds in Discord servers. It provides features including but not limited to:</p>
+        <ul>
+            <li>Creating and configuring forum channels for VRChat world posts</li>
+            <li>Fetching VRChat world information via the VRChat API</li>
+            <li>Managing world posts, tags, and related data</li>
+            <li>Maintaining database entries of world information</li>
+        </ul>
+        
+        <h2>3. User Requirements and Conduct</h2>
+        <h3>3.1 Discord Terms</h3>
+        <p>Users must comply with Discord's Terms of Service and Community Guidelines when using our Bot.</p>
+        
+        <h3>3.2 VRChat Terms</h3>
+        <p>All content shared through our Bot must comply with VRChat's Terms of Service and Community Guidelines.</p>
+        
+        <h3>3.3 Prohibited Activities</h3>
+        <p>When using our Bot, you must not:</p>
+        <ul>
+            <li>Use the Bot to share inappropriate, offensive, or illegal content</li>
+            <li>Attempt to exploit, hack, or modify the Bot's code or functionality</li>
+            <li>Use the Bot to spam or disrupt Discord servers</li>
+            <li>Impersonate the Bot developer or other users</li>
+            <li>Attempt to use the Bot in ways that it was not intended to be used</li>
+        </ul>
+        
+        <h2>4. Data Storage and Privacy</h2>
+        <p>Our Bot stores certain data necessary for its functioning, including:</p>
+        <ul>
+            <li>Discord server IDs, channel IDs, and thread IDs</li>
+            <li>VRChat world IDs and related information</li>
+            <li>User IDs associated with world submissions</li>
+            <li>Tag preferences and choices</li>
+        </ul>
+        <p>For more information about our data practices, please refer to our <a href="{{ url_for('privacy') }}" style="color: var(--primary);">Privacy Policy</a>.</p>
+        
+        <h2>5. Intellectual Property</h2>
+        <p>The VRChat World Showcase Bot, including its code, design, and functionality, is the intellectual property of its creators. The Bot is provided for use as-is, and you may not copy, modify, distribute, or create derivative works based on our Bot without explicit permission.</p>
+        
+        <h2>6. Limitation of Liability</h2>
+        <p>The VRChat World Showcase Bot is provided "as is" without any warranties of any kind. We are not responsible for any damages or issues that may arise from the use of our Bot, including but not limited to:</p>
+        <ul>
+            <li>Service interruptions or failures</li>
+            <li>Data loss or inaccuracies</li>
+            <li>Issues related to Discord or VRChat API changes</li>
+            <li>Misuse or unauthorized access to the Bot</li>
+        </ul>
+        
+        <h2>7. Modifications to the Service and Terms</h2>
+        <p>We reserve the right to modify or discontinue the Bot at any time without notice. We may also update these Terms at any time. Continued use of the Bot after any changes constitutes acceptance of the new Terms.</p>
+        
+        <h2>8. Termination</h2>
+        <p>We reserve the right to terminate or restrict your access to our Bot for violations of these Terms or for any other reason at our discretion.</p>
+        
+        <h2>9. Contact Information</h2>
+        <p>If you have any questions about these Terms, please contact us through our Discord support server or via email at <a href="mailto:contact@vrchat-showcase-bot.com" style="color: var(--primary);">contact@vrchat-showcase-bot.com</a>.</p>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Back to top button functionality is handled by main.js
+</script>
+{% endblock %}

@@ -7,6 +7,7 @@ import threading
 import os
 import sys
 import secrets
+import logging
 
 # Add the bot directory to the Python path
 sys.path.append(os.path.join(os.path.dirname(__file__), 'bot'))
@@ -27,6 +28,9 @@ template_folder = os.path.join(current_dir, 'web', 'templates')
 print(f"Static folder path: {static_folder}")
 print(f"Template folder path: {template_folder}")
 
+# Make sure static folder exists
+os.makedirs(static_folder, exist_ok=True)
+
 app = Flask(__name__, 
            static_folder=static_folder, 
            static_url_path='/static',
@@ -36,8 +40,15 @@ app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
 # Set secret key for sessions - generate a new one on startup or use an env var
 app.secret_key = os.getenv("FLASK_SECRET_KEY", secrets.token_hex(16))
 
-# Import the web dashboard setup
-from web_dashboard import setup_routes, user_guilds_cache
+# Custom error handler for 404 errors
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('error.html', message="Page not found. The requested page doesn't exist."), 404
+
+# Custom error handler for 500 errors
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template('error.html', message="Internal server error. Please try again later."), 500
 
 #########################################
 # Template Filters
@@ -73,20 +84,54 @@ def verify():
 @app.route('/api/status', methods=['GET'])
 def status():
     """Return bot status information."""
-    # Get status information
-    guilds_count = getattr(bot_main, 'guild_count', 0)
-    worlds_count = getattr(bot_main, 'worlds_count', 0)
-    
-    # Construct status response
-    status_data = {
-        "status": "online",
-        "guilds": guilds_count,
-        "worlds": worlds_count,
-        "version": "1.0.0",
-        "uptime": getattr(bot_main, 'uptime', 'Unknown')
-    }
-    
-    return jsonify(status_data)
+    try:
+        # Get status information
+        guilds_count = getattr(bot_main, 'guild_count', 0)
+        worlds_count = getattr(bot_main, 'worlds_count', 0)
+        
+        # Get bot reference to check if it's running
+        bot = getattr(bot_main, 'bot', None)
+        is_online = bot is not None and bot.is_ready() if hasattr(bot, 'is_ready') else False
+        
+        # Construct status response
+        status_data = {
+            "status": "online" if is_online else "offline",
+            "guilds": guilds_count,
+            "worlds": worlds_count,
+            "version": "1.0.0",
+            "uptime": getattr(bot_main, 'uptime', 'Unknown')
+        }
+        
+        return jsonify(status_data)
+    except Exception as e:
+        app.logger.error(f"Error in status API: {e}")
+        return jsonify({
+            "status": "error",
+            "message": "Could not retrieve bot status"
+        }), 500
+
+# Index route (root page)
+@app.route('/')
+def index():
+    """Serve the landing page."""
+    try:
+        # If we have a marketing landing page, use it
+        if os.path.exists(os.path.join(app.template_folder, 'marketing_index.html')):
+            # Check if user is authenticated, redirect to dashboard if so
+            if 'user_id' in session:
+                return redirect(url_for('dashboard'))
+            
+            # Add bot_invite_url to context
+            bot_invite_url = config.BOT_INVITE_URL
+            return render_template('marketing_index.html', bot_invite_url=bot_invite_url)
+        
+        # Otherwise use our dashboard landing page
+        if 'user_id' in session:
+            return redirect(url_for('dashboard'))
+        return render_template('index.html')
+    except Exception as e:
+        app.logger.error(f"Error rendering index: {e}")
+        return render_template('error.html', message=f"Template error: {str(e)}")
 
 #########################################
 # Static Files and Direct Template Routes
@@ -95,12 +140,28 @@ def status():
 @app.route('/terms')
 def terms():
     """Serve the terms of service page."""
-    return render_template('terms.html')
+    return render_template('terms.html', bot_invite_url=config.BOT_INVITE_URL)
 
 @app.route('/privacy')
 def privacy():
     """Serve the privacy policy page."""
-    return render_template('privacy.html')
+    return render_template('privacy.html', bot_invite_url=config.BOT_INVITE_URL)
+
+# Serve common static files at root level
+@app.route('/favicon.ico')
+def favicon():
+    """Serve the favicon."""
+    return send_from_directory(os.path.join(app.static_folder, 'img'), 'favicon.ico')
+
+@app.route('/robots.txt')
+def robots():
+    """Serve robots.txt."""
+    return send_from_directory(app.static_folder, 'robots.txt')
+
+@app.route('/styles.css')
+def root_styles():
+    """Serve styles.css at root level for direct references."""
+    return send_from_directory(os.path.join(app.static_folder, 'css'), 'marketing-styles.css')
 
 # Fallback route to catch any undefined routes
 @app.route('/<path:path>')
@@ -117,7 +178,9 @@ def catch_all(path):
     # Then check if it's a template
     template_path = f"{path}.html"
     try:
-        return render_template(template_path)
+        # Add bot_invite_url to context
+        bot_invite_url = config.BOT_INVITE_URL
+        return render_template(template_path, bot_invite_url=bot_invite_url)
     except:
         # If not a template, pass to the next handler
         pass
@@ -132,8 +195,6 @@ def catch_all(path):
 def run_bot():
     """Run the Discord bot in a separate thread."""
     try:
-        # Store a reference to the bot for the web dashboard
-        global bot
         # Run the bot's main function
         asyncio.run(bot_main.main())
     except Exception as e:
@@ -141,22 +202,24 @@ def run_bot():
         print(f"Bot error: {e}")
 
 if __name__ == '__main__':
+    # Create a logger for the Flask app
+    handler = logging.StreamHandler(sys.stdout)
+    handler.setFormatter(logging.Formatter(
+        '%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
+    app.logger.addHandler(handler)
+    app.logger.setLevel(logging.INFO)
+    
     # Start the bot in a background thread
+    app.logger.info("Starting Discord bot in background thread...")
     bot_thread = threading.Thread(target=run_bot, daemon=True)
     bot_thread.start()
     
+    # Import the web dashboard setup
+    from web_dashboard import setup_routes
+    
     # Set up the web dashboard routes
-    # Debug bot guilds
-    bot = getattr(bot_main, 'bot', None)
-    if bot:
-        print(f"Bot is in {len(bot.guilds)} guilds:")
-        for guild in bot.guilds:
-            print(f"- {guild.name} (ID: {guild.id})")
-    else:
-        print("Bot instance is None or not properly initialized")
-
-    # Then pass bot to setup_routes
-    setup_routes(app, bot)
+    # Pass app to setup_routes - bot will be grabbed from bot_main
+    setup_routes(app)
     
     # Get the port from environment variable
     port = int(os.environ.get("PORT", 8080))

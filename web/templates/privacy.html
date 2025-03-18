@@ -1,159 +1,103 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy Policy - VRChat World Showcase Bot</title>
-    <link rel="stylesheet" href="styles.css">
-    <meta name="description" content="Privacy Policy for the VRChat World Showcase Discord Bot">
-</head>
-<body>
-    <header>
-        <nav>
-            <div class="logo">
-                <span>🌎</span> VRChat World Showcase Bot
-            </div>
-            <div class="nav-links">
-                <a href="index.html#features">Features</a>
-                <a href="index.html#commands">Commands</a>
-                <a href="index.html#howto">How To Use</a>
-            </div>
-            <a href="index.html" class="btn">Back to Home</a>
-        </nav>
-    </header>
-    
-    <section class="section">
-        <div class="section-header">
-            <h2>Privacy Policy</h2>
-            <p>How we handle your data and protect your privacy</p>
-        </div>
-        
-        <div class="privacy-container">
-            <p class="last-updated">Last Updated: March 18, 2025</p>
-            
-            <p>This Privacy Policy describes how your information is collected, used, and shared when you use the VRChat World Showcase Bot ("Bot") in your Discord server.</p>
-            
-            <h2>1. Information We Collect</h2>
-            <p>When you use our Bot, we collect and store the following types of information:</p>
-            
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Data Type</th>
-                        <th>Purpose</th>
-                        <th>Duration Stored</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Discord Server ID</td>
-                        <td>To identify which server the Bot is operating in</td>
-                        <td>Until Bot is removed from server</td>
-                    </tr>
-                    <tr>
-                        <td>Discord Channel and Thread IDs</td>
-                        <td>To manage forum channels and thread posts</td>
-                        <td>Until channels are deleted or the Bot is removed</td>
-                    </tr>
-                    <tr>
-                        <td>Discord User IDs</td>
-                        <td>To associate world submissions with users</td>
-                        <td>Until related world posts are deleted</td>
-                    </tr>
-                    <tr>
-                        <td>VRChat World IDs and URLs</td>
-                        <td>To display world information and prevent duplicates</td>
-                        <td>Until related world posts are deleted</td>
-                    </tr>
-                    <tr>
-                        <td>Tag Selections</td>
-                        <td>To categorize world posts</td>
-                        <td>Until related world posts are deleted</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <p>All data is stored in a secure database and is only used for the Bot's functionality.</p>
-            
-            <h2>2. How We Use Your Information</h2>
-            <p>We use the information we collect to:</p>
-            <ul>
-                <li>Create and manage VRChat world showcase forums in your Discord server</li>
-                <li>Fetch world information from the VRChat API to populate posts</li>
-                <li>Tag and categorize world posts based on user selections</li>
-                <li>Prevent duplicate world submissions</li>
-                <li>Maintain and troubleshoot the Bot's functionality</li>
-            </ul>
-            
-            <p>We do not use your data for marketing purposes or sell it to third parties.</p>
-            
-            <h2>3. Information Sharing</h2>
-            <p>We do not share your information with any third parties except in the following circumstances:</p>
-            <ul>
-                <li>We may retrieve world information from the VRChat API using world IDs submitted by users</li>
-                <li>We may use basic analytics tools to monitor the Bot's performance and troubleshoot issues</li>
-                <li>If required by law or to protect our rights</li>
-            </ul>
-            
-            <h2>4. User Rights</h2>
-            <p>You have the right to:</p>
-            <ul>
-                <li>Remove the Bot from your server at any time, which will stop new data collection</li>
-                <li>Request deletion of your server's data by contacting us</li>
-                <li>Use the Bot's built-in commands to manage or delete world posts</li>
-            </ul>
-            
-            <h2>5. Data Security</h2>
-            <p>We implement reasonable security measures to protect your information. However, please be aware that no method of electronic storage or transmission is 100% secure.</p>
-            
-            <h2>6. VRChat API Usage</h2>
-            <p>Our Bot interacts with the VRChat API to fetch world information. This interaction is governed by VRChat's own terms and policies. Our access to the VRChat API is limited to publicly available world information and does not include user authentication data or private information.</p>
-            
-            <h2>7. Children's Privacy</h2>
-            <p>Our services are not directed to individuals under the age of 13. We do not knowingly collect personal information from children under 13. If we learn we have collected personal information of a child under 13, we will take steps to delete such information as quickly as possible.</p>
-            
-            <h2>8. Changes to This Privacy Policy</h2>
-            <p>We may update this Privacy Policy from time to time to reflect changes in our practices or for other operational, legal, or regulatory reasons. We will notify users of any material changes by updating the "Last Updated" date.</p>
-            
-            <h2>9. Contact Us</h2>
-            <p>If you have any questions about our privacy practices or would like to exercise your rights regarding your data, please contact us through our <a href="https://discord.gg/vrchat-world-showcase" style="color: var(--primary);">Discord support server</a> or via email at <a href="mailto:contact@vrchat-showcase-bot.com" style="color: var(--primary);">contact@vrchat-showcase-bot.com</a>.</p>
-        </div>
-    </section>
-    
-    <footer>
-        <div class="footer-content">
-            <div class="logo">
-                <span>🌎</span> VRChat World Showcase Bot
-            </div>
-            <div class="footer-links">
-                <a href="index.html">Home</a>
-                <a href="terms.html">Terms of Service</a>
-                <a href="https://discord.gg/vrchat-world-showcase">Discord Support</a>
-            </div>
-            <div class="copyright">
-                &copy; 2025 VRChat World Showcase Bot. Created by Hppedeaf. All rights reserved.
-            </div>
-        </div>
-    </footer>
+{% extends "base_marketing.html" %}
 
-    <a href="#" class="back-to-top" id="backToTop">↑</a>
+{% block title %}Privacy Policy - VRChat World Showcase Bot{% endblock %}
 
-    <script>
-        // Back to top button functionality
-        const backToTopButton = document.getElementById('backToTop');
+{% block content %}
+<section class="section">
+    <div class="section-header">
+        <h2>Privacy Policy</h2>
+        <p>How we handle your data and protect your privacy</p>
+    </div>
+    
+    <div class="privacy-container">
+        <p class="last-updated">Last Updated: March 18, 2025</p>
         
-        window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 300) {
-                backToTopButton.classList.add('visible');
-            } else {
-                backToTopButton.classList.remove('visible');
-            }
-        });
+        <p>This Privacy Policy describes how your information is collected, used, and shared when you use the VRChat World Showcase Bot ("Bot") in your Discord server.</p>
         
-        backToTopButton.addEventListener('click', (e) => {
-            e.preventDefault();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-    </script>
-</body>
-</html>
+        <h2>1. Information We Collect</h2>
+        <p>When you use our Bot, we collect and store the following types of information:</p>
+        
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Data Type</th>
+                    <th>Purpose</th>
+                    <th>Duration Stored</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Discord Server ID</td>
+                    <td>To identify which server the Bot is operating in</td>
+                    <td>Until Bot is removed from server</td>
+                </tr>
+                <tr>
+                    <td>Discord Channel and Thread IDs</td>
+                    <td>To manage forum channels and thread posts</td>
+                    <td>Until channels are deleted or the Bot is removed</td>
+                </tr>
+                <tr>
+                    <td>Discord User IDs</td>
+                    <td>To associate world submissions with users</td>
+                    <td>Until related world posts are deleted</td>
+                </tr>
+                <tr>
+                    <td>VRChat World IDs and URLs</td>
+                    <td>To display world information and prevent duplicates</td>
+                    <td>Until related world posts are deleted</td>
+                </tr>
+                <tr>
+                    <td>Tag Selections</td>
+                    <td>To categorize world posts</td>
+                    <td>Until related world posts are deleted</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <p>All data is stored in a secure database and is only used for the Bot's functionality.</p>
+        
+        <h2>2. How We Use Your Information</h2>
+        <p>We use the information we collect to:</p>
+        <ul>
+            <li>Create and manage VRChat world showcase forums in your Discord server</li>
+            <li>Fetch world information from the VRChat API to populate posts</li>
+            <li>Tag and categorize world posts based on user selections</li>
+            <li>Prevent duplicate world submissions</li>
+            <li>Maintain and troubleshoot the Bot's functionality</li>
+        </ul>
+        
+        <p>We do not use your data for marketing purposes or sell it to third parties.</p>
+        
+        <h2>3. Information Sharing</h2>
+        <p>We do not share your information with any third parties except in the following circumstances:</p>
+        <ul>
+            <li>We may retrieve world information from the VRChat API using world IDs submitted by users</li>
+            <li>We may use basic analytics tools to monitor the Bot's performance and troubleshoot issues</li>
+            <li>If required by law or to protect our rights</li>
+        </ul>
+        
+        <h2>4. User Rights</h2>
+        <p>You have the right to:</p>
+        <ul>
+            <li>Remove the Bot from your server at any time, which will stop new data collection</li>
+            <li>Request deletion of your server's data by contacting us</li>
+            <li>Use the Bot's built-in commands to manage or delete world posts</li>
+        </ul>
+        
+        <h2>5. Data Security</h2>
+        <p>We implement reasonable security measures to protect your information. However, please be aware that no method of electronic storage or transmission is 100% secure.</p>
+        
+        <h2>6. VRChat API Usage</h2>
+        <p>Our Bot interacts with the VRChat API to fetch world information. This interaction is governed by VRChat's own terms and policies. Our access to the VRChat API is limited to publicly available world information and does not include user authentication data or private information.</p>
+        
+        <h2>7. Children's Privacy</h2>
+        <p>Our services are not directed to individuals under the age of 13. We do not knowingly collect personal information from children under 13. If we learn we have collected personal information of a child under 13, we will take steps to delete such information as quickly as possible.</p>
+        
+        <h2>8. Changes to This Privacy Policy</h2>
+        <p>We may update this Privacy Policy from time to time to reflect changes in our practices or for other operational, legal, or regulatory reasons. We will notify users of any material changes by updating the "Last Updated" date.</p>
+        
+        <h2>9. Contact Us</h2>
+        <p>If you have any questions about our privacy practices or would like to exercise your rights regarding your data, please contact us through our <a href="https://discord.gg/vrchat-world-showcase" style="color: var(--primary);">Discord support server</a> or via email at <a href="mailto:contact@vrchat-showcase-bot.com" style="color: var(--primary);">contact@vrchat-showcase-bot.com</a>.</p>
+    </div>
+</section>
+{% endblock %}

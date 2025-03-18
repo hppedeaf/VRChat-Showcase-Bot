@@ -6,6 +6,8 @@
     <title>{% block title %}VRChat World Showcase Manager{% endblock %}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}" type="image/x-icon">
+    <meta name="csrf-token" content="{{ csrf_token if csrf_token else '' }}">
     <style>
         /* Custom styles */
         .bg-discord {
@@ -13,6 +15,9 @@
         }
         .text-discord {
             color: #5865F2;
+        }
+        .border-discord {
+            border-color: #5865F2;
         }
         .bg-discord-dark {
             background-color: #36393f;
@@ -47,20 +52,20 @@
                                     <span>{{ user.username[:1] }}</span>
                                 </div>
                             {% endif %}
-                            <span>{{ user.username }}</span>
+                            <span class="hidden md:inline">{{ user.username }}</span>
                             <i class="fas fa-chevron-down"></i>
                         </button>
                         <div class="dropdown-content hidden absolute right-0 mt-2 w-48 bg-discord-darker rounded shadow-lg z-10">
-                            <a href="/dashboard" class="block px-4 py-2 text-white hover:bg-discord-light">
+                            <a href="{{ url_for('dashboard') }}" class="block px-4 py-2 text-white hover:bg-discord-light">
                                 <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
                             </a>
-                            <a href="/logout" class="block px-4 py-2 text-white hover:bg-discord-light">
+                            <a href="{{ url_for('logout') }}" class="block px-4 py-2 text-white hover:bg-discord-light">
                                 <i class="fas fa-sign-out-alt mr-2"></i>Logout
                             </a>
                         </div>
                     </div>
                 {% else %}
-                    <a href="/login" class="bg-discord hover:bg-blue-600 text-white font-bold py-2 px-4 rounded inline-flex items-center">
+                    <a href="{{ url_for('login') }}" class="bg-discord hover:bg-blue-600 text-white font-bold py-2 px-4 rounded inline-flex items-center">
                         <i class="fab fa-discord mr-2"></i>
                         <span>Login with Discord</span>
                     </a>
@@ -74,9 +79,9 @@
         {% if messages %}
             <div class="container mx-auto mt-4 px-4">
                 {% for category, message in messages %}
-                    <div class="{% if category == 'error' %}bg-red-100 border-red-400 text-red-700{% else %}bg-green-100 border-green-400 text-green-700{% endif %} px-4 py-3 rounded relative mb-4 border" role="alert">
+                    <div class="{% if category == 'error' %}bg-red-100 border-red-400 text-red-700{% else %}bg-green-100 border-green-400 text-green-700{% endif %} px-4 py-3 rounded relative mb-4 border alert" role="alert">
                         <span class="block sm:inline">{{ message }}</span>
-                        <button type="button" class="absolute top-0 bottom-0 right-0 px-4 py-3" onclick="this.parentElement.style.display='none'">
+                        <button type="button" class="absolute top-0 bottom-0 right-0 px-4 py-3 close-btn" onclick="this.parentElement.style.display='none'">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
@@ -95,17 +100,17 @@
         <div class="container mx-auto px-4">
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="mb-4 md:mb-0">
-                    <p>&copy; 2025 VRChat World Showcase Manager</p>
+                    <p>&copy; {{ current_year|default('2025') }} VRChat World Showcase Manager</p>
                 </div>
                 <div class="flex space-x-4">
-                    <a href="#" class="text-white hover:text-gray-300">
+                    <a href="https://discord.gg/vrchat-world-showcase" class="text-white hover:text-gray-300" target="_blank">
                         <i class="fab fa-discord"></i>
                     </a>
-                    <a href="#" class="text-white hover:text-gray-300">
-                        <i class="fab fa-github"></i>
+                    <a href="/" class="text-white hover:text-gray-300">
+                        <i class="fas fa-home"></i>
                     </a>
-                    <a href="#" class="text-white hover:text-gray-300">
-                        <i class="fas fa-envelope"></i>
+                    <a href="{{ url_for('terms') }}" class="text-white hover:text-gray-300">
+                        <i class="fas fa-file-contract"></i>
                     </a>
                 </div>
             </div>
@@ -113,27 +118,7 @@
     </footer>
 
     <!-- JavaScript -->
-    <script>
-        // Dropdown toggle
-        document.addEventListener('DOMContentLoaded', function() {
-            const dropdowns = document.querySelectorAll('.dropdown');
-            dropdowns.forEach(dropdown => {
-                const button = dropdown.querySelector('button');
-                const content = dropdown.querySelector('.dropdown-content');
-                
-                button.addEventListener('click', function() {
-                    content.classList.toggle('hidden');
-                });
-                
-                // Close dropdown when clicking outside
-                document.addEventListener('click', function(event) {
-                    if (!dropdown.contains(event.target)) {
-                        content.classList.add('hidden');
-                    }
-                });
-            });
-        });
-    </script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     {% block scripts %}{% endblock %}
 </body>
 </html>

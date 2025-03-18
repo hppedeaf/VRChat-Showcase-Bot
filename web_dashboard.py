@@ -9,55 +9,45 @@ from datetime import datetime
 from flask import render_template, redirect, url_for, session, request, flash, jsonify
 from database.models import ServerChannels, WorldPosts, ServerTags
 import config as config  # Import the config module
+import main as bot_main  # Import the bot main module to access the bot instance
 
 # Constants from config
-DISCORD_CLIENT_ID = config.DISCORD_CLIENT_ID
-DISCORD_CLIENT_SECRET = config.DISCORD_CLIENT_SECRET
-DISCORD_REDIRECT_URI = config.DISCORD_REDIRECT_URI
-BOT_INVITE_URL = config.BOT_INVITE_URL
+DISCORD_CLIENT_ID = getattr(config, 'DISCORD_CLIENT_ID', '')
+DISCORD_CLIENT_SECRET = getattr(config, 'DISCORD_CLIENT_SECRET', '')
+DISCORD_REDIRECT_URI = getattr(config, 'DISCORD_REDIRECT_URI', '')
+BOT_INVITE_URL = getattr(config, 'BOT_INVITE_URL', '')
 DISCORD_API_ENDPOINT = 'https://discord.com/api/v10'
 OAUTH_SCOPES = ['identify', 'guilds']
 
 # User guilds cache for faster access
 user_guilds_cache = {}
 
-def setup_routes(app, bot=None):
+def setup_routes(app):
     """
     Set up all web dashboard routes.
     
     Args:
         app: Flask application instance
-        bot: Discord bot instance (optional)
     """
+    # Add logging for debugging
+    app.logger.info("Setting up web dashboard routes")
+    
+    # Try to get bot instance
+    bot = getattr(bot_main, 'bot', None)
+    if bot:
+        app.logger.info(f"Bot is available: {bot}")
+    else:
+        app.logger.warning("Bot instance not available for web dashboard")
     
     @app.context_processor
     def inject_globals():
         """Add global variables to all templates."""
         return {
             'discord_client_id': DISCORD_CLIENT_ID,
-            'bot_name': config.DASHBOARD_TITLE,
+            'bot_name': getattr(config, 'DASHBOARD_TITLE', 'VRChat World Showcase'),
             'current_year': datetime.now().year,
             'bot_invite_url': BOT_INVITE_URL
         }
-    
-    @app.route('/')
-    def index():
-        """Serve the landing page."""
-        try:
-            # If we have a marketing landing page, use it
-            if os.path.exists(os.path.join(app.template_folder, 'marketing_index.html')):
-                # Check if user is authenticated, redirect to dashboard if so
-                if 'user_id' in session:
-                    return redirect(url_for('dashboard'))
-                return render_template('marketing_index.html')
-            
-            # Otherwise use our dashboard landing page
-            if 'user_id' in session:
-                return redirect(url_for('dashboard'))
-            return render_template('index.html')
-        except Exception as e:
-            app.logger.error(f"Error rendering index: {e}")
-            return render_template('error.html', message=f"Template error: {str(e)}")
     
     @app.route('/login')
     def login():
@@ -144,16 +134,15 @@ def setup_routes(app, bot=None):
         # Check which guilds are using the bot
         bot_guilds = []
         bot_guild_ids = []
-        if hasattr(config, 'bot') and config.bot:
-            bot_guild_ids = [str(g.id) for g in config.bot.guilds]
-        elif bot:
-            bot_guild_ids = [str(g.id) for g in bot.guilds]
+        
+        if bot:
+            try:
+                bot_guild_ids = [str(g.id) for g in bot.guilds]
+                app.logger.info(f"Bot is in {len(bot_guild_ids)} guilds")
+            except Exception as e:
+                app.logger.error(f"Error accessing bot guilds: {e}")
         
         try:
-            # This requires the bot instance to be running and accessible
-            if bot:
-                bot_guild_ids = [str(g.id) for g in bot.guilds]
-            
             # For each admin guild, check if the bot is in it
             for guild in admin_guilds:
                 guild_id = guild['id']
@@ -162,8 +151,11 @@ def setup_routes(app, bot=None):
                 # Check if the guild has configured the bot
                 has_configured = False
                 if is_using_bot:
-                    forum_config = ServerChannels.get_forum_channel(int(guild_id))
-                    has_configured = forum_config is not None
+                    try:
+                        forum_config = ServerChannels.get_forum_channel(int(guild_id))
+                        has_configured = forum_config is not None
+                    except Exception as db_error:
+                        app.logger.error(f"Database error checking configuration: {db_error}")
                 
                 bot_guilds.append({
                     'id': guild_id,
@@ -179,7 +171,7 @@ def setup_routes(app, bot=None):
         return render_template('dashboard.html', 
                               user=session, 
                               guilds=bot_guilds,
-                              bot_invite_url=BOT_INVITE_URL)  # Pass the bot invite URL to the template
+                              bot_invite_url=BOT_INVITE_URL)
     
     @app.route('/force-refresh-guilds', methods=['GET'])
     def force_refresh_guilds():
@@ -231,7 +223,11 @@ def setup_routes(app, bot=None):
             return redirect(url_for('dashboard'))
         
         # Get guild configuration
-        forum_config = ServerChannels.get_forum_channel(guild_id)
+        forum_config = None
+        try:
+            forum_config = ServerChannels.get_forum_channel(guild_id)
+        except Exception as e:
+            app.logger.error(f"Error fetching forum configuration: {e}")
         
         # Get stats
         world_count = 0
@@ -339,7 +335,11 @@ def setup_routes(app, bot=None):
         guild_info = next((g for g in user_guilds if g['id'] == str(guild_id)), None)
         
         # Get settings
-        forum_config = ServerChannels.get_forum_channel(guild_id)
+        forum_config = None
+        try:
+            forum_config = ServerChannels.get_forum_channel(guild_id)
+        except Exception as e:
+            app.logger.error(f"Error fetching forum configuration: {e}")
         
         return render_template('guild_settings.html',
                               user=session,
@@ -432,4 +432,5 @@ def encode_params(params):
     Returns:
         URL-encoded parameter string
     """
-    return "&".join([f"{key}={params[key]}" for key in params])
+    import urllib.parse
+    return '&'.join([f"{key}={urllib.parse.quote(str(params[key]))}" for key in params])

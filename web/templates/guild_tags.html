@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block title %}{{ guild.name }} - Tags Management{% endblock %}
+
+{% block content %}
+<div class="bg-discord-dark text-white py-8">
+    <div class="container mx-auto px-4">
+        <div class="flex items-center">
+            {% if guild.icon %}
+            <img src="https://cdn.discordapp.com/icons/{{ guild.id }}/{{ guild.icon }}.png" alt="{{ guild.name }}" class="w-16 h-16 rounded-full mr-4">
+            {% else %}
+            <div class="w-16 h-16 rounded-full bg-gray-500 flex items-center justify-center text-white font-bold mr-4">
+                {{ guild.name[:1] }}
+            </div>
+            {% endif %}
+            <div>
+                <h1 class="text-3xl font-bold">{{ guild.name }}</h1>
+                <p class="text-gray-300">Tags Management</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mx-auto px-4 py-8">
+    <!-- Server Navigation -->
+    <div class="bg-white rounded-lg shadow-md overflow-hidden mb-8">
+        <div class="flex flex-wrap border-b">
+            <a href="{{ url_for('guild_dashboard', guild_id=guild.id) }}" class="px-6 py-3 font-medium text-gray-600 hover:text-discord-dark">
+                <i class="fas fa-home mr-2"></i> Overview
+            </a>
+            <a href="{{ url_for('guild_worlds', guild_id=guild.id) }}" class="px-6 py-3 font-medium text-gray-600 hover:text-discord-dark">
+                <i class="fas fa-globe mr-2"></i> Worlds
+            </a>
+            <a href="{{ url_for('guild_tags', guild_id=guild.id) }}" class="px-6 py-3 font-medium text-discord-dark border-b-2 border-discord">
+                <i class="fas fa-tags mr-2"></i> Tags
+            </a>
+            <a href="{{ url_for('guild_settings', guild_id=guild.id) }}" class="px-6 py-3 font-medium text-gray-600 hover:text-discord-dark">
+                <i class="fas fa-cog mr-2"></i> Settings
+            </a>
+        </div>
+    </div>
+
+    <!-- Tags Management -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-discord-dark">VRChat World Tags</h2>
+            <button id="refreshTags" class="bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 px-4 rounded flex items-center">
+                <i class="fas fa-sync-alt mr-2"></i> Refresh Tags
+            </button>
+        </div>
+
+        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <i class="fas fa-info-circle text-yellow-400"></i>
+                </div>
+                <div class="ml-3">
+                    <h3 class="text-sm font-medium text-yellow-800">Tag Management Information</h3>
+                    <div class="mt-2 text-sm text-yellow-700">
+                        <p>Tags can only be managed through Discord. Use the following commands:</p>
+                        <ul class="list-disc pl-5 mt-1">
+                            <li>Tags are synchronized from your Discord forum channel's available tags</li>
+                            <li>Add or modify tags in Discord's forum channel settings</li>
+                            <li>Use <code class="bg-gray-100 px-1">/scan</code> to update tag assignments</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if tags %}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                {% for tag in tags %}
+                <div class="border rounded-lg p-4 flex items-center">
+                    <div class="w-10 h-10 rounded-full bg-discord-dark flex items-center justify-center text-white mr-4 flex-shrink-0">
+                        {% if tag.emoji %}
+                        <span>{{ tag.emoji }}</span>
+                        {% else %}
+                        <i class="fas fa-tag"></i>
+                        {% endif %}
+                    </div>
+                    <div class="flex-grow">
+                        <h3 class="font-bold">{{ tag.tag_name }}</h3>
+                        <p class="text-gray-500 text-sm">ID: {{ tag.tag_id }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center py-12 bg-gray-50 rounded-lg">
+                <div class="text-5xl text-gray-300 mb-4">
+                    <i class="fas fa-tags"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-600 mb-2">No tags found</h3>
+                <p class="text-gray-500 mb-4">No tags have been set up for this server.</p>
+                <a href="https://discord.com/channels/{{ guild.id }}" target="_blank" class="bg-discord hover:bg-blue-600 text-white py-2 px-4 rounded inline-flex items-center">
+                    <i class="fas fa-plus mr-2"></i> Configure in Discord
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Usage Statistics -->
+    {% if tags %}
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-bold text-discord-dark mb-4">Tag Usage</h2>
+        
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tag</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Worlds</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Percentage</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for tag in tags %}
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-8 w-8 flex items-center justify-center">
+                                    {% if tag.emoji %}
+                                    <span class="text-lg">{{ tag.emoji }}</span>
+                                    {% else %}
+                                    <span class="text-discord text-lg"><i class="fas fa-tag"></i></span>
+                                    {% endif %}
+                                </div>
+                                <div class="ml-4">
+                                    <div class="text-sm font-medium text-gray-900">{{ tag.tag_name }}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-900">{{ tag.count|default(0) }}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-discord h-2.5 rounded-full" style="width: {{ tag.percentage|default(0) }}%;"></div>
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1">{{ tag.percentage|default(0) }}%</div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const refreshButton = document.getElementById('refreshTags');
+    if (refreshButton) {
+        refreshButton.addEventListener('click', function() {
+            window.location.reload();
+        });
+    }
+});
+</script>
+{% endblock %}

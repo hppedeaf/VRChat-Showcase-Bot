@@ -161,7 +161,7 @@
             <div class="link-card">
                 <h3>Web Dashboard</h3>
                 <p>Manage your server configuration through our web dashboard.</p>
-                <a href="/login" class="link-btn">Login</a>
+                <a href="{{ url_for('login') }}" class="link-btn">Login</a>
             </div>
             
             <div class="link-card">
@@ -171,15 +171,15 @@
             </div>
             
             <div class="link-card">
-                <h3>Interactions Endpoint URL</h3>
-                <p>Used for Discord's interaction webhook integration.</p>
-                <a href="/api/interactions" class="link-btn">View Endpoint</a>
+                <h3>Support Server</h3>
+                <p>Join our Discord support server for help and updates.</p>
+                <a href="https://discord.gg/vrchat-world-showcase" class="link-btn">Join Server</a>
             </div>
             
             <div class="link-card">
                 <h3>Terms of Service</h3>
                 <p>Read our terms of service for using the VRChat World Showcase Bot.</p>
-                <a href="/terms" class="link-btn">Read Terms</a>
+                <a href="{{ url_for('terms') }}" class="link-btn">Read Terms</a>
             </div>
         </div>
     </section>

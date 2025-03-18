@@ -1908,3 +1908,189 @@ jinja2.exceptions.UndefinedError: 'stats' is undefined
 2025-03-18 20:13:45,676 - vrchat_bot - INFO - Button already exists in thread 1351622713034145852
 2025-03-18 20:13:45,886 - vrchat_bot - INFO - Button already exists in thread 1351593964280610856
 2025-03-18 20:13:45,887 - vrchat_bot - INFO - All threads have been checked and world buttons added where needed.
+2025-03-18 20:17:02,286 - server - ERROR - Exception on /dashboard [GET]
+Traceback (most recent call last):
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\developpeur\VRChat-World-Showcase-Bot\web_dashboard.py", line 179, in dashboard
+    return render_template('dashboard.html',
+                          user=session,
+                          guilds=bot_guilds,
+                          bot_invite_url=BOT_INVITE_URL)  # Pass the bot invite URL to the template
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\web\templates\dashboard.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "D:\developpeur\VRChat-World-Showcase-Bot\web\templates\base.html", line 90, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^
+  File "D:\developpeur\VRChat-World-Showcase-Bot\web\templates\dashboard.html", line 104, in block 'content'
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\jinja2\environment.py", line 490, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: 'stats' is undefined
+2025-03-18 20:17:02,291 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:17:02] "[35m[1mGET /dashboard HTTP/1.1[0m" 500 -
+2025-03-18 20:17:12,027 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 20:17:12,028 - discord.client - INFO - logging in using static token
+2025-03-18 20:17:12,512 - vrchat_bot - INFO - Persistent views registered
+2025-03-18 20:17:12,515 - vrchat_bot - INFO - Cogs loaded
+2025-03-18 20:17:12,907 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 86667a6687dda2932180b0c9788aae3a).
+2025-03-18 20:17:13,296 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.8:8080
+2025-03-18 20:17:13,296 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 20:17:14,936 - vrchat_bot - INFO - Logged in as VRC World Helper
+2025-03-18 20:17:23,019 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:17:23] "[32mGET /callback?code=6Y1nwZXcU7s6dn03Ep6MvsCkt1zFOi HTTP/1.1[0m" 302 -
+2025-03-18 20:17:23,038 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:17:23] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 20:18:04,566 - vrchat_bot - INFO - Synced 12 command(s)
+2025-03-18 20:18:04,566 - vrchat_bot - INFO - Setting up database: database\vrchat_worlds.db
+2025-03-18 20:18:04,568 - vrchat_bot - INFO - Database setup completed successfully
+2025-03-18 20:18:04,841 - vrchat_bot - INFO - Button already exists in thread 1351622713034145852
+2025-03-18 20:18:05,055 - vrchat_bot - INFO - Button already exists in thread 1351593964280610856
+2025-03-18 20:18:05,056 - vrchat_bot - INFO - All threads have been checked and world buttons added where needed.
+2025-03-18 20:19:04,128 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:19:04] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 20:35:39,725 - server - INFO - Starting Discord bot in background thread...
+2025-03-18 20:35:39,727 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 20:35:39,730 - discord.client - INFO - logging in using static token
+2025-03-18 20:35:40,022 - server - INFO - Setting up web dashboard routes
+2025-03-18 20:35:40,022 - server - WARNING - Bot instance not available for web dashboard
+2025-03-18 20:35:40,258 - vrchat_bot - INFO - Persistent views registered
+2025-03-18 20:35:40,264 - vrchat_bot - INFO - Cogs loaded
+2025-03-18 20:35:40,653 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 84550a1b8b4c113745030650691664ad).
+2025-03-18 20:35:41,286 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.8:8080
+2025-03-18 20:35:41,286 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 20:35:42,675 - vrchat_bot - INFO - Logged in as VRC World Helper
+2025-03-18 20:35:43,068 - vrchat_bot - INFO - Synced 12 command(s)
+2025-03-18 20:35:43,068 - vrchat_bot - INFO - Setting up database: database\vrchat_worlds.db
+2025-03-18 20:35:43,069 - vrchat_bot - INFO - Database setup completed successfully
+2025-03-18 20:35:43,274 - vrchat_bot - INFO - Button already exists in thread 1351622713034145852
+2025-03-18 20:35:43,480 - vrchat_bot - INFO - Button already exists in thread 1351593964280610856
+2025-03-18 20:35:43,480 - vrchat_bot - INFO - All threads have been checked and world buttons added where needed.
+2025-03-18 20:36:03,764 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:36:03] "[32mGET / HTTP/1.1[0m" 302 -
+2025-03-18 20:36:04,116 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:36:04] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 20:36:05,134 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:36:05] "GET /static/js/main.js HTTP/1.1" 200 -
+2025-03-18 20:36:05,355 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:36:05] "GET /static/img/favicon.ico HTTP/1.1" 200 -
+2025-03-18 20:36:08,072 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:36:08] "[32mGET / HTTP/1.1[0m" 302 -
+2025-03-18 20:36:08,336 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:36:08] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 20:36:08,451 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:36:08] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-03-18 20:36:08,972 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:36:08] "[36mGET /static/img/favicon.ico HTTP/1.1[0m" 304 -
+2025-03-18 20:36:11,187 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:36:11] "[32mGET / HTTP/1.1[0m" 302 -
+2025-03-18 20:36:11,501 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:36:11] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 20:36:11,751 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:36:11] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-03-18 20:36:11,869 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:36:11] "[36mGET /static/img/favicon.ico HTTP/1.1[0m" 304 -
+2025-03-18 20:36:16,984 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:36:16] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 20:36:17,369 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:36:17] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-03-18 20:36:17,639 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:36:17] "[36mGET /static/img/favicon.ico HTTP/1.1[0m" 304 -
+2025-03-18 20:36:21,170 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:36:21] "[32mGET /force-refresh-guilds HTTP/1.1[0m" 302 -
+2025-03-18 20:36:21,176 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:36:21] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 20:36:21,606 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:36:21] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-03-18 20:36:21,869 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:36:21] "[36mGET /static/img/favicon.ico HTTP/1.1[0m" 304 -
+2025-03-18 20:36:28,013 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:36:28] "GET /terms HTTP/1.1" 200 -
+2025-03-18 20:36:28,407 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:36:28] "[36mGET /static/css/marketing-styles.css HTTP/1.1[0m" 304 -
+2025-03-18 20:36:28,408 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:36:28] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-03-18 20:36:28,654 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:36:28] "[36mGET /static/img/favicon.ico HTTP/1.1[0m" 304 -
+2025-03-18 20:36:32,250 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:36:32] "[32mGET / HTTP/1.1[0m" 302 -
+2025-03-18 20:36:32,569 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:36:32] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 20:36:32,817 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:36:32] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-03-18 20:36:33,032 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:36:33] "[36mGET /static/img/favicon.ico HTTP/1.1[0m" 304 -
+2025-03-18 20:36:34,574 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:36:34] "[36mGET /static/img/favicon.ico HTTP/1.1[0m" 304 -
+2025-03-18 20:37:05,592 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:37:05] "[32mGET / HTTP/1.1[0m" 302 -
+2025-03-18 20:37:05,862 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:37:05] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 20:37:06,061 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:37:06] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-03-18 20:37:06,580 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:37:06] "[36mGET /static/img/favicon.ico HTTP/1.1[0m" 304 -
+2025-03-18 20:37:42,937 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:37:42] "[32mGET / HTTP/1.1[0m" 302 -
+2025-03-18 20:37:43,257 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:37:43] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 20:37:43,507 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:37:43] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-03-18 20:37:43,658 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:37:43] "[36mGET /static/img/favicon.ico HTTP/1.1[0m" 304 -
+2025-03-18 20:37:56,163 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:37:56] "[32mGET /dashboard HTTP/1.1[0m" 302 -
+2025-03-18 20:37:56,427 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:37:56] "[32mGET /login HTTP/1.1[0m" 302 -
+2025-03-18 20:38:16,908 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:38:16] "GET / HTTP/1.1" 200 -
+2025-03-18 20:38:17,414 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:38:17] "[36mGET /static/css/marketing-styles.css HTTP/1.1[0m" 304 -
+2025-03-18 20:38:17,415 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:38:17] "GET /static/js/main.js HTTP/1.1" 200 -
+2025-03-18 20:38:17,494 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:38:17] "[33mGET /static/img/hero-bg.jpg HTTP/1.1[0m" 404 -
+2025-03-18 20:38:17,791 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:38:17] "GET /static/img/favicon.ico HTTP/1.1" 200 -
+2025-03-18 20:38:35,828 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:38:35] "[36mGET /static/img/favicon.ico HTTP/1.1[0m" 304 -
+2025-03-18 20:38:37,533 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:38:37] "GET /terms HTTP/1.1" 200 -
+2025-03-18 20:38:37,731 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:38:37] "[36mGET /static/css/marketing-styles.css HTTP/1.1[0m" 304 -
+2025-03-18 20:38:37,741 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:38:37] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-03-18 20:38:37,936 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:38:37] "[36mGET /static/img/favicon.ico HTTP/1.1[0m" 304 -
+2025-03-18 20:38:41,801 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:38:41] "GET /privacy HTTP/1.1" 200 -
+2025-03-18 20:38:41,867 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:38:41] "[36mGET /static/css/marketing-styles.css HTTP/1.1[0m" 304 -
+2025-03-18 20:38:41,868 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:38:41] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-03-18 20:38:42,200 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:38:42] "[36mGET /static/img/favicon.ico HTTP/1.1[0m" 304 -
+2025-03-18 20:38:57,882 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:38:57] "[36mGET /static/img/favicon.ico HTTP/1.1[0m" 304 -
+2025-03-18 20:39:01,592 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:39:01] "GET / HTTP/1.1" 200 -
+2025-03-18 20:39:01,660 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:39:01] "[36mGET /static/css/marketing-styles.css HTTP/1.1[0m" 304 -
+2025-03-18 20:39:01,666 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:39:01] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-03-18 20:39:01,923 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:39:01] "[33mGET /static/img/hero-bg.jpg HTTP/1.1[0m" 404 -
+2025-03-18 20:39:02,065 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:39:02] "[36mGET /static/img/favicon.ico HTTP/1.1[0m" 304 -
+2025-03-18 20:39:09,440 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:39:09] "[36mGET /static/img/favicon.ico HTTP/1.1[0m" 304 -
+2025-03-18 20:39:59,202 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:39:59] "[32mGET /login HTTP/1.1[0m" 302 -
+2025-03-18 20:40:07,726 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:40:07] "[32mGET /callback?code=wtiM1quJzzg7x3f0Hrxa5Uvzdby5Ds HTTP/1.1[0m" 302 -
+2025-03-18 20:40:07,732 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:40:07] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 20:40:08,574 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:40:08] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-03-18 20:40:08,839 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:40:08] "[36mGET /static/img/favicon.ico HTTP/1.1[0m" 304 -
+2025-03-18 20:40:54,465 - vrchat_bot - INFO - Joined new guild: Tachppe (ID: 1321294622995120199)
+2025-03-18 20:40:54,466 - discord.client - ERROR - Ignoring exception in on_guild_join
+Traceback (most recent call last):
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\discord\client.py", line 481, in _run_event
+    await coro(*args, **kwargs)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\main.py", line 143, in on_guild_join
+    GuildTracking.add_guild(guild.id, guild.name, guild.member_count)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\developpeur\VRChat-World-Showcase-Bot\database\models.py", line 1153, in add_guild
+    cursor.execute(
+    ~~~~~~~~~~~~~~^
+        "INSERT OR IGNORE INTO guild_tracking (guild_id, guild_name, member_count) VALUES (?, ?, ?)",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        (guild_id, guild_name, member_count)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+sqlite3.OperationalError: no such table: guild_tracking
+2025-03-18 20:41:00,414 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:41:00] "[32mGET /force-refresh-guilds HTTP/1.1[0m" 302 -
+2025-03-18 20:41:00,426 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:41:00] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 20:41:00,918 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:41:00] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-03-18 20:41:01,103 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:41:01] "[32mGET /force-refresh-guilds HTTP/1.1[0m" 302 -
+2025-03-18 20:41:01,178 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:41:01] "[36mGET /static/img/favicon.ico HTTP/1.1[0m" 304 -
+2025-03-18 20:41:10,720 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:41:10] "[32mGET /force-refresh-guilds HTTP/1.1[0m" 302 -
+2025-03-18 20:41:11,039 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:41:11] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 20:41:11,289 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:41:11] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-03-18 20:41:11,396 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:41:11] "[36mGET /static/img/favicon.ico HTTP/1.1[0m" 304 -
+2025-03-18 20:41:16,970 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:41:16] "[32mGET /force-refresh-guilds HTTP/1.1[0m" 302 -
+2025-03-18 20:41:17,279 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:41:17] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 20:41:17,541 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:41:17] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-03-18 20:41:17,625 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:41:17] "[36mGET /static/img/favicon.ico HTTP/1.1[0m" 304 -
+2025-03-18 20:41:24,859 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:41:24] "[32mGET /force-refresh-guilds HTTP/1.1[0m" 302 -
+2025-03-18 20:41:25,181 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:41:25] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 20:41:25,429 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:41:25] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-03-18 20:41:25,537 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:41:25] "[36mGET /static/img/favicon.ico HTTP/1.1[0m" 304 -
+2025-03-18 20:42:08,009 - vrchat_bot - INFO - Left guild: Tachppe (ID: 1321294622995120199)
+2025-03-18 20:42:08,010 - discord.client - ERROR - Ignoring exception in on_guild_remove
+Traceback (most recent call last):
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\discord\client.py", line 481, in _run_event
+    await coro(*args, **kwargs)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\main.py", line 172, in on_guild_remove
+    GuildTracking.remove_guild(guild.id)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "D:\developpeur\VRChat-World-Showcase-Bot\database\models.py", line 1190, in remove_guild
+    cursor.execute("DELETE FROM guild_tracking WHERE guild_id = ?", (guild_id,))
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such table: guild_tracking
