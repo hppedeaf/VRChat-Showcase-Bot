@@ -1,6 +1,11 @@
 import asyncio
 import threading
 import os
+import sys
+
+# Add the bot directory to the Python path
+sys.path.append(os.path.join(os.path.dirname(__file__), 'bot'))
+
 from flask import Flask, request, jsonify, send_from_directory
 # Import your bot's main module
 import bot.main as bot_main
