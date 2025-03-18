@@ -18,19 +18,16 @@ if not TOKEN:
 AUTH = os.getenv("VRCHAT_AUTH")
 API_KEY = os.getenv("VRCHAT_API_KEY")
 
-# If DATABASE_URL is provided by Railway, use PostgreSQL
+# Database
 DATABASE_URL = os.getenv("DATABASE_URL")
 if DATABASE_URL:
-    # Using PostgreSQL
+    # Using PostgreSQL on Railway
     DATABASE_FILE = DATABASE_URL
 else:
     # Local SQLite fallback
     DATABASE_PATH = Path("database") / "vrchat_worlds.db"
     DATABASE_FILE = str(DATABASE_PATH)
     DATABASE_PATH.parent.mkdir(exist_ok=True)
-
-# Ensure database directory exists
-DATABASE_PATH.parent.mkdir(exist_ok=True)
 
 # Logging
 LOG_PATH = Path("logs")
@@ -85,4 +82,4 @@ API_TIMEOUT = 10
 API_RETRY_DELAY = 2
 
 # Welcome image URL
-WELCOME_IMAGE_URL = "https://cdn.discordapp.com/avatars/1156538533876613121/e679e2cbdb24804661804a48c86f3e1e.png?size=4096"
+WELCOME_IMAGE_URL = "https://cdn.discordapp.com/avatars/1156538533876613121/e679e2cbdb24804661804a48c86f3e1e.png"

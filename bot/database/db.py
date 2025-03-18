@@ -3,34 +3,181 @@ Database connection and setup module.
 Handles creating and upgrading database schema.
 """
 import sqlite3
-from typing import Dict, Any, List, Tuple, Optional
-import config
+from typing import Dict, Any, List, Tuple, Optional, Union
+import bot.config as config
+import os
 
 def get_connection():
     """
-    Get a connection to the database.
+    Get a connection to the database (PostgreSQL on Railway, SQLite locally).
+    
+    Returns:
+        Database connection
     """
-    if config.DATABASE_URL and config.DATABASE_URL.startswith("postgres"):
+    if hasattr(config, 'DATABASE_URL') and config.DATABASE_URL and config.DATABASE_URL.startswith("postgres"):
         import psycopg2
+        import psycopg2.extras
+        
         conn = psycopg2.connect(config.DATABASE_URL)
-        # Set up psycopg2 to use dictionary-like access
         conn.cursor_factory = psycopg2.extras.DictCursor
         return conn
     else:
         # SQLite fallback for local development
         conn = sqlite3.connect(config.DATABASE_FILE)
-        conn.row_factory = sqlite3.Row
+        conn.row_factory = sqlite3.Row  # Enable dictionary-like access to rows
+        
+        # Enable foreign key constraints
         cursor = conn.cursor()
         cursor.execute("PRAGMA foreign_keys = ON")
+        
         return conn
 
 def setup_database() -> None:
     """
-    Set up the SQLite database tables safely, handling existing schemas.
+    Set up the database tables safely, handling existing schemas.
     Creates new tables if they don't exist and migrates legacy data.
     """
     config.logger.info(f"Setting up database: {config.DATABASE_FILE}")
     
+    is_postgres = hasattr(config, 'DATABASE_URL') and config.DATABASE_URL and config.DATABASE_URL.startswith("postgres")
+    
+    if is_postgres:
+        setup_postgres_tables()
+    else:
+        setup_sqlite_tables()
+        
+    setup_guild_tracking_table()
+    config.logger.info(f"Database setup completed successfully")
+
+def setup_postgres_tables():
+    """Set up PostgreSQL tables."""
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        
+        # Server channels table
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS server_channels (
+                server_id BIGINT PRIMARY KEY,
+                forum_channel_id BIGINT NOT NULL,
+                thread_id BIGINT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        
+        # Unified world posts table
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS world_posts (
+                id SERIAL PRIMARY KEY,
+                server_id BIGINT NOT NULL,
+                user_id BIGINT NOT NULL,
+                thread_id BIGINT,
+                world_id TEXT NOT NULL,
+                world_link TEXT NOT NULL,
+                user_choices TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                UNIQUE(server_id, world_id)
+            )
+        """)
+        
+        # Legacy tables for backward compatibility
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS user_world_links (
+                user_id BIGINT PRIMARY KEY,
+                world_link TEXT,
+                user_choices TEXT,
+                world_id TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS thread_world_links (
+                server_id BIGINT,
+                thread_id BIGINT,
+                world_id TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                PRIMARY KEY (server_id, world_id)
+            )
+        """)
+        
+        # Server tags table
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS server_tags (
+                server_id BIGINT,
+                tag_id BIGINT,
+                tag_name TEXT,
+                emoji TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                PRIMARY KEY (server_id, tag_id)
+            )
+        """)
+        
+        # VRChat worlds table
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS vrchat_worlds (
+                world_id TEXT PRIMARY KEY,
+                world_name TEXT,
+                author_name TEXT,
+                image_url TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        
+        # Tag usage table
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS tag_usage (
+                server_id BIGINT,
+                thread_id BIGINT,
+                tag_id BIGINT,
+                added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                PRIMARY KEY (server_id, thread_id, tag_id)
+            )
+        """)
+        
+        # Bot activity log
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS bot_activity_log (
+                id SERIAL PRIMARY KEY,
+                server_id BIGINT,
+                action_type TEXT,
+                details TEXT,
+                timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        
+        # Activity stats
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS activity_stats (
+                id SERIAL PRIMARY KEY,
+                server_id BIGINT,
+                date DATE,
+                worlds_added INTEGER DEFAULT 0,
+                users_active INTEGER DEFAULT 0,
+                UNIQUE(server_id, date)
+            )
+        """)
+        
+        # Create indexes
+        cursor.execute("""
+            CREATE INDEX IF NOT EXISTS idx_user_world_links_world_id 
+            ON user_world_links(world_id)
+        """)
+        
+        cursor.execute("""
+            CREATE INDEX IF NOT EXISTS idx_thread_world_links_thread_id 
+            ON thread_world_links(thread_id)
+        """)
+        
+        cursor.execute("""
+            CREATE INDEX IF NOT EXISTS idx_server_tags_tag_name 
+            ON server_tags(server_id, tag_name)
+        """)
+        
+        conn.commit()
+
+def setup_sqlite_tables():
+    """Set up SQLite tables."""
     with get_connection() as conn:
         cursor = conn.cursor()
         
@@ -72,17 +219,6 @@ def setup_database() -> None:
         # Migrate data if upgrading from legacy schema
         if is_legacy_db:
             _migrate_legacy_data(conn)
-        
-        config.logger.info(f"Database setup completed successfully: {config.DATABASE_FILE}")
-    
-    setup_guild_tracking_table()
-
-"""
-Enhanced database structure with improved world tracking.
-Replace the relevant parts in database/db.py and database/models.py.
-"""
-
-# In database/db.py, modify the _create_tables function:
 
 def _create_tables(conn: sqlite3.Connection) -> None:
     """
@@ -93,7 +229,7 @@ def _create_tables(conn: sqlite3.Connection) -> None:
     """
     cursor = conn.cursor()
     
-    # Server channels table (unchanged)
+    # Server channels table
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS server_channels (
             server_id INTEGER PRIMARY KEY,
@@ -103,7 +239,7 @@ def _create_tables(conn: sqlite3.Connection) -> None:
         )
     """)
     
-    # Unified world posts table (replaces thread_world_links and enhances user_world_links)
+    # Unified world posts table
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS world_posts (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -141,7 +277,7 @@ def _create_tables(conn: sqlite3.Connection) -> None:
         )
     """)
     
-    # Server tags table (unchanged)
+    # Server tags table
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS server_tags (
             server_id INTEGER,
@@ -153,7 +289,7 @@ def _create_tables(conn: sqlite3.Connection) -> None:
         )
     """)
     
-    # Remaining tables (unchanged)
+    # VRChat worlds table
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS vrchat_worlds (
             world_id TEXT PRIMARY KEY,
@@ -164,6 +300,7 @@ def _create_tables(conn: sqlite3.Connection) -> None:
         )
     """)
     
+    # Tag usage table
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS tag_usage (
             server_id INTEGER,
@@ -174,6 +311,7 @@ def _create_tables(conn: sqlite3.Connection) -> None:
         )
     """)
     
+    # Bot activity log
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS bot_activity_log (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -184,6 +322,7 @@ def _create_tables(conn: sqlite3.Connection) -> None:
         )
     """)
     
+    # Activity stats
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS activity_stats (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -196,56 +335,6 @@ def _create_tables(conn: sqlite3.Connection) -> None:
     """)
     
     conn.commit()
-
-# In database/db.py, add a migration function:
-
-def migrate_to_unified_world_posts():
-    """Migrate data from legacy tables to the new unified world_posts table."""
-    with get_connection() as conn:
-        cursor = conn.cursor()
-        
-        # Check if the unified table exists
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='world_posts'")
-        if not cursor.fetchone():
-            config.logger.info("world_posts table doesn't exist yet. Creating...")
-            _create_tables(conn)
-        
-        # Migrate data from thread_world_links and user_world_links
-        config.logger.info("Migrating data to unified world_posts table...")
-        
-        # Get all thread_world_links
-        cursor.execute("SELECT server_id, thread_id, world_id FROM thread_world_links")
-        thread_links = cursor.fetchall()
-        
-        # For each thread link, try to find matching user data
-        for server_id, thread_id, world_id in thread_links:
-            # Try to find user who posted this world
-            cursor.execute(
-                "SELECT user_id, world_link, user_choices FROM user_world_links WHERE world_id=? OR world_link LIKE ?", 
-                (world_id, f"%{world_id}%")
-            )
-            user_data = cursor.fetchone()
-            
-            if user_data:
-                user_id, world_link, user_choices = user_data
-            else:
-                # If no user data found, use placeholder values
-                user_id = 0  # System/unknown user
-                world_link = f"https://vrchat.com/home/world/{world_id}"
-                user_choices = ""
-            
-            # Insert into unified table
-            try:
-                cursor.execute("""
-                    INSERT OR IGNORE INTO world_posts 
-                    (server_id, user_id, thread_id, world_id, world_link, user_choices)
-                    VALUES (?, ?, ?, ?, ?, ?)
-                """, (server_id, user_id, thread_id, world_id, world_link, user_choices))
-            except:
-                config.logger.warning(f"Failed to migrate world post: {world_id} in thread {thread_id}")
-        
-        conn.commit()
-        config.logger.info("Migration to unified world_posts table complete.")
 
 def _create_indexes(conn: sqlite3.Connection) -> None:
     """
@@ -352,38 +441,153 @@ def log_activity(server_id: int, action_type: str, details: str) -> None:
     try:
         with get_connection() as conn:
             cursor = conn.cursor()
-            cursor.execute(
-                "INSERT INTO bot_activity_log (server_id, action_type, details) VALUES (?, ?, ?)",
-                (server_id, action_type, details)
-            )
+            
+            is_postgres = hasattr(config, 'DATABASE_URL') and config.DATABASE_URL and config.DATABASE_URL.startswith("postgres")
+            
+            if is_postgres:
+                cursor.execute(
+                    "INSERT INTO bot_activity_log (server_id, action_type, details) VALUES (%s, %s, %s)",
+                    (server_id, action_type, details)
+                )
+            else:
+                cursor.execute(
+                    "INSERT INTO bot_activity_log (server_id, action_type, details) VALUES (?, ?, ?)",
+                    (server_id, action_type, details)
+                )
+                
             conn.commit()
     except Exception as e:
         config.logger.error(f"Error logging activity: {e}")
         
 def setup_guild_tracking_table():
     """Set up the table to track guilds (servers)."""
+    is_postgres = hasattr(config, 'DATABASE_URL') and config.DATABASE_URL and config.DATABASE_URL.startswith("postgres")
+    
     with get_connection() as conn:
         cursor = conn.cursor()
         
-        # Create guild tracking table
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS guild_tracking (
-                guild_id INTEGER PRIMARY KEY,
-                guild_name TEXT,
-                member_count INTEGER,
-                joined_at TEXT DEFAULT (datetime('now')),
-                last_active TEXT DEFAULT (datetime('now')),
-                has_forum BOOLEAN DEFAULT 0
-            )
-        """)
-        
-        # Create a stats table for summary information
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS bot_stats (
-                stat_name TEXT PRIMARY KEY,
-                stat_value INTEGER,
-                updated_at TEXT DEFAULT (datetime('now'))
-            )
-        """)
+        if is_postgres:
+            # Create guild tracking table for PostgreSQL
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS guild_tracking (
+                    guild_id BIGINT PRIMARY KEY,
+                    guild_name TEXT,
+                    member_count INTEGER,
+                    joined_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    last_active TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    has_forum BOOLEAN DEFAULT FALSE
+                )
+            """)
+            
+            # Create a stats table for summary information
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS bot_stats (
+                    stat_name TEXT PRIMARY KEY,
+                    stat_value INTEGER,
+                    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                )
+            """)
+        else:
+            # Create guild tracking table for SQLite
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS guild_tracking (
+                    guild_id INTEGER PRIMARY KEY,
+                    guild_name TEXT,
+                    member_count INTEGER,
+                    joined_at TEXT DEFAULT (datetime('now')),
+                    last_active TEXT DEFAULT (datetime('now')),
+                    has_forum BOOLEAN DEFAULT 0
+                )
+            """)
+            
+            # Create a stats table for summary information
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS bot_stats (
+                    stat_name TEXT PRIMARY KEY,
+                    stat_value INTEGER,
+                    updated_at TEXT DEFAULT (datetime('now'))
+                )
+            """)
         
         conn.commit()
+
+def migrate_to_unified_world_posts():
+    """Migrate data from legacy tables to the new unified world_posts table."""
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        
+        # Check if the unified table exists
+        is_postgres = hasattr(config, 'DATABASE_URL') and config.DATABASE_URL and config.DATABASE_URL.startswith("postgres")
+        
+        if is_postgres:
+            cursor.execute("SELECT to_regclass('world_posts')")
+            table_exists = cursor.fetchone()[0] is not None
+        else:
+            cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='world_posts'")
+            table_exists = cursor.fetchone() is not None
+            
+        if not table_exists:
+            config.logger.info("world_posts table doesn't exist yet. Creating...")
+            if is_postgres:
+                setup_postgres_tables()
+            else:
+                with get_connection() as conn2:
+                    _create_tables(conn2)
+        
+        # Migrate data from thread_world_links and user_world_links
+        config.logger.info("Migrating data to unified world_posts table...")
+        
+        # Get all thread_world_links
+        cursor.execute("SELECT server_id, thread_id, world_id FROM thread_world_links")
+        thread_links = cursor.fetchall()
+        
+        # For each thread link, try to find matching user data
+        for row in thread_links:
+            server_id = row[0]
+            thread_id = row[1]
+            world_id = row[2]
+            
+            # Try to find user who posted this world
+            if is_postgres:
+                cursor.execute(
+                    "SELECT user_id, world_link, user_choices FROM user_world_links WHERE world_id=%s OR world_link LIKE %s", 
+                    (world_id, f"%{world_id}%")
+                )
+            else:
+                cursor.execute(
+                    "SELECT user_id, world_link, user_choices FROM user_world_links WHERE world_id=? OR world_link LIKE ?", 
+                    (world_id, f"%{world_id}%")
+                )
+                
+            user_data = cursor.fetchone()
+            
+            if user_data:
+                user_id = user_data[0]
+                world_link = user_data[1]
+                user_choices = user_data[2]
+            else:
+                # If no user data found, use placeholder values
+                user_id = 0  # System/unknown user
+                world_link = f"https://vrchat.com/home/world/{world_id}"
+                user_choices = ""
+            
+            # Insert into unified table
+            try:
+                if is_postgres:
+                    cursor.execute("""
+                        INSERT INTO world_posts 
+                        (server_id, user_id, thread_id, world_id, world_link, user_choices)
+                        VALUES (%s, %s, %s, %s, %s, %s)
+                        ON CONFLICT (server_id, world_id) DO NOTHING
+                    """, (server_id, user_id, thread_id, world_id, world_link, user_choices))
+                else:
+                    cursor.execute("""
+                        INSERT OR IGNORE INTO world_posts 
+                        (server_id, user_id, thread_id, world_id, world_link, user_choices)
+                        VALUES (?, ?, ?, ?, ?, ?)
+                    """, (server_id, user_id, thread_id, world_id, world_link, user_choices))
+            except Exception as e:
+                config.logger.warning(f"Failed to migrate world post: {world_id} in thread {thread_id} - {e}")
+        
+        conn.commit()
+        config.logger.info("Migration to unified world_posts table complete.")

@@ -7,12 +7,12 @@ from discord.ext import commands
 import asyncio
 import re
 from typing import Optional, List, Dict, Tuple
-import config
+import bot.config as config
 from database.models import ServerChannels, ServerTags
 from database.db import log_activity
 from utils.api import extract_world_id
 from ui.buttons import WorldButton
-import config
+import bot.config as config
 from database.models import ServerChannels, WorldPosts, ServerTags
 
 class AdminCommands(commands.Cog):

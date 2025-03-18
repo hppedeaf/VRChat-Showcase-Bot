@@ -4,10 +4,8 @@ Main entry point for the VRChat World Showcase Bot.
 import asyncio
 import discord
 from discord.ext import commands
-import sys
 import os
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-import config
+import bot.config as config
 from database.db import setup_database
 
 # Add these imports for Flask

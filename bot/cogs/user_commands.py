@@ -5,7 +5,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 from typing import Optional
-import config
+import bot.config as config
 from utils.embed_builders import build_about_embed, build_help_embed
 from ui.buttons import WorldButton
 
