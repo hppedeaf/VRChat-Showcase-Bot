@@ -265,10 +265,28 @@ class ThreadWorldLinks:
         """
         with get_connection() as conn:
             cursor = conn.cursor()
-            cursor.execute(
-                "INSERT INTO thread_world_links (server_id, thread_id, world_id) VALUES (?, ?, ?)",
-                (server_id, thread_id, world_id)
-            )
+            
+            # Check if we're using PostgreSQL
+            is_postgres = hasattr(config, 'DATABASE_URL') and config.DATABASE_URL and config.DATABASE_URL.startswith("postgres")
+            
+            if is_postgres:
+                # PostgreSQL syntax
+                cursor.execute(
+                    """
+                    INSERT INTO thread_world_links (server_id, thread_id, world_id) 
+                    VALUES (%s, %s, %s)
+                    ON CONFLICT (server_id, world_id) DO UPDATE SET 
+                    thread_id = %s
+                    """,
+                    (server_id, thread_id, world_id, thread_id)
+                )
+            else:
+                # SQLite syntax
+                cursor.execute(
+                    "INSERT OR REPLACE INTO thread_world_links (server_id, thread_id, world_id) VALUES (?, ?, ?)",
+                    (server_id, thread_id, world_id)
+                )
+                
             conn.commit()
         
         log_activity(server_id, "add_world", f"Thread: {thread_id}, World: {world_id}")
