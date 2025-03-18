@@ -1,6 +1,7 @@
 """
 Admin commands for the VRChat World Showcase Bot.
 """
+import time
 import discord
 from discord import app_commands
 from discord.ext import commands
@@ -294,14 +295,30 @@ class AdminCommands(commands.Cog):
                         "Preserved world data but you'll need to re-scan for threads."
                     )
                 
-                # Scan active threads in the forum and add them to the database
-                await interaction.followup.send("📊 Scanning existing forum posts for VRChat worlds...")
-                worlds_found, unknown_threads = await self._scan_forum_threads(interaction.guild.id, forum_channel)
+                # Send initial progress message
+                progress_message = await interaction.followup.send("🔍 **Scanning VRChat Worlds**: Initializing scan...")
                 
+                # Scan active threads in the forum and add them to the database
+                import time
+                start_time = time.time()
+                
+                # Call the scanning function with the progress message
+                worlds_found, unknown_threads = await self._scan_forum_threads(
+                    interaction.guild.id, 
+                    forum_channel,
+                    progress_message
+                )
+                
+                # Calculate scan duration
+                duration = time.time() - start_time
+                
+                # Send a summary message with the scan results
                 await interaction.followup.send(
-                    f"✅ Scan complete! Found and indexed {worlds_found} VRChat worlds in existing posts.\n" +
-                    f"• {len(unknown_threads)} threads without identifiable VRChat worlds were skipped.\n" +
-                    f"• All world IDs have been added to the database."
+                    f"✅ **Scan Summary**:\n" +
+                    f"• Found and indexed **{worlds_found}** VRChat worlds\n" +
+                    f"• **{len(unknown_threads)}** threads without identifiable worlds were skipped\n" +
+                    f"• All world IDs have been added to the database\n" +
+                    f"• Scan completed in **{duration:.1f}** seconds"
                 )
             
             # Create the welcome embed first
@@ -494,13 +511,14 @@ class AdminCommands(commands.Cog):
                 ephemeral=True
             )
     
-    async def _scan_forum_threads(self, server_id: int, forum_channel: discord.ForumChannel) -> Tuple[int, List[Dict]]:
+    async def _scan_forum_threads(self, server_id: int, forum_channel: discord.ForumChannel, progress_message=None) -> Tuple[int, List[Dict]]:
         """
-        Scan forum threads for VRChat worlds with improved accuracy.
+        Scan forum threads for VRChat worlds with improved accuracy and real-time updates.
         
         Args:
             server_id: Discord server ID
             forum_channel: Discord forum channel
+            progress_message: Discord message to update with progress
                 
         Returns:
             Tuple of (worlds_found, unknown_threads_data)
@@ -508,7 +526,7 @@ class AdminCommands(commands.Cog):
         worlds_found = 0
         unknown_threads = []
         duplicates_found = 0
-        updates_made = 0
+        threads_processed = 0
         
         # Get all threads in the forum
         threads = [thread for thread in forum_channel.threads]
@@ -519,18 +537,29 @@ class AdminCommands(commands.Cog):
         except Exception as e:
             config.logger.error(f"Error fetching archived threads: {e}")
         
+        total_threads = len(threads)
+        
         # Import APIs
         from utils.api import extract_world_id, VRChatAPI
         vrchat_api = VRChatAPI(config.AUTH)
         
         # Log the scanning process
-        config.logger.info(f"Scanning {len(threads)} threads in forum channel {forum_channel.id} for server {server_id}")
+        config.logger.info(f"Scanning {total_threads} threads in forum channel {forum_channel.id} for server {server_id}")
+        
+        # Initialize progress message if not provided
+        if progress_message:
+            await progress_message.edit(content=f"🔍 **Scanning VRChat Worlds**: 0/{total_threads} threads processed, 0 worlds found...")
+        
+        # Update interval (update message every X threads to avoid rate limits)
+        update_interval = max(1, min(total_threads // 10, 10))  # Update at most 10 times during scan
+        last_update_time = time.time()
         
         # Process each thread
-        for thread in threads:
+        for index, thread in enumerate(threads):
             try:
                 # Skip the control thread
                 if thread.name == "Please post here to provide information and display it to the world" or thread.name == "Share Your VRChat World Here!":
+                    threads_processed += 1
                     continue
                     
                 # Check if this thread already has a world ID in our database
@@ -538,6 +567,15 @@ class AdminCommands(commands.Cog):
                 if existing_world_id:
                     # This thread already has a world entry - count it and skip
                     worlds_found += 1
+                    threads_processed += 1
+                    
+                    # Update progress message periodically
+                    if progress_message and (index % update_interval == 0 or index == total_threads - 1) and time.time() - last_update_time > 1.5:
+                        await progress_message.edit(
+                            content=f"🔍 **Scanning VRChat Worlds**: {threads_processed}/{total_threads} threads processed, {worlds_found} worlds found..."
+                        )
+                        last_update_time = time.time()
+                        
                     continue
                     
                 # Get the first 3 messages (original post + possible follow-ups)
@@ -621,9 +659,26 @@ class AdminCommands(commands.Cog):
                         "issue_type": "no_world_link", 
                         "message_sample": first_message.content[:100] if messages and messages[0].content else "No content"
                     })
+                
+                threads_processed += 1
+                
+                # Update progress message periodically
+                if progress_message and (index % update_interval == 0 or index == total_threads - 1) and time.time() - last_update_time > 1.5:
+                    await progress_message.edit(
+                        content=f"🔍 **Scanning VRChat Worlds**: {threads_processed}/{total_threads} threads processed, {worlds_found} worlds found..."
+                    )
+                    last_update_time = time.time()
+                    
             except Exception as e:
                 config.logger.error(f"Error processing thread {thread.id}: {e}")
+                threads_processed += 1
                 continue
+        
+        # Final update for the progress message
+        if progress_message:
+            await progress_message.edit(
+                content=f"✅ **Scan Complete**: {threads_processed}/{total_threads} threads processed, {worlds_found} worlds found, {duplicates_found} duplicates, {len(unknown_threads)} issues detected."
+            )
         
         # Log the scan results
         config.logger.info(f"Scan completed: Found {worlds_found} worlds, {duplicates_found} duplicates, and {len(unknown_threads)} threads with issues")
