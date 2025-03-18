@@ -542,9 +542,6 @@ class VRChatAPI:
             config.logger.warning("Cannot extract file ID: World info is None")
             return "Not specified"
         
-        # Debug log to see what we're working with
-        config.logger.debug(f"World info keys: {list(world_info.keys())}")
-        
         # Method 1: Try direct assetUrl in world_info
         if "assetUrl" in world_info and world_info["assetUrl"]:
             asset_url = world_info["assetUrl"]
@@ -584,13 +581,23 @@ class VRChatAPI:
                 if match:
                     return match.group(0)
         
-        # Method 4: Try to search through all properties for a file ID pattern
+        # NEW METHOD 4: Try to extract from imageUrl or thumbnailImageUrl
+        # This addresses the issue seen in the logs where file IDs are only in image URLs
+        for image_key in ['imageUrl', 'thumbnailImageUrl']:
+            if image_key in world_info and world_info[image_key]:
+                image_url = world_info[image_key]
+                file_id = self._extract_file_id_from_url(image_url)
+                if file_id:
+                    config.logger.info(f"Found file ID in {image_key}: {file_id}")
+                    return file_id
+        
+        # Method 5: Try to search through all properties for a file ID pattern
         for key, value in world_info.items():
             if isinstance(value, str) and value.startswith("file_") and len(value) > 10:
                 config.logger.debug(f"Found potential file ID in {key}: {value}")
                 return value
         
-        # Method 5: Fall back to searching for file ID in version info
+        # Method 6: Fall back to searching for file ID in version info
         if "version" in world_info and isinstance(world_info["version"], dict):
             version = world_info["version"]
             for key, value in version.items():

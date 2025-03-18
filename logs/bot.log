@@ -231,3 +231,79 @@ connector: <aiohttp.connector.TCPConnector object at 0x000002BEC9D5E120>
 2025-03-18 15:43:51,476 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 15:43:51] "[36mGET /styles.css HTTP/1.1[0m" 304 -
 2025-03-18 15:43:51,606 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 15:43:51] "[36mGET /api/placeholder/1200/600 HTTP/1.1[0m" 304 -
 2025-03-18 15:43:51,845 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 15:43:51] "[36mGET /favicon.ico HTTP/1.1[0m" 304 -
+2025-03-18 16:14:02,755 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 16:14:02,756 - discord.client - INFO - logging in using static token
+2025-03-18 16:14:03,569 - vrchat_bot - INFO - Persistent views registered
+2025-03-18 16:14:03,586 - vrchat_bot - INFO - Cogs loaded
+2025-03-18 16:14:03,909 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: f52fb2598194695ae051255d716068ef).
+2025-03-18 16:14:04,027 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.8:8080
+2025-03-18 16:14:04,027 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 16:14:05,943 - vrchat_bot - INFO - Logged in as VRC World Helper
+2025-03-18 16:14:06,238 - vrchat_bot - INFO - Synced 11 command(s)
+2025-03-18 16:14:06,238 - vrchat_bot - INFO - Setting up database: database\vrchat_worlds.db
+2025-03-18 16:14:06,239 - vrchat_bot - INFO - Database setup completed successfully
+2025-03-18 16:14:06,455 - vrchat_bot - INFO - Button already exists in thread 1351529703533445201
+2025-03-18 16:14:06,688 - vrchat_bot - INFO - Button already exists in thread 1351522617965805600
+2025-03-18 16:14:06,689 - vrchat_bot - INFO - All threads have been checked and world buttons added where needed.
+2025-03-18 16:17:09,584 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 16:17:09,736 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 16:17:09,880 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 16:17:09,880 - vrchat_bot - INFO - World name: Doll House - Horror World
+2025-03-18 16:17:09,880 - vrchat_bot - INFO - Author: 『 도비 』
+2025-03-18 16:17:18,242 - vrchat_bot - INFO - User 552268901409488917 selected tags: ['Liminal'] for world wrld_c634c31c-116a-4aaa-a130-1010929d979c
+2025-03-18 16:18:14,865 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 16:18:14,997 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 16:18:14,997 - vrchat_bot - INFO - Scanning 3 threads in forum channel 1351569341413589053 for server 1190336327888146442
+2025-03-18 16:18:15,558 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 16:18:15,559 - vrchat_bot - INFO - World name: 面会室
+2025-03-18 16:18:15,559 - vrchat_bot - INFO - Author: Toraba
+2025-03-18 16:18:15,924 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 16:18:15,924 - vrchat_bot - INFO - World name: VR Chess
+2025-03-18 16:18:15,925 - vrchat_bot - INFO - Author: NoLife1942
+2025-03-18 16:18:16,219 - vrchat_bot - INFO - Scan completed: Found 2 worlds, 0 duplicates, and 0 threads with issues
+2025-03-18 16:18:24,873 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 16:18:24,899 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 16:18:25,245 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 16:18:25,246 - vrchat_bot - INFO - World name: Finishing Touch - Art Studio ＆ Gallery
+2025-03-18 16:18:25,246 - vrchat_bot - INFO - Author: Mixieǃ
+2025-03-18 16:18:27,910 - vrchat_bot - INFO - User 552268901409488917 selected tags: ['Horror'] for world wrld_93dc2a1f-60f6-474f-ba8b-f86ad2fd8025
+2025-03-18 16:18:28,151 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 16:18:28,180 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 16:18:28,318 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 16:18:28,319 - vrchat_bot - INFO - World name: Finishing Touch - Art Studio ＆ Gallery
+2025-03-18 16:18:28,319 - vrchat_bot - INFO - Author: Mixieǃ
+2025-03-18 16:18:28,319 - vrchat_bot - INFO - File ID for world wrld_93dc2a1f-60f6-474f-ba8b-f86ad2fd8025: file_c6044a88-f584-4926-a2f0-acf6c17f35a4
+2025-03-18 16:18:28,319 - vrchat_bot - INFO - ===== VRCHAT WORLD DEBUG =====
+2025-03-18 16:18:28,319 - vrchat_bot - INFO - World info keys: ['authorId', 'authorName', 'capacity', 'created_at', 'defaultContentSettings', 'description', 'favorites', 'featured', 'heat', 'id', 'imageUrl', 'instances', 'labsPublicationDate', 'name', 'occupants', 'organization', 'popularity', 'previewYoutubeId', 'privateOccupants', 'publicOccupants', 'publicationDate', 'recommendedCapacity', 'releaseStatus', 'storeId', 'tags', 'thumbnailImageUrl', 'udonProducts', 'unityPackages', 'updated_at', 'urlList', 'version', 'visits']
+2025-03-18 16:18:28,320 - vrchat_bot - INFO - Found 3 unity packages
+2025-03-18 16:18:28,320 - vrchat_bot - INFO - Package 1 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'unitySortNumber', 'unityVersion']
+2025-03-18 16:18:28,320 - vrchat_bot - INFO - Package 1 assetUrl: https://api.vrchat.cloud/api/1/file/file_c6044a88-f584-4926-a2f0-acf6c17f35a4/33/file
+2025-03-18 16:18:28,320 - vrchat_bot - INFO - Package 1 platform: standalonewindows
+2025-03-18 16:18:28,320 - vrchat_bot - INFO - Package 2 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'unitySortNumber', 'unityVersion']
+2025-03-18 16:18:28,321 - vrchat_bot - INFO - Package 2 assetUrl: https://api.vrchat.cloud/api/1/file/file_c6044a88-f584-4926-a2f0-acf6c17f35a4/36/file
+2025-03-18 16:18:28,321 - vrchat_bot - INFO - Package 2 platform: standalonewindows
+2025-03-18 16:18:28,321 - vrchat_bot - INFO - Package 3 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'unitySortNumber', 'unityVersion', 'worldSignature']
+2025-03-18 16:18:28,321 - vrchat_bot - INFO - Package 3 assetUrl: https://api.vrchat.cloud/api/1/file/file_c6044a88-f584-4926-a2f0-acf6c17f35a4/41/file
+2025-03-18 16:18:28,321 - vrchat_bot - INFO - Package 3 platform: standalonewindows
+2025-03-18 16:18:28,322 - vrchat_bot - INFO - Found potential file ID pattern in imageUrl: file_bfee2c6f-3da7-4460-bf85-121503afd77f
+2025-03-18 16:18:28,322 - vrchat_bot - INFO - Found potential file ID pattern in thumbnailImageUrl: file_bfee2c6f-3da7-4460-bf85-121503afd77f
+2025-03-18 16:18:28,322 - vrchat_bot - INFO - File ID for world: file_c6044a88-f584-4926-a2f0-acf6c17f35a4
+2025-03-18 16:18:28,517 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 16:18:28,551 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 16:18:28,689 - vrchat_bot - INFO - File info retrieved successfully
+2025-03-18 16:18:28,690 - vrchat_bot - INFO - File info keys: ['extension', 'id', 'mimeType', 'name', 'ownerId', 'tags', 'versions']
+2025-03-18 16:18:28,690 - vrchat_bot - INFO - Found 42 versions
+2025-03-18 16:18:28,690 - vrchat_bot - INFO - Last version keys: ['created_at', 'file', 'signature', 'status', 'version']
+2025-03-18 16:18:28,690 - vrchat_bot - INFO - File data keys: ['category', 'fileName', 'md5', 'sizeInBytes', 'status', 'uploadId', 'url']
+2025-03-18 16:18:28,690 - vrchat_bot - INFO - Size in bytes: 87699178
+2025-03-18 16:18:28,691 - vrchat_bot - INFO - Formatted size: 83.64 MB
+2025-03-18 16:18:28,691 - vrchat_bot - INFO - ===== END VRCHAT WORLD DEBUG =====
+2025-03-18 16:18:28,834 - vrchat_bot - INFO - World size raw value: 87699178
+2025-03-18 16:18:28,834 - vrchat_bot - INFO - Formatted world size: 83.64 MB
+2025-03-18 16:18:28,948 - vrchat_bot - INFO - World size raw value: 87699178
+2025-03-18 16:18:28,949 - vrchat_bot - INFO - Formatted world size: 83.64 MB
+2025-03-18 16:18:28,949 - vrchat_bot - INFO - Building embed with size: 83.64 MB
+2025-03-18 16:18:29,541 - vrchat_bot - INFO - Added tags ['Horror'] to thread 1351575519191367781

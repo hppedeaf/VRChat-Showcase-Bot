@@ -67,8 +67,13 @@ def build_world_embed(
     if favorites != 'Unknown':
         favorites = "{:,}".format(favorites)
     
-    # IMPORTANT FIX: Use the passed world_size directly without any modification
-    embed.add_field(name="World Size", value=world_size, inline=True)
+    # Handle Unknown world size with a better fallback message
+    display_size = world_size
+    if world_size == "Unknown":
+        display_size = "Not Available"
+
+    # Add fields with proper fallbacks
+    embed.add_field(name="World Size", value=display_size, inline=True)
     embed.add_field(name="Platform", value=platform_info, inline=True)
     embed.add_field(name="Capacity", value=capacity, inline=True)
     embed.add_field(name="Published", value=created_at, inline=True)
