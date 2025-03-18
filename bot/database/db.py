@@ -15,12 +15,9 @@ def get_connection():
         Database connection
     """
     if hasattr(config, 'DATABASE_URL') and config.DATABASE_URL and config.DATABASE_URL.startswith("postgres"):
-        import psycopg2
-        import psycopg2.extras
-        
-        conn = psycopg2.connect(config.DATABASE_URL)
-        conn.cursor_factory = psycopg2.extras.DictCursor
-        return conn
+        # Use our enhanced PostgreSQL handler for Railway
+        from database.pg_handler import get_postgres_connection
+        return get_postgres_connection()
     else:
         # SQLite fallback for local development
         conn = sqlite3.connect(config.DATABASE_FILE)
@@ -42,139 +39,13 @@ def setup_database() -> None:
     is_postgres = hasattr(config, 'DATABASE_URL') and config.DATABASE_URL and config.DATABASE_URL.startswith("postgres")
     
     if is_postgres:
+        # Use our enhanced PostgreSQL setup
+        from database.pg_handler import setup_postgres_tables
         setup_postgres_tables()
     else:
         setup_sqlite_tables()
         
-    setup_guild_tracking_table()
     config.logger.info(f"Database setup completed successfully")
-
-def setup_postgres_tables():
-    """Set up PostgreSQL tables."""
-    with get_connection() as conn:
-        cursor = conn.cursor()
-        
-        # Server channels table
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS server_channels (
-                server_id BIGINT PRIMARY KEY,
-                forum_channel_id BIGINT NOT NULL,
-                thread_id BIGINT,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-        """)
-        
-        # Unified world posts table
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS world_posts (
-                id SERIAL PRIMARY KEY,
-                server_id BIGINT NOT NULL,
-                user_id BIGINT NOT NULL,
-                thread_id BIGINT,
-                world_id TEXT NOT NULL,
-                world_link TEXT NOT NULL,
-                user_choices TEXT,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                UNIQUE(server_id, world_id)
-            )
-        """)
-        
-        # Legacy tables for backward compatibility
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS user_world_links (
-                user_id BIGINT PRIMARY KEY,
-                world_link TEXT,
-                user_choices TEXT,
-                world_id TEXT,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-        """)
-        
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS thread_world_links (
-                server_id BIGINT,
-                thread_id BIGINT,
-                world_id TEXT,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                PRIMARY KEY (server_id, world_id)
-            )
-        """)
-        
-        # Server tags table
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS server_tags (
-                server_id BIGINT,
-                tag_id BIGINT,
-                tag_name TEXT,
-                emoji TEXT,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                PRIMARY KEY (server_id, tag_id)
-            )
-        """)
-        
-        # VRChat worlds table
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS vrchat_worlds (
-                world_id TEXT PRIMARY KEY,
-                world_name TEXT,
-                author_name TEXT,
-                image_url TEXT,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-        """)
-        
-        # Tag usage table
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS tag_usage (
-                server_id BIGINT,
-                thread_id BIGINT,
-                tag_id BIGINT,
-                added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                PRIMARY KEY (server_id, thread_id, tag_id)
-            )
-        """)
-        
-        # Bot activity log
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS bot_activity_log (
-                id SERIAL PRIMARY KEY,
-                server_id BIGINT,
-                action_type TEXT,
-                details TEXT,
-                timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-        """)
-        
-        # Activity stats
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS activity_stats (
-                id SERIAL PRIMARY KEY,
-                server_id BIGINT,
-                date DATE,
-                worlds_added INTEGER DEFAULT 0,
-                users_active INTEGER DEFAULT 0,
-                UNIQUE(server_id, date)
-            )
-        """)
-        
-        # Create indexes
-        cursor.execute("""
-            CREATE INDEX IF NOT EXISTS idx_user_world_links_world_id 
-            ON user_world_links(world_id)
-        """)
-        
-        cursor.execute("""
-            CREATE INDEX IF NOT EXISTS idx_thread_world_links_thread_id 
-            ON thread_world_links(thread_id)
-        """)
-        
-        cursor.execute("""
-            CREATE INDEX IF NOT EXISTS idx_server_tags_tag_name 
-            ON server_tags(server_id, tag_name)
-        """)
-        
-        conn.commit()
 
 def setup_sqlite_tables():
     """Set up SQLite tables."""
@@ -255,15 +126,14 @@ def _create_tables(conn: sqlite3.Connection) -> None:
         )
     """)
     
-    # Create legacy tables for backward compatibility
+    # Legacy tables for backward compatibility
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS user_world_links (
-            user_id INTEGER,
+            user_id INTEGER PRIMARY KEY,
             world_link TEXT,
             user_choices TEXT,
             world_id TEXT,
-            created_at TEXT DEFAULT (datetime('now')),
-            PRIMARY KEY (user_id)
+            created_at TEXT DEFAULT (datetime('now'))
         )
     """)
     
@@ -459,11 +329,6 @@ def log_activity(server_id: int, action_type: str, details: str) -> None:
     except Exception as e:
         config.logger.error(f"Error logging activity: {e}")
 
-"""
-To make your database operations compatible with both PostgreSQL and SQLite,
-add this utility helper and use it in all your database operations.
-"""
-
 def get_placeholder_style():
     """
     Returns the appropriate placeholder style for the current database.
@@ -521,13 +386,58 @@ def execute_insert_query(conn, query, params=None):
     if is_postgres:
         # Handle PostgreSQL specific syntax
         if "INSERT OR REPLACE" in query:
-            query = query.replace("INSERT OR REPLACE", "INSERT")
-            query = query.replace("VALUES", "VALUES") + " ON CONFLICT DO UPDATE SET "
-            # This is a simplified version - for a real implementation you'd need to parse
-            # the query to determine table and columns
+            # For PostgreSQL, transform the query to use ON CONFLICT syntax
+            # First determine the table and columns
+            parts = query.split()
+            table_idx = parts.index("INTO") + 1
+            table_name = parts[table_idx].strip()
+            
+            # Extract column names from the query
+            columns_start = query.find("(", query.find(table_name)) + 1
+            columns_end = query.find(")", columns_start)
+            columns_str = query[columns_start:columns_end].strip()
+            columns = [col.strip() for col in columns_str.split(",")]
+            
+            # Assume the first column is the primary key
+            primary_key = columns[0]
+            
+            # Reconstruct the query using ON CONFLICT
+            values_str = ", ".join(["%s" for _ in range(len(columns))])
+            update_parts = []
+            
+            for col in columns[1:]:  # Skip the primary key
+                update_parts.append(f"{col} = EXCLUDED.{col}")
+                
+            update_clause = ", ".join(update_parts)
+            
+            query = f"""
+                INSERT INTO {table_name} ({columns_str})
+                VALUES ({values_str})
+                ON CONFLICT ({primary_key}) DO UPDATE SET {update_clause}
+            """
         elif "INSERT OR IGNORE" in query:
+            # Transform to use ON CONFLICT DO NOTHING
             query = query.replace("INSERT OR IGNORE", "INSERT")
-            query = query.replace("VALUES", "VALUES") + " ON CONFLICT DO NOTHING"
+            
+            # Find the table name
+            parts = query.split()
+            table_idx = parts.index("INTO") + 1
+            table_name = parts[table_idx].strip()
+            
+            # Extract column names to determine primary key
+            columns_start = query.find("(", query.find(table_name)) + 1
+            columns_end = query.find(")", columns_start)
+            columns_str = query[columns_start:columns_end].strip()
+            columns = [col.strip() for col in columns_str.split(",")]
+            
+            # Assume the first column is the primary key
+            primary_key = columns[0]
+            
+            # Add ON CONFLICT clause
+            if ")" in query and "VALUES" in query:
+                query = query.replace("VALUES", f") ON CONFLICT ({primary_key}) DO NOTHING VALUES")
+            else:
+                query += f" ON CONFLICT ({primary_key}) DO NOTHING"
             
         # Replace ? with %s for PostgreSQL
         query = query.replace("?", "%s")
@@ -605,6 +515,7 @@ def migrate_to_unified_world_posts():
         if not table_exists:
             config.logger.info("world_posts table doesn't exist yet. Creating...")
             if is_postgres:
+                from database.pg_handler import setup_postgres_tables
                 setup_postgres_tables()
             else:
                 with get_connection() as conn2:

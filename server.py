@@ -14,6 +14,17 @@ from flask import Flask, request, jsonify, send_from_directory, Response
 import bot.main as bot_main
 import bot.config as config
 
+# Initialize PostgreSQL when on Railway
+if os.getenv("RAILWAY_ENVIRONMENT") or os.getenv("DATABASE_URL"):
+    try:
+        from database.pg_handler import setup_postgres_tables
+        print("Initializing PostgreSQL database for Railway deployment...")
+        setup_postgres_tables()
+        print("PostgreSQL database initialized successfully.")
+    except Exception as e:
+        print(f"Error initializing PostgreSQL database: {e}")
+        config.logger.error(f"Error initializing PostgreSQL database: {e}")
+
 # Initialize Flask application
 app = Flask(__name__, static_folder='web')
 
@@ -57,13 +68,41 @@ def status():
     guilds_count = getattr(bot_main, 'guild_count', 0)
     worlds_count = getattr(bot_main, 'worlds_count', 0)
     
+    # Check database connection status
+    db_status = "unknown"
+    try:
+        if os.getenv("DATABASE_URL"):
+            # Check PostgreSQL connection
+            from database.pg_handler import get_postgres_connection
+            conn = get_postgres_connection()
+            cursor = conn.cursor()
+            cursor.execute("SELECT 1")
+            result = cursor.fetchone()
+            if result and result[0] == 1:
+                db_status = "connected (PostgreSQL)"
+            conn.close()
+        else:
+            # Check SQLite connection
+            import sqlite3
+            conn = sqlite3.connect(config.DATABASE_FILE)
+            cursor = conn.cursor()
+            cursor.execute("SELECT 1")
+            result = cursor.fetchone()
+            if result and result[0] == 1:
+                db_status = "connected (SQLite)"
+            conn.close()
+    except Exception as e:
+        db_status = f"error ({str(e)[:50]}...)" if len(str(e)) > 50 else f"error ({str(e)})"
+    
     # Construct status response
     status_data = {
         "status": "online",
         "guilds": guilds_count,
         "worlds": worlds_count,
         "version": "1.0.0",
-        "uptime": getattr(bot_main, 'uptime', 'Unknown')
+        "uptime": getattr(bot_main, 'uptime', 'Unknown'),
+        "database": db_status,
+        "environment": os.getenv("RAILWAY_ENVIRONMENT", "local")
     }
     
     return jsonify(status_data)
