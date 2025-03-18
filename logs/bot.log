@@ -2094,3 +2094,41 @@ Traceback (most recent call last):
     cursor.execute("DELETE FROM guild_tracking WHERE guild_id = ?", (guild_id,))
     ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 sqlite3.OperationalError: no such table: guild_tracking
+2025-03-18 20:53:43,440 - server - INFO - Starting Discord bot in background thread...
+2025-03-18 20:53:43,442 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 20:53:43,442 - discord.client - INFO - logging in using static token
+2025-03-18 20:53:43,718 - server - INFO - Setting up web dashboard routes
+2025-03-18 20:53:43,719 - server - WARNING - Bot instance not available for web dashboard
+2025-03-18 20:53:43,982 - vrchat_bot - INFO - Persistent views registered
+2025-03-18 20:53:43,985 - vrchat_bot - INFO - Cogs loaded
+2025-03-18 20:53:44,410 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 670d5ced194d82af8b7b630346f8a92d).
+2025-03-18 20:53:44,988 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.8:8080
+2025-03-18 20:53:44,988 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 20:53:45,029 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:53:45] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 20:53:45,328 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:53:45] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-03-18 20:53:45,465 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:53:45] "[36mGET /static/img/favicon.ico HTTP/1.1[0m" 304 -
+2025-03-18 20:53:46,456 - vrchat_bot - INFO - Logged in as VRC World Helper
+2025-03-18 20:53:46,917 - vrchat_bot - INFO - Synced 12 command(s)
+2025-03-18 20:53:46,918 - vrchat_bot - INFO - Setting up database: database\vrchat_worlds.db
+2025-03-18 20:53:46,934 - vrchat_bot - INFO - Database setup completed successfully
+2025-03-18 20:53:47,134 - vrchat_bot - INFO - Button already exists in thread 1351622713034145852
+2025-03-18 20:53:47,346 - vrchat_bot - INFO - Button already exists in thread 1351593964280610856
+2025-03-18 20:53:47,346 - vrchat_bot - INFO - All threads have been checked and world buttons added where needed.
+2025-03-18 20:53:48,101 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:53:48] "[32mGET / HTTP/1.1[0m" 302 -
+2025-03-18 20:53:48,364 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:53:48] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 20:53:48,419 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:53:48] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-03-18 20:53:48,931 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:53:48] "[36mGET /static/img/favicon.ico HTTP/1.1[0m" 304 -
+2025-03-18 20:53:54,807 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:53:54] "[32mGET /force-refresh-guilds HTTP/1.1[0m" 302 -
+2025-03-18 20:53:55,124 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:53:55] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 20:53:55,388 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:53:55] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-03-18 20:53:55,543 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:53:55] "[36mGET /static/img/favicon.ico HTTP/1.1[0m" 304 -
+2025-03-18 20:55:39,078 - vrchat_bot - INFO - Joined new guild: Ghost's server (ID: 1091526919444504666)
+2025-03-18 20:56:16,160 - vrchat_bot - ERROR - Error fetching archived threads: 403 Forbidden (error code: 50001): Missing Access
+2025-03-18 20:56:16,354 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 20:56:16,492 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 20:56:16,931 - vrchat_bot - ERROR - Error in world_set_slash: 403 Forbidden (error code: 50001): Missing Access
+2025-03-18 20:58:09,068 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 20:58:09,221 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26

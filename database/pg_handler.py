@@ -1,18 +1,18 @@
 """
-PostgreSQL database handler for Railway deployment.
-Provides better handling of PostgreSQL connections and migrations.
+Enhanced PostgreSQL database handler for Railway deployment.
+Provides better handling of PostgreSQL connections, migrations, and optimized table structures.
 """
 import psycopg2
 import psycopg2.extras
 import logging
 import time
 import os
-from typing import Dict, Any, List, Tuple, Optional
+from typing import Dict, Any, List, Tuple, Optional, Union
 import config as config
 
 def get_postgres_connection():
     """
-    Get a connection to the PostgreSQL database on Railway.
+    Get a connection to the PostgreSQL database on Railway with improved error handling.
     
     Returns:
         Database connection
@@ -23,13 +23,17 @@ def get_postgres_connection():
     if not db_url:
         raise ValueError("DATABASE_URL environment variable is not set")
         
-    # Add retry mechanism for connection
+    # Add retry mechanism for connection with exponential backoff
     max_retries = 5
-    retry_delay = 3  # seconds
+    retry_delay = 3  # initial seconds
     
     for attempt in range(max_retries):
         try:
-            conn = psycopg2.connect(db_url)
+            conn = psycopg2.connect(
+                db_url,
+                connect_timeout=10,  # Set connection timeout
+                application_name="VRChat World Showcase Bot"  # Identify app in pg_stat_activity
+            )
             conn.autocommit = False  # We'll manage transactions explicitly
             conn.cursor_factory = psycopg2.extras.DictCursor  # Enable dictionary-like access to rows
             
@@ -38,14 +42,31 @@ def get_postgres_connection():
         except psycopg2.OperationalError as e:
             if attempt < max_retries - 1:
                 config.logger.warning(f"Failed to connect to PostgreSQL (attempt {attempt+1}/{max_retries}): {e}")
+                # Exponential backoff
                 time.sleep(retry_delay)
+                retry_delay *= 2
             else:
                 config.logger.error(f"Failed to connect to PostgreSQL after {max_retries} attempts: {e}")
                 raise
 
+def check_table_exists(conn, table_name: str) -> bool:
+    """
+    Check if a table exists in the PostgreSQL database.
+    
+    Args:
+        conn: Database connection
+        table_name: Name of the table to check
+        
+    Returns:
+        True if the table exists, False otherwise
+    """
+    with conn.cursor() as cursor:
+        cursor.execute("SELECT to_regclass(%s)", (table_name,))
+        return cursor.fetchone()[0] is not None
+
 def setup_postgres_tables(conn=None):
     """
-    Set up PostgreSQL database tables.
+    Set up PostgreSQL database tables with optimized indices and constraints.
     
     Args:
         conn: Optional database connection
@@ -67,7 +88,7 @@ def setup_postgres_tables(conn=None):
                 )
             """)
             
-            # Unified world posts table
+            # Unified world posts table with improved schema
             cursor.execute("""
                 CREATE TABLE IF NOT EXISTS world_posts (
                     id SERIAL PRIMARY KEY,
@@ -116,13 +137,19 @@ def setup_postgres_tables(conn=None):
                 )
             """)
             
-            # VRChat worlds table
+            # VRChat worlds table with improved fields
             cursor.execute("""
                 CREATE TABLE IF NOT EXISTS vrchat_worlds (
                     world_id TEXT PRIMARY KEY,
                     world_name TEXT,
                     author_name TEXT,
                     image_url TEXT,
+                    capacity INTEGER,
+                    visit_count INTEGER,
+                    favorites_count INTEGER,
+                    last_updated TIMESTAMP,
+                    platform_type TEXT,
+                    world_size_bytes BIGINT,
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
             """)
@@ -138,13 +165,14 @@ def setup_postgres_tables(conn=None):
                 )
             """)
             
-            # Bot activity log
+            # Bot activity log with improved schema
             cursor.execute("""
                 CREATE TABLE IF NOT EXISTS bot_activity_log (
                     id SERIAL PRIMARY KEY,
                     server_id BIGINT,
                     action_type TEXT,
                     details TEXT,
+                    user_id BIGINT,
                     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
             """)
@@ -182,24 +210,40 @@ def setup_postgres_tables(conn=None):
                 )
             """)
             
-            # Create indexes for better performance
-            cursor.execute("""
-                CREATE INDEX IF NOT EXISTS idx_user_world_links_world_id 
-                ON user_world_links(world_id)
-            """)
+            # Create improved indices for better performance
             
-            cursor.execute("""
-                CREATE INDEX IF NOT EXISTS idx_thread_world_links_thread_id 
-                ON thread_world_links(thread_id)
-            """)
+            # Indices for world_posts
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_world_posts_server_id ON world_posts(server_id)")
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_world_posts_user_id ON world_posts(user_id)")
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_world_posts_thread_id ON world_posts(thread_id)")
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_world_posts_world_id ON world_posts(world_id)")
             
-            cursor.execute("""
-                CREATE INDEX IF NOT EXISTS idx_server_tags_tag_name 
-                ON server_tags(server_id, tag_name)
-            """)
+            # Indices for user_world_links
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_user_world_links_world_id ON user_world_links(world_id)")
+            
+            # Indices for thread_world_links
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_thread_world_links_thread_id ON thread_world_links(thread_id)")
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_thread_world_links_server_id ON thread_world_links(server_id)")
+            
+            # Indices for server_tags
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_server_tags_tag_name ON server_tags(server_id, tag_name)")
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_server_tags_server_id ON server_tags(server_id)")
+            
+            # Indices for tag_usage
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_tag_usage_server_id ON tag_usage(server_id)")
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_tag_usage_tag_id ON tag_usage(tag_id)")
+            
+            # Indices for activity_stats
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_activity_stats_date ON activity_stats(date)")
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_activity_stats_server_id ON activity_stats(server_id)")
+            
+            # Indices for bot_activity_log
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_bot_activity_timestamp ON bot_activity_log(timestamp)")
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_bot_activity_server_id ON bot_activity_log(server_id)")
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_bot_activity_action_type ON bot_activity_log(action_type)")
             
             conn.commit()
-            config.logger.info("PostgreSQL tables created successfully")
+            config.logger.info("PostgreSQL tables and indices created successfully")
             
     except Exception as e:
         conn.rollback()
@@ -209,6 +253,66 @@ def setup_postgres_tables(conn=None):
         if connection_created:
             conn.close()
 
+def add_missing_columns():
+    """
+    Add any missing columns to existing tables that were added in schema updates.
+    This allows for non-breaking schema changes.
+    """
+    try:
+        conn = get_postgres_connection()
+        with conn.cursor() as cursor:
+            # Check and add missing columns for vrchat_worlds
+            try:
+                cursor.execute("SELECT capacity FROM vrchat_worlds LIMIT 1")
+            except psycopg2.errors.UndefinedColumn:
+                cursor.execute("ALTER TABLE vrchat_worlds ADD COLUMN capacity INTEGER")
+                config.logger.info("Added missing column: capacity to vrchat_worlds")
+                
+            try:
+                cursor.execute("SELECT visit_count FROM vrchat_worlds LIMIT 1")
+            except psycopg2.errors.UndefinedColumn:
+                cursor.execute("ALTER TABLE vrchat_worlds ADD COLUMN visit_count INTEGER")
+                config.logger.info("Added missing column: visit_count to vrchat_worlds")
+                
+            try:
+                cursor.execute("SELECT favorites_count FROM vrchat_worlds LIMIT 1")
+            except psycopg2.errors.UndefinedColumn:
+                cursor.execute("ALTER TABLE vrchat_worlds ADD COLUMN favorites_count INTEGER")
+                config.logger.info("Added missing column: favorites_count to vrchat_worlds")
+                
+            try:
+                cursor.execute("SELECT last_updated FROM vrchat_worlds LIMIT 1")
+            except psycopg2.errors.UndefinedColumn:
+                cursor.execute("ALTER TABLE vrchat_worlds ADD COLUMN last_updated TIMESTAMP")
+                config.logger.info("Added missing column: last_updated to vrchat_worlds")
+                
+            try:
+                cursor.execute("SELECT platform_type FROM vrchat_worlds LIMIT 1")
+            except psycopg2.errors.UndefinedColumn:
+                cursor.execute("ALTER TABLE vrchat_worlds ADD COLUMN platform_type TEXT")
+                config.logger.info("Added missing column: platform_type to vrchat_worlds")
+                
+            try:
+                cursor.execute("SELECT world_size_bytes FROM vrchat_worlds LIMIT 1")
+            except psycopg2.errors.UndefinedColumn:
+                cursor.execute("ALTER TABLE vrchat_worlds ADD COLUMN world_size_bytes BIGINT")
+                config.logger.info("Added missing column: world_size_bytes to vrchat_worlds")
+                
+            # Check and add missing columns for bot_activity_log
+            try:
+                cursor.execute("SELECT user_id FROM bot_activity_log LIMIT 1")
+            except psycopg2.errors.UndefinedColumn:
+                cursor.execute("ALTER TABLE bot_activity_log ADD COLUMN user_id BIGINT")
+                config.logger.info("Added missing column: user_id to bot_activity_log")
+                
+            conn.commit()
+            config.logger.info("All missing columns added successfully")
+    except Exception as e:
+        conn.rollback()
+        config.logger.error(f"Error adding missing columns: {e}")
+    finally:
+        conn.close()
+
 def migrate_data_from_sqlite():
     """
     Migrate data from SQLite to PostgreSQL.
@@ -216,9 +320,140 @@ def migrate_data_from_sqlite():
     This function should be called if you want to move data from a local SQLite
     database to the PostgreSQL database on Railway.
     """
-    # This function would implement the data migration logic if needed
-    # For now, it's a placeholder - implement when needed
-    pass
+    import sqlite3
+    from database.db import get_connection
+    
+    # Check if SQLite database exists
+    sqlite_db_path = config.DATABASE_FILE
+    if not os.path.exists(sqlite_db_path):
+        config.logger.warning(f"SQLite database {sqlite_db_path} not found, skipping migration")
+        return
+    
+    config.logger.info(f"Starting migration from SQLite database {sqlite_db_path} to PostgreSQL")
+    
+    # Connect to both databases
+    sqlite_conn = sqlite3.connect(sqlite_db_path)
+    sqlite_conn.row_factory = sqlite3.Row
+    
+    pg_conn = get_postgres_connection()
+    
+    try:
+        # First, get a list of all tables to migrate
+        sqlite_cursor = sqlite_conn.cursor()
+        sqlite_cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
+        tables = [row[0] for row in sqlite_cursor.fetchall()]
+        
+        # For each table, migrate the data
+        for table in tables:
+            config.logger.info(f"Migrating table: {table}")
+            
+            # Skip SQLite system tables
+            if table.startswith('sqlite_'):
+                continue
+                
+            # Get table schema to determine columns
+            sqlite_cursor.execute(f"PRAGMA table_info({table})")
+            columns = [row[1] for row in sqlite_cursor.fetchall()]
+            
+            if not columns:
+                config.logger.warning(f"No columns found for table {table}, skipping")
+                continue
+                
+            # Get data from SQLite
+            sqlite_cursor.execute(f"SELECT * FROM {table}")
+            rows = sqlite_cursor.fetchall()
+            
+            if not rows:
+                config.logger.info(f"No data in table {table}, skipping")
+                continue
+                
+            # Insert data into PostgreSQL
+            with pg_conn.cursor() as pg_cursor:
+                for row in rows:
+                    # Convert row to dict
+                    row_dict = {columns[i]: row[i] for i in range(len(columns))}
+                    
+                    # Prepare columns and values for INSERT
+                    cols = ", ".join(row_dict.keys())
+                    placeholders = ", ".join(["%s"] * len(row_dict))
+                    values = list(row_dict.values())
+                    
+                    try:
+                        # Insert with ON CONFLICT DO NOTHING to avoid duplicates
+                        pg_cursor.execute(
+                            f"INSERT INTO {table} ({cols}) VALUES ({placeholders}) ON CONFLICT DO NOTHING",
+                            values
+                        )
+                    except Exception as e:
+                        config.logger.error(f"Error inserting row in table {table}: {e}")
+                        # Continue with next row
+                        continue
+                        
+            config.logger.info(f"Migrated {len(rows)} rows from table {table}")
+            
+        # Commit all changes
+        pg_conn.commit()
+        config.logger.info("Migration completed successfully")
+        
+    except Exception as e:
+        pg_conn.rollback()
+        config.logger.error(f"Migration failed: {e}")
+    finally:
+        sqlite_conn.close()
+        pg_conn.close()
+
+def clean_database():
+    """
+    Clean the database by removing orphaned data and fixing inconsistencies.
+    """
+    conn = None
+    try:
+        conn = get_postgres_connection()
+        with conn.cursor() as cursor:
+            # 1. Find and remove thread_world_links with no matching thread in Discord
+            cursor.execute("""
+                DELETE FROM thread_world_links
+                WHERE server_id NOT IN (SELECT server_id FROM server_channels)
+            """)
+            deleted_count = cursor.rowcount
+            config.logger.info(f"Cleaned {deleted_count} orphaned thread_world_links")
+            
+            # 2. Remove duplicate world entries (keeping the most recent)
+            cursor.execute("""
+                DELETE FROM world_posts wp1
+                WHERE EXISTS (
+                    SELECT 1 FROM world_posts wp2
+                    WHERE wp1.server_id = wp2.server_id
+                    AND wp1.world_id = wp2.world_id
+                    AND wp1.id < wp2.id
+                )
+            """)
+            deleted_count = cursor.rowcount
+            config.logger.info(f"Cleaned {deleted_count} duplicate world posts")
+            
+            # 3. Clean up old activity logs (older than 90 days)
+            cursor.execute("""
+                DELETE FROM bot_activity_log
+                WHERE timestamp < NOW() - INTERVAL '90 days'
+            """)
+            deleted_count = cursor.rowcount
+            config.logger.info(f"Cleaned {deleted_count} old activity logs")
+            
+            # 4. Run VACUUM to reclaim space and optimize performance
+            conn.set_isolation_level(0)  # AUTOCOMMIT for VACUUM
+            cursor.execute("VACUUM ANALYZE")
+            conn.set_isolation_level(1)  # Reset isolation level
+            
+            config.logger.info("Database cleaning completed successfully")
+            conn.commit()
+            
+    except Exception as e:
+        if conn:
+            conn.rollback()
+        config.logger.error(f"Database cleaning failed: {e}")
+    finally:
+        if conn:
+            conn.close()
 
 class PostgresExecutor:
     """Helper class for executing PostgreSQL queries with proper error handling."""
@@ -331,3 +566,49 @@ class PostgresExecutor:
         """
         
         return PostgresExecutor.execute_query(query, values, commit=True)
+    
+    @staticmethod
+    def bulk_insert(table: str, data_list: List[Dict[str, Any]], unique_columns: List[str]=None):
+        """
+        Insert multiple rows at once for better performance.
+        
+        Args:
+            table: Table name
+            data_list: List of dictionaries mapping column names to values
+            unique_columns: Columns that uniquely identify rows (for ON CONFLICT)
+            
+        Returns:
+            Number of rows affected
+        """
+        if not data_list:
+            return 0
+            
+        # All dictionaries must have the same keys
+        columns = list(data_list[0].keys())
+        
+        # Prepare values list
+        all_values = []
+        for data in data_list:
+            values = [data.get(col) for col in columns]
+            all_values.append(values)
+            
+        # Create placeholders
+        placeholders = [f"%s" for _ in columns]
+        placeholders_str = f"({', '.join(placeholders)})"
+        
+        # Prepare the base query
+        query = f"INSERT INTO {table} ({', '.join(columns)}) VALUES "
+        
+        # Add the values placeholders
+        values_part = ", ".join([placeholders_str] * len(data_list))
+        query += values_part
+        
+        # Add ON CONFLICT clause if unique_columns is provided
+        if unique_columns:
+            conflict_columns = ", ".join(unique_columns)
+            query += f" ON CONFLICT ({conflict_columns}) DO NOTHING"
+            
+        # Flatten all_values for the execute function
+        flat_values = [val for sublist in all_values for val in sublist]
+        
+        return PostgresExecutor.execute_query(query, flat_values, commit=True)
