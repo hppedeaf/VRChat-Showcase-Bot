@@ -369,7 +369,7 @@ class ScanActionButtons(discord.ui.View):
             embed = discord.Embed(
                 title="Tag Fix Results",
                 description=summary,
-                color=discord.Color.green()
+                color=discord.Color.dark_red()
             )
             
             # Add detailed log to a field
@@ -439,7 +439,7 @@ class ScanActionButtons(discord.ui.View):
         embed = discord.Embed(
             title="Empty Thread Review",
             description="These threads don't have detectable VRChat world links. You can:",
-            color=discord.Color.orange()
+            color=discord.Color.dark_red()
         )
         
         embed.add_field(
@@ -487,7 +487,7 @@ class ScanActionButtons(discord.ui.View):
         embed = discord.Embed(
             title="Duplicate World Review",
             description="These threads contain worlds that also exist in other threads. You can:",
-            color=discord.Color.orange()
+            color=discord.Color.dark_red()
         )
         
         embed.add_field(
@@ -536,7 +536,7 @@ class ThreadReviewView(discord.ui.View):
         embed = discord.Embed(
             title="Thread Review Result",
             description=f"✅ Keeping all {len(self.threads)} threads without modification.",
-            color=discord.Color.green()
+            color=discord.Color.dark_red()
         )
         
         # Disable all buttons
@@ -577,7 +577,7 @@ class ThreadReviewView(discord.ui.View):
         embed = discord.Embed(
             title="Thread Review Result",
             description=f"✅ Removed {removed_count} threads without VRChat worlds.",
-            color=discord.Color.green()
+            color=discord.Color.dark_red()
         )
         
         if failed_count > 0:
@@ -667,7 +667,7 @@ class ThreadReviewView(discord.ui.View):
         embed = discord.Embed(
             title="Advanced Thread Scan Result",
             description=f"✅ Found valid VRChat world links in {fixed_count} threads!",
-            color=discord.Color.green()
+            color=discord.Color.dark_red()
         )
         
         if not_found_count > 0:
@@ -701,7 +701,7 @@ class DuplicateReviewView(discord.ui.View):
         embed = discord.Embed(
             title="Duplicate Review Result",
             description=f"✅ Keeping all {len(self.duplicates)} duplicate world threads.",
-            color=discord.Color.green()
+            color=discord.Color.dark_red()
         )
         
         # Disable all buttons
@@ -742,7 +742,7 @@ class DuplicateReviewView(discord.ui.View):
         embed = discord.Embed(
             title="Duplicate Review Result",
             description=f"✅ Removed {removed_count} duplicate world threads.",
-            color=discord.Color.green()
+            color=discord.Color.dark_red()
         )
         
         if failed_count > 0:
@@ -767,7 +767,7 @@ class DuplicateReviewView(discord.ui.View):
         embed = discord.Embed(
             title="Individual Review",
             description="This would show an interface for reviewing each duplicate thread individually.",
-            color=discord.Color.blue()
+            color=discord.Color.dark_red()
         )
         
         embed.add_field(

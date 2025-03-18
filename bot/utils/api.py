@@ -390,6 +390,7 @@ class VRChatAPI:
         return None
 
     # Rest of the API methods remain the same as in previous implementations
+
     def get_world_info(self, world_id: str) -> Optional[Dict[str, Any]]:
         """
         Get information about a VRChat world.
@@ -404,20 +405,24 @@ class VRChatAPI:
         
         # Log some debug information to help diagnose issues
         if world_info:
-            # Log available keys to help troubleshoot
-            config.logger.info(f"World info keys: {', '.join(list(world_info.keys())[:10])}...")
+            # Safe logging that handles Unicode characters properly
+            try:
+                # Log limited keys to avoid excessive output
+                keys_to_log = list(world_info.keys())[:10]
+                config.logger.info(f"World info keys: {', '.join(keys_to_log)}...")
+                
+                # Safely log name and author
+                config.logger.info(f"World name: {world_info.get('name', 'Unknown')}")
+                config.logger.info(f"Author: {world_info.get('authorName', 'Unknown')}")
+            except UnicodeEncodeError:
+                # Fallback if there are encoding issues
+                config.logger.info("Retrieved world info (unicode logging error)")
             
             # Check for missing unityPackages data
             if "unityPackages" not in world_info:
                 config.logger.warning("World info is missing 'unityPackages' data")
             elif not world_info["unityPackages"]:
                 config.logger.warning("World has empty 'unityPackages' array")
-            
-            # Check for other useful fields
-            if "name" in world_info:
-                config.logger.info(f"World name: {world_info['name']}")
-            if "authorName" in world_info:
-                config.logger.info(f"Author: {world_info['authorName']}")
                 
         return world_info
     

@@ -121,7 +121,7 @@ class VRChatBot(commands.Bot):
                         view = WorldButton(allowed_user_id=admin_id)  # Allow only an admin if found
                         embed = discord.Embed(
                             description="Hiya! \n\nWelcome! Do you want to share amazing VRChat worlds with everyone?\n\nIt's super easy! Just click the button below and paste the VRChat world's URL! You can copy the URL from the VRChat website. \n\nYou'll get to pick tags in the next step, so people who love things like horror or games or chatting can easily find worlds they'll enjoy! We'll make it look super pretty with all the details!\n\nPlease don't share every VRChat world you see. Let's focus on the special ones, the ones you think are really cool or maybe even a little hidden and deserve some love! ❤️",
-                            color=discord.Color.yellow()
+                            color=discord.Color.dark_red()
                         )
                         await channel.send(embed=embed, view=view)
                         config.logger.info(f"Added world button to thread {thread_id}, allowed user: {admin_id}")
@@ -147,7 +147,7 @@ class VRChatBot(commands.Bot):
                         "or `/world-set` to use an existing one.\n\n" +
                         "For more information, run `/about` or `/help`."
                     ),
-                    color=discord.Color.blue()
+                    color=discord.Color.dark_red()
                 )
                 
                 try:
@@ -176,7 +176,7 @@ class VRChatBot(commands.Bot):
                         "or `/world-set` to use an existing one.\n\n" +
                         "For more information, run `/about` or `/help`."
                     ),
-                    color=discord.Color.blue()
+                    color=discord.Color.dark_red()
                 )
                 
                 try:

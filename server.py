@@ -17,7 +17,7 @@ import bot.config as config
 # Initialize PostgreSQL when on Railway
 if os.getenv("RAILWAY_ENVIRONMENT") or os.getenv("DATABASE_URL"):
     try:
-        from database.pg_handler import setup_postgres_tables
+        from bot.database.pg_handler import setup_postgres_tables
         print("Initializing PostgreSQL database for Railway deployment...")
         setup_postgres_tables()
         print("PostgreSQL database initialized successfully.")
@@ -73,7 +73,7 @@ def status():
     try:
         if os.getenv("DATABASE_URL"):
             # Check PostgreSQL connection
-            from database.pg_handler import get_postgres_connection
+            from bot.database.pg_handler import get_postgres_connection
             conn = get_postgres_connection()
             cursor = conn.cursor()
             cursor.execute("SELECT 1")

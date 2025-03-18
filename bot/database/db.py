@@ -16,7 +16,7 @@ def get_connection():
     """
     if hasattr(config, 'DATABASE_URL') and config.DATABASE_URL and config.DATABASE_URL.startswith("postgres"):
         # Use our enhanced PostgreSQL handler for Railway
-        from database.pg_handler import get_postgres_connection
+        from bot.database.pg_handler import get_postgres_connection
         return get_postgres_connection()
     else:
         # SQLite fallback for local development
@@ -40,7 +40,7 @@ def setup_database() -> None:
     
     if is_postgres:
         # Use our enhanced PostgreSQL setup
-        from database.pg_handler import setup_postgres_tables
+        from bot.database.pg_handler import setup_postgres_tables
         setup_postgres_tables()
     else:
         setup_sqlite_tables()
@@ -515,7 +515,7 @@ def migrate_to_unified_world_posts():
         if not table_exists:
             config.logger.info("world_posts table doesn't exist yet. Creating...")
             if is_postgres:
-                from database.pg_handler import setup_postgres_tables
+                from bot.database.pg_handler import setup_postgres_tables
                 setup_postgres_tables()
             else:
                 with get_connection() as conn2:

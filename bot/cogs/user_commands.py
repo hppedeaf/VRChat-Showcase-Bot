@@ -42,7 +42,7 @@ class UserCommands(commands.Cog):
         view = WorldButton(allowed_user_id=interaction.user.id)  # Only allow the command user
         embed = discord.Embed(
             description="Hiya! \n\nWelcome! Do you want to share amazing VRChat worlds with everyone?\n\nIt's super easy! Just click the button below and paste the VRChat world's URL! You can copy the URL from the VRChat website. \n\nYou'll get to pick tags in the next step, so people who love things like horror or games or chatting can easily find worlds they'll enjoy! We'll make it look super pretty with all the details!\n\nPlease don't share every VRChat world you see. Let's focus on the special ones, the ones you think are really cool or maybe even a little hidden and deserve some love! ❤️",
-            color=discord.Color.yellow()
+            color=discord.Color.dark_red()
         )
         await interaction.response.send_message(embed=embed, view=view)
     

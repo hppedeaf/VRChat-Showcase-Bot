@@ -13,8 +13,7 @@ from database.models import ServerChannels, ServerTags
 from database.db import log_activity
 from utils.api import extract_world_id, VRChatAPI
 from ui.buttons import WorldButton
-import bot.config as config
-from database.models import ServerChannels, WorldPosts, ServerTags
+from database.models import WorldPosts
 
 class AdminCommands(commands.Cog):
     """Administrative commands for the bot."""
@@ -31,12 +30,9 @@ class AdminCommands(commands.Cog):
     # Add a command to view bot stats
     @app_commands.command(name="stats", description="View bot statistics")
     @app_commands.default_permissions(administrator=True)
-    async def stats_slash(self, interaction: discord.Interaction):
+    async def stats_slash(self, interaction):
         """
         View bot statistics.
-        
-        Args:
-            interaction: Discord interaction
         """
         await interaction.response.defer(thinking=True)
         
@@ -50,7 +46,7 @@ class AdminCommands(commands.Cog):
         # Create embed
         embed = discord.Embed(
             title="VRChat World Showcase Bot - Statistics",
-            color=discord.Color.blue()
+            color=discord.Color.dark_red()
         )
         
         embed.add_field(
@@ -78,7 +74,6 @@ class AdminCommands(commands.Cog):
                 )
         
         # Add this server's info
-        from database.models import WorldPosts
         
         # Count world posts for this server
         server_posts = len(WorldPosts.get_all_posts(interaction.guild.id))
@@ -97,12 +92,9 @@ class AdminCommands(commands.Cog):
         
     @app_commands.command(name="world-create", description="Create a forum channel for VRChat world posts")
     @app_commands.default_permissions(administrator=True)
-    async def world_create_slash(self, interaction: discord.Interaction):
+    async def world_create_slash(self, interaction):
         """
         Create a new forum channel for VRChat worlds.
-        
-        Args:
-            interaction: Discord interaction
         """
         await interaction.response.defer(thinking=True)
         
@@ -189,7 +181,7 @@ class AdminCommands(commands.Cog):
             # Create the welcome embed first
             thread_embed = discord.Embed(
                 title="Share your favorite VRChat worlds here!",
-                color=discord.Color.yellow()
+                color=discord.Color.dark_red()
             )
             thread_embed.set_image(url=config.WELCOME_IMAGE_URL)
 
@@ -205,7 +197,7 @@ class AdminCommands(commands.Cog):
             view = WorldButton(allowed_user_id=interaction.user.id)  # Only allow the admin who created it
             button_embed = discord.Embed(
                 description="Hiya! \n\nWelcome! Do you want to share amazing VRChat worlds with everyone?\n\nIt's super easy! Just click the button below and paste the VRChat world's URL! You can copy the URL from the VRChat website. \n\nYou'll get to pick tags in the next step, so people who love things like horror or games or chatting can easily find worlds they'll enjoy! We'll make it look super pretty with all the details!\n\nPlease don't share every VRChat world you see. Let's focus on the special ones, the ones you think are really cool or maybe even a little hidden and deserve some love! ❤️",
-                color=discord.Color.yellow()
+                color=discord.Color.dark_red()
             )
             await thread.send(embed=button_embed, view=view)
 
@@ -242,15 +234,11 @@ class AdminCommands(commands.Cog):
     @app_commands.default_permissions(administrator=True)
     async def world_set_slash(
         self, 
-        interaction: discord.Interaction, 
+        interaction, 
         forum_channel: discord.ForumChannel
     ):
         """
         Set up an existing forum channel for VRChat worlds.
-        
-        Args:
-            interaction: Discord interaction
-            forum_channel: Discord forum channel to set up
         """
         await interaction.response.defer(thinking=True)
         
@@ -323,7 +311,7 @@ class AdminCommands(commands.Cog):
             # Create the welcome embed first
             embed = discord.Embed(
                 title="Share your favorite VRChat worlds here!",
-                color=discord.Color.yellow()
+                color=discord.Color.dark_red()
             )
             embed.set_image(url=config.WELCOME_IMAGE_URL)
 
@@ -339,7 +327,7 @@ class AdminCommands(commands.Cog):
             view = WorldButton()
             button_embed = discord.Embed(
                 description="Hiya! \n\nWelcome! Do you want to share amazing VRChat worlds with everyone?\n\nIt's super easy! Just click the button below and paste the VRChat world's URL! You can copy the URL from the VRChat website. \n\nYou'll get to pick tags in the next step, so people who love things like horror or games or chatting can easily find worlds they'll enjoy! We'll make it look super pretty with all the details!\n\nPlease don't share every VRChat world you see. Let's focus on the special ones, the ones you think are really cool or maybe even a little hidden and deserve some love! ❤️",
-                color=discord.Color.yellow()
+                color=discord.Color.dark_red()
             )
             await thread.send(embed=button_embed, view=view)
 
@@ -367,134 +355,13 @@ class AdminCommands(commands.Cog):
             await interaction.followup.send(f"❌ An error occurred: {e}")
     
     @app_commands.command(
-    name="world-remove", 
-    description="Remove a specific VRChat world post"
-    )
-    @app_commands.describe(
-        world_id_or_url="The world ID or URL to remove (e.g., wrld_123... or https://vrchat.com/home/world/...)",
-        thread="Or select the thread to remove"
-    )
-    @app_commands.default_permissions(administrator=True)
-    async def world_remove_slash(
-        self, 
-        interaction: discord.Interaction, 
-        world_id_or_url: Optional[str] = None,
-        thread: Optional[discord.Thread] = None
-    ):
-        """
-        Remove a specific VRChat world post.
-        """
-        await interaction.response.defer(thinking=True)
-        server_id = interaction.guild_id
-
-        # Make sure at least one parameter is provided
-        if not world_id_or_url and not thread:
-            await interaction.followup.send(
-                "⚠️ Please provide either a world ID/URL or select a thread to remove."
-            )
-            return
-
-        try:
-            # First, check if a forum channel is configured for this server
-            forum_config = ServerChannels.get_forum_channel(server_id)
-            if not forum_config:
-                await interaction.followup.send("❌ No forum channel configuration found for this server.")
-                return
-            
-            forum_channel_id = forum_config[0]
-            
-            # Import WorldPosts
-            from database.models import WorldPosts
-            
-            # If thread is provided directly, use that
-            if thread:
-                thread_id = thread.id
-                
-                # Find the world associated with this thread
-                world_id = WorldPosts.get_world_for_thread(server_id, thread_id)
-                
-                if world_id:
-                    # Remove the thread-world link
-                    WorldPosts.remove_post_by_thread(server_id, thread_id)
-                    
-                    await interaction.followup.send(
-                        f"✅ Successfully removed thread {thread.mention} from the database. " +
-                        f"World ID: `{world_id}`"
-                    )
-                    
-                    # Try to delete the thread if it exists
-                    try:
-                        await thread.delete()
-                        await interaction.followup.send(f"✅ Thread has been deleted from Discord.")
-                    except Exception as e:
-                        config.logger.error(f"Could not delete thread {thread_id}: {e}")
-                        await interaction.followup.send(f"⚠️ Note: Could not delete the Discord thread: {e}")
-                else:
-                    await interaction.followup.send(
-                        f"❌ No world associated with thread {thread.mention} found in the database."
-                    )
-                return
-            
-            # If we get here, we're using world_id_or_url
-            world_id = None
-            
-            # Check if the input is a URL
-            if world_id_or_url.startswith("http"):
-                # Extract world ID from URL
-                world_id = extract_world_id(world_id_or_url)
-                if not world_id:
-                    await interaction.followup.send("❌ Could not extract a valid world ID from the URL.")
-                    return
-            elif world_id_or_url.startswith("wrld_"):
-                # This is already a world ID
-                world_id = world_id_or_url
-            else:
-                await interaction.followup.send(
-                    "❌ Invalid input. Please provide either a valid world ID (starting with 'wrld_') or a URL."
-                )
-                return
-                
-            # Now process with the extracted or provided world ID
-            thread_id = WorldPosts.get_thread_for_world(server_id, world_id)
-            
-            if thread_id:
-                # Remove the thread-world link
-                WorldPosts.remove_post_by_world(server_id, world_id)
-                
-                await interaction.followup.send(
-                    f"✅ Successfully removed world `{world_id}` from the database. " +
-                    f"Thread ID: <#{thread_id}>"
-                )
-                
-                # Try to delete the thread if it exists
-                try:
-                    forum_channel = interaction.client.get_channel(forum_channel_id)
-                    if forum_channel:
-                        thread = forum_channel.get_thread(thread_id)
-                        if thread:
-                            await thread.delete()
-                            await interaction.followup.send(f"✅ Thread has been deleted from Discord.")
-                except Exception as e:
-                    config.logger.error(f"Could not delete thread {thread_id}: {e}")
-                    await interaction.followup.send(f"⚠️ Note: Could not delete the Discord thread: {e}")
-            else:
-                await interaction.followup.send(f"❌ No world with ID `{world_id}` found in the database.")
-            
-        except Exception as e:
-            config.logger.error(f"Error in world_remove_slash: {e}")
-            await interaction.followup.send(f"❌ An error occurred: {e}")
-    
-    @app_commands.command(
         name="sync", 
         description="Sync slash commands (admin only)"
     )
     @app_commands.default_permissions(administrator=True)
-    async def sync_slash(self, interaction: discord.Interaction):
+    async def sync_slash(self, interaction):
         """
         Sync slash commands with Discord.
-        
-        Args:
-            interaction: Discord interaction
         """
         if interaction.user.guild_permissions.administrator:
             await interaction.response.defer(thinking=True)
@@ -509,17 +376,9 @@ class AdminCommands(commands.Cog):
                 ephemeral=True
             )
     
-    async def _scan_forum_threads(self, server_id: int, forum_channel: discord.ForumChannel, progress_message=None) -> Tuple[int, List[Dict]]:
+    async def _scan_forum_threads(self, server_id, forum_channel, progress_message=None):
         """
         Scan forum threads for VRChat worlds with improved accuracy and real-time updates.
-        
-        Args:
-            server_id: Discord server ID
-            forum_channel: Discord forum channel
-            progress_message: Discord message to update with progress
-                
-        Returns:
-            Tuple of (worlds_found, unknown_threads_data)
         """
         worlds_found = 0
         unknown_threads = []
@@ -600,6 +459,7 @@ class AdminCommands(commands.Cog):
                     # Check message content for VRChat links if we didn't find one in embeds
                     if not world_id and first_message.content:
                         # Look for VRChat world URLs in the message
+                        import re
                         urls = re.findall(
                             r'https://vrchat\.com/home/world/wrld_[a-zA-Z0-9_-]+(?:/info)?', 
                             first_message.content
@@ -683,16 +543,9 @@ class AdminCommands(commands.Cog):
         
         return worlds_found, unknown_threads
     
-    async def _sync_forum_tags(self, server_id: int, forum_channel: discord.ForumChannel) -> int:
+    async def _sync_forum_tags(self, server_id, forum_channel):
         """
         Synchronize forum tags with database.
-        
-        Args:
-            server_id: Discord server ID
-            forum_channel: Discord forum channel
-            
-        Returns:
-            Number of tags added
         """
         # If there are no tags in the forum, create default ones
         if not forum_channel.available_tags:
@@ -733,7 +586,7 @@ class AdminCommands(commands.Cog):
         description="Repair threads that don't have proper world links"
     )
     @app_commands.default_permissions(administrator=True)
-    async def repair_threads_slash(self, interaction: discord.Interaction):
+    async def repair_threads_slash(self, interaction):
         """
         Repair forum threads that don't have proper world links.
         """
@@ -755,7 +608,6 @@ class AdminCommands(commands.Cog):
                 return
             
             # Step 1: Try to repair threads with the repair function
-            from database.models import WorldPosts
             fixed_count = WorldPosts.repair_missing_threads(server_id)
             
             # Step 2: Scan forum for threads without world links
@@ -848,7 +700,7 @@ class AdminCommands(commands.Cog):
             embed = discord.Embed(
                 title="Thread Repair Results",
                 description="",
-                color=discord.Color.green()
+                color=discord.Color.dark_red()
             )
             
             embed.description += f"✅ Fixed {fixed_count} threads with database repairs\n"

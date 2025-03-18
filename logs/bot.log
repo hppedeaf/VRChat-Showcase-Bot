@@ -1,0 +1,233 @@
+2025-03-18 12:26:04,434 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 12:26:04,435 - discord.client - INFO - logging in using static token
+2025-03-18 12:26:05,200 - vrchat_bot - INFO - Persistent views registered
+2025-03-18 12:26:05,216 - vrchat_bot - CRITICAL - Failed to start bot: Extension 'cogs.maintenance' raised an error: TypeError: unsupported type annotation <class 'discord.interactions.Interaction'>
+2025-03-18 12:26:05,707 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.8:8080
+2025-03-18 12:26:05,707 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 12:33:41,508 - asyncio - ERROR - Unclosed connector
+connections: ['deque([(<aiohttp.client_proto.ResponseHandler object at 0x000002BEC9D2A390>, 399169.3361039)])']
+connector: <aiohttp.connector.TCPConnector object at 0x000002BEC9D5E120>
+2025-03-18 12:33:44,541 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 12:33:44,542 - discord.client - INFO - logging in using static token
+2025-03-18 12:33:45,550 - vrchat_bot - INFO - Persistent views registered
+2025-03-18 12:33:45,565 - vrchat_bot - INFO - Cogs loaded
+2025-03-18 12:33:45,800 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.8:8080
+2025-03-18 12:33:45,800 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 12:33:45,950 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 4b0a2a5eba4c02226804fb156730d0f1).
+2025-03-18 12:33:48,055 - vrchat_bot - INFO - Logged in as VRC World Helper
+2025-03-18 12:33:48,453 - vrchat_bot - INFO - Synced 11 command(s)
+2025-03-18 12:33:48,453 - vrchat_bot - INFO - Setting up database: database\vrchat_worlds.db
+2025-03-18 12:33:48,487 - vrchat_bot - INFO - Database setup completed successfully
+2025-03-18 12:33:48,489 - vrchat_bot - INFO - All threads have been checked and world buttons added where needed.
+2025-03-18 12:34:04,812 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 12:34:04,958 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 12:34:04,958 - vrchat_bot - INFO - Scanning 37 threads in forum channel 1348539036775616564 for server 914869780584992789
+2025-03-18 12:34:06,091 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 12:34:06,091 - vrchat_bot - INFO - World name: Super VR Ball
+2025-03-18 12:34:06,091 - vrchat_bot - INFO - Author: blueasis
+2025-03-18 12:34:06,446 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 12:34:06,833 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 12:34:06,833 - vrchat_bot - INFO - World name: 'Among Us' game
+2025-03-18 12:34:06,834 - vrchat_bot - INFO - Author: Jar
+2025-03-18 12:34:07,187 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 12:34:07,188 - vrchat_bot - INFO - World name: Infinity Beach Shack
+2025-03-18 12:34:07,188 - vrchat_bot - INFO - Author: Silent
+2025-03-18 12:34:07,850 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 12:34:07,850 - vrchat_bot - INFO - World name: Doll House - Horror World
+2025-03-18 12:34:08,252 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 12:34:08,944 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 12:34:08,944 - vrchat_bot - INFO - World name: MyAvatarGoods
+2025-03-18 12:34:08,945 - vrchat_bot - INFO - Author: MetaCreatorsTYO
+2025-03-18 12:34:09,695 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 12:34:09,696 - vrchat_bot - INFO - World name: Vibrations Test
+2025-03-18 12:34:09,696 - vrchat_bot - INFO - Author: Jordo
+2025-03-18 12:34:10,100 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 12:34:10,101 - vrchat_bot - INFO - World name: New High Resolution Shadow
+2025-03-18 12:34:10,468 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 12:34:10,469 - vrchat_bot - INFO - World name: Popcorn Palace
+2025-03-18 12:34:10,469 - vrchat_bot - INFO - Author: spacebaar
+2025-03-18 12:34:10,829 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 12:34:10,830 - vrchat_bot - INFO - World name: Buckshot Bar
+2025-03-18 12:34:11,173 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 12:34:11,174 - vrchat_bot - INFO - World name: Murder 4
+2025-03-18 12:34:11,174 - vrchat_bot - INFO - Author: Jar
+2025-03-18 12:34:11,666 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 12:34:11,670 - vrchat_bot - INFO - Author: syncpulse
+2025-03-18 12:34:12,260 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 12:34:12,261 - vrchat_bot - INFO - World name: Le Froge Ponde
+2025-03-18 12:34:12,261 - vrchat_bot - INFO - Author: Fionna
+2025-03-18 12:34:12,741 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 12:34:12,741 - vrchat_bot - INFO - World name: Cozy Cottage - Legacy
+2025-03-18 12:34:12,741 - vrchat_bot - INFO - Author: ~Sam
+2025-03-18 12:34:13,107 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 12:34:13,110 - vrchat_bot - INFO - Author: max_GRIDMAN
+2025-03-18 12:34:13,444 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 12:34:13,444 - vrchat_bot - INFO - World name: FiveSkies
+2025-03-18 12:34:13,832 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 12:34:13,832 - vrchat_bot - INFO - World name: Oxymore Official World
+2025-03-18 12:34:13,833 - vrchat_bot - INFO - Author: VRROOM
+2025-03-18 12:34:15,560 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 12:34:15,560 - vrchat_bot - INFO - World name: Eepyheads Theater
+2025-03-18 12:34:15,561 - vrchat_bot - INFO - Author: OrionRi
+2025-03-18 12:34:15,921 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 12:34:15,922 - vrchat_bot - INFO - World name: Prismic's Avatar Search
+2025-03-18 12:34:15,922 - vrchat_bot - INFO - Author: Prismic247
+2025-03-18 12:34:16,959 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 12:34:16,959 - vrchat_bot - INFO - World name: VRCBeta
+2025-03-18 12:34:16,959 - vrchat_bot - INFO - Author: hppedeaf
+2025-03-18 12:34:17,558 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 12:34:17,558 - vrchat_bot - INFO - World name: AnimRecStudio
+2025-03-18 12:34:17,558 - vrchat_bot - INFO - Author: taa_vr
+2025-03-18 12:34:17,900 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 12:34:17,900 - vrchat_bot - INFO - World name: 1's Optimized Box
+2025-03-18 12:34:17,901 - vrchat_bot - INFO - Author: 1
+2025-03-18 12:34:18,281 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 12:34:18,281 - vrchat_bot - INFO - World name: The Diner
+2025-03-18 12:34:18,641 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 12:34:18,641 - vrchat_bot - INFO - World name: VR Chess
+2025-03-18 12:34:18,642 - vrchat_bot - INFO - Author: NoLife1942
+2025-03-18 12:34:19,104 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 12:34:19,105 - vrchat_bot - INFO - World name: CORE
+2025-03-18 12:34:19,523 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 12:34:19,524 - vrchat_bot - INFO - World name: The Normal Elevator
+2025-03-18 12:34:19,524 - vrchat_bot - INFO - Author: Hens
+2025-03-18 12:34:20,153 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 12:34:20,158 - vrchat_bot - INFO - Author: TrueAquaPsych
+2025-03-18 12:34:20,522 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 12:34:20,522 - vrchat_bot - INFO - World name: Anvil Ridge
+2025-03-18 12:34:20,522 - vrchat_bot - INFO - Author: TheArchie
+2025-03-18 12:34:20,874 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 12:34:20,874 - vrchat_bot - INFO - World name: Bruhville
+2025-03-18 12:34:20,874 - vrchat_bot - INFO - Author: ThatFatKidsMom
+2025-03-18 12:34:21,477 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 12:34:21,477 - vrchat_bot - INFO - World name: Haven
+2025-03-18 12:34:21,478 - vrchat_bot - INFO - Author: Lucifer MStar
+2025-03-18 12:34:22,098 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 12:34:22,102 - vrchat_bot - INFO - Author: blueasis
+2025-03-18 12:34:22,502 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 12:34:22,506 - vrchat_bot - INFO - Author: Air In
+2025-03-18 12:34:23,132 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 12:34:23,132 - vrchat_bot - INFO - World name: Gaming Hideout
+2025-03-18 12:34:23,132 - vrchat_bot - INFO - Author: ohmiwa
+2025-03-18 12:34:24,045 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 12:34:24,045 - vrchat_bot - INFO - World name: Meadow Cottage
+2025-03-18 12:34:24,379 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 12:34:24,977 - vrchat_bot - INFO - Scan completed: Found 36 worlds, 0 duplicates, and 0 threads with issues
+2025-03-18 12:38:50,522 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 12:38:50,523 - discord.client - INFO - logging in using static token
+2025-03-18 12:38:51,265 - vrchat_bot - INFO - Persistent views registered
+2025-03-18 12:38:51,279 - vrchat_bot - INFO - Cogs loaded
+2025-03-18 12:38:51,620 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: ed75cdcf89c269321e4e60d3278a6a42).
+2025-03-18 12:38:51,788 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.8:8080
+2025-03-18 12:38:51,788 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 12:38:53,659 - vrchat_bot - INFO - Logged in as VRC World Helper
+2025-03-18 12:38:53,907 - vrchat_bot - INFO - Synced 11 command(s)
+2025-03-18 12:38:53,907 - vrchat_bot - INFO - Setting up database: database\vrchat_worlds.db
+2025-03-18 12:38:53,908 - vrchat_bot - INFO - Database setup completed successfully
+2025-03-18 12:38:54,130 - vrchat_bot - INFO - Button already exists in thread 1351519131190689842
+2025-03-18 12:38:54,130 - vrchat_bot - INFO - All threads have been checked and world buttons added where needed.
+2025-03-18 12:40:59,426 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 12:40:59,581 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 12:40:59,581 - vrchat_bot - INFO - Scanning 37 threads in forum channel 1348539036775616564 for server 914869780584992789
+2025-03-18 12:41:00,033 - vrchat_bot - INFO - Scan completed: Found 36 worlds, 0 duplicates, and 0 threads with issues
+2025-03-18 12:43:54,984 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 12:43:54,985 - discord.client - INFO - logging in using static token
+2025-03-18 12:43:55,721 - vrchat_bot - INFO - Persistent views registered
+2025-03-18 12:43:55,726 - vrchat_bot - INFO - Cogs loaded
+2025-03-18 12:43:56,070 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: f264b8d21d9835c0991198ad9f2469a8).
+2025-03-18 12:43:56,244 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.8:8080
+2025-03-18 12:43:56,245 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 12:43:58,088 - vrchat_bot - INFO - Logged in as VRC World Helper
+2025-03-18 12:43:58,356 - vrchat_bot - INFO - Synced 11 command(s)
+2025-03-18 12:43:58,356 - vrchat_bot - INFO - Setting up database: database\vrchat_worlds.db
+2025-03-18 12:43:58,357 - vrchat_bot - INFO - Database setup completed successfully
+2025-03-18 12:43:58,556 - vrchat_bot - INFO - Button already exists in thread 1351520717631393862
+2025-03-18 12:43:58,557 - vrchat_bot - INFO - All threads have been checked and world buttons added where needed.
+2025-03-18 12:48:14,210 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 12:48:14,348 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 12:48:14,348 - vrchat_bot - INFO - Scanning 2 threads in forum channel 1350978256890761218 for server 1290387960285368443
+2025-03-18 12:48:15,018 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 12:48:15,018 - vrchat_bot - INFO - World name: The Black Cat
+2025-03-18 12:48:15,018 - vrchat_bot - INFO - Author: spookyghostboo
+2025-03-18 12:48:16,304 - vrchat_bot - INFO - Scan completed: Found 1 worlds, 0 duplicates, and 0 threads with issues
+2025-03-18 12:52:22,712 - discord.gateway - INFO - Shard ID None has successfully RESUMED session f264b8d21d9835c0991198ad9f2469a8.
+2025-03-18 13:15:23,014 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 13:15:23,014 - discord.client - INFO - logging in using static token
+2025-03-18 13:15:23,778 - vrchat_bot - INFO - Persistent views registered
+2025-03-18 13:15:23,794 - vrchat_bot - INFO - Cogs loaded
+2025-03-18 13:15:24,144 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 0dcf8cb7c87b1a0d0fc3967fc1aea0da).
+2025-03-18 13:15:24,288 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.8:8080
+2025-03-18 13:15:24,289 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 13:15:26,174 - vrchat_bot - INFO - Logged in as VRC World Helper
+2025-03-18 13:15:26,484 - vrchat_bot - INFO - Synced 11 command(s)
+2025-03-18 13:15:26,484 - vrchat_bot - INFO - Setting up database: database\vrchat_worlds.db
+2025-03-18 13:15:26,485 - vrchat_bot - INFO - Database setup completed successfully
+2025-03-18 13:15:26,682 - vrchat_bot - INFO - Button already exists in thread 1351522018167881840
+2025-03-18 13:15:26,874 - vrchat_bot - INFO - Button already exists in thread 1351522617965805600
+2025-03-18 13:15:26,875 - vrchat_bot - INFO - All threads have been checked and world buttons added where needed.
+2025-03-18 13:15:58,462 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 13:15:58,463 - discord.client - INFO - logging in using static token
+2025-03-18 13:15:59,271 - vrchat_bot - INFO - Persistent views registered
+2025-03-18 13:15:59,275 - vrchat_bot - INFO - Cogs loaded
+2025-03-18 13:15:59,630 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 0e22d96da0da6a1254ed59a577404d23).
+2025-03-18 13:15:59,721 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.8:8080
+2025-03-18 13:15:59,721 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 13:16:01,652 - vrchat_bot - INFO - Logged in as VRC World Helper
+2025-03-18 13:16:01,913 - vrchat_bot - INFO - Synced 11 command(s)
+2025-03-18 13:16:01,913 - vrchat_bot - INFO - Setting up database: database\vrchat_worlds.db
+2025-03-18 13:16:01,914 - vrchat_bot - INFO - Database setup completed successfully
+2025-03-18 13:16:02,183 - vrchat_bot - INFO - Button already exists in thread 1351522018167881840
+2025-03-18 13:16:02,522 - vrchat_bot - INFO - Button already exists in thread 1351522617965805600
+2025-03-18 13:16:02,523 - vrchat_bot - INFO - All threads have been checked and world buttons added where needed.
+2025-03-18 13:55:09,202 - discord.gateway - INFO - Shard ID None has successfully RESUMED session 0e22d96da0da6a1254ed59a577404d23.
+2025-03-18 15:41:03,576 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 15:41:03,577 - discord.client - INFO - logging in using static token
+2025-03-18 15:41:04,275 - vrchat_bot - INFO - Persistent views registered
+2025-03-18 15:41:04,279 - vrchat_bot - INFO - Cogs loaded
+2025-03-18 15:41:04,652 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: ae6a1ee3676082e98b83f0e6cd0a0689).
+2025-03-18 15:41:04,840 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.8:8080
+2025-03-18 15:41:04,840 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 15:41:06,678 - vrchat_bot - INFO - Logged in as VRC World Helper
+2025-03-18 15:41:06,993 - vrchat_bot - INFO - Synced 11 command(s)
+2025-03-18 15:41:06,993 - vrchat_bot - INFO - Setting up database: database\vrchat_worlds.db
+2025-03-18 15:41:06,995 - vrchat_bot - INFO - Database setup completed successfully
+2025-03-18 15:41:07,214 - vrchat_bot - INFO - Button already exists in thread 1351529703533445201
+2025-03-18 15:41:07,747 - vrchat_bot - INFO - Button already exists in thread 1351522617965805600
+2025-03-18 15:41:07,748 - vrchat_bot - INFO - All threads have been checked and world buttons added where needed.
+2025-03-18 15:41:45,851 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 15:41:45] "GET / HTTP/1.1" 200 -
+2025-03-18 15:41:46,464 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 15:41:46] "GET /styles.css HTTP/1.1" 200 -
+2025-03-18 15:41:46,580 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 15:41:46] "GET /api/placeholder/1200/600 HTTP/1.1" 200 -
+2025-03-18 15:41:46,794 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 15:41:46] "GET /favicon.ico HTTP/1.1" 200 -
+2025-03-18 15:41:49,276 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 15:41:49] "GET /api/status HTTP/1.1" 200 -
+2025-03-18 15:41:49,612 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 15:41:49] "[36mGET /favicon.ico HTTP/1.1[0m" 304 -
+2025-03-18 15:42:17,448 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 15:42:17] "GET /api/verify HTTP/1.1" 200 -
+2025-03-18 15:42:17,782 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 15:42:17] "[36mGET /favicon.ico HTTP/1.1[0m" 304 -
+2025-03-18 15:42:29,741 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 15:42:29] "GET /api/interactions HTTP/1.1" 200 -
+2025-03-18 15:42:29,819 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 15:42:29] "GET /api/styles.css HTTP/1.1" 200 -
+2025-03-18 15:42:30,101 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 15:42:30] "[36mGET /favicon.ico HTTP/1.1[0m" 304 -
+2025-03-18 15:42:44,707 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 15:42:44] "[36mGET /favicon.ico HTTP/1.1[0m" 304 -
+2025-03-18 15:43:51,389 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 15:43:51] "[36mGET / HTTP/1.1[0m" 304 -
+2025-03-18 15:43:51,476 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 15:43:51] "[36mGET /styles.css HTTP/1.1[0m" 304 -
+2025-03-18 15:43:51,606 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 15:43:51] "[36mGET /api/placeholder/1200/600 HTTP/1.1[0m" 304 -
+2025-03-18 15:43:51,845 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 15:43:51] "[36mGET /favicon.ico HTTP/1.1[0m" 304 -

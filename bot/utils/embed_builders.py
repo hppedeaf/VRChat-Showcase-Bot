@@ -92,7 +92,7 @@ def build_about_embed() -> discord.Embed:
     embed = discord.Embed(
         title="VRChat World Showcase Bot",
         description="This bot helps you create and manage an organized showcase of VRChat worlds in your Discord server. Find exciting new worlds to explore!",
-        color=discord.Color.blue()
+        color=discord.Color.dark_red()
     )
     
     embed.add_field(
@@ -165,7 +165,7 @@ def build_help_embed() -> discord.Embed:
     embed = discord.Embed(
         title="VRChat World Showcase Bot - Command Guide",
         description="This bot helps you create and manage a showcase of VRChat worlds in your Discord server. Here are all the available commands with detailed explanations:",
-        color=discord.Color.blue()
+        color=discord.Color.dark_red()
     )
     
     embed.add_field(
@@ -250,7 +250,7 @@ def build_scan_results_embed(title: str, results: List[str], part: int = 1, tota
     embed = discord.Embed(
         title=f"{title} (Part {part}/{total_parts})",
         description=description,
-        color=discord.Color.blue()
+        color=discord.Color.dark_red()
     )
     
     # Add a footer with timestamp
@@ -280,7 +280,7 @@ def build_tag_selection_embed(world_name: str, image_url: str) -> discord.Embed:
     embed = discord.Embed(
         title=f"Choose Tags for the World: {world_name}",
         description="Selected tags (0/5): None\n\nClick on tags to select/deselect. Click Submit when done.",
-        color=discord.Color.yellow()
+        color=discord.Color.dark_red()
     )
     
     if image_url and image_url != 'No image available':
