@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+
+{% block title %}{{ guild.name }} - Dashboard{% endblock %}
+
+{% block content %}
+<div class="bg-discord-dark text-white py-8">
+    <div class="container mx-auto px-4">
+        <div class="flex items-center">
+            {% if guild.icon %}
+            <img src="https://cdn.discordapp.com/icons/{{ guild.id }}/{{ guild.icon }}.png" alt="{{ guild.name }}" class="w-16 h-16 rounded-full mr-4">
+            {% else %}
+            <div class="w-16 h-16 rounded-full bg-gray-500 flex items-center justify-center text-white font-bold mr-4">
+                {{ guild.name[:1] }}
+            </div>
+            {% endif %}
+            <div>
+                <h1 class="text-3xl font-bold">{{ guild.name }}</h1>
+                <p class="text-gray-300">Server Dashboard</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mx-auto px-4 py-8">
+    <!-- Server Navigation -->
+    <div class="bg-white rounded-lg shadow-md overflow-hidden mb-8">
+        <div class="flex flex-wrap border-b">
+            <a href="/guild/{{ guild.id }}" class="px-6 py-3 font-medium text-discord-dark border-b-2 border-discord">
+                <i class="fas fa-home mr-2"></i> Overview
+            </a>
+            <a href="/guild/{{ guild.id }}/worlds" class="px-6 py-3 font-medium text-gray-600 hover:text-discord-dark">
+                <i class="fas fa-globe mr-2"></i> Worlds
+            </a>
+            <a href="/guild/{{ guild.id }}/tags" class="px-6 py-3 font-medium text-gray-600 hover:text-discord-dark">
+                <i class="fas fa-tags mr-2"></i> Tags
+            </a>
+            <a href="/guild/{{ guild.id }}/settings" class="px-6 py-3 font-medium text-gray-600 hover:text-discord-dark">
+                <i class="fas fa-cog mr-2"></i> Settings
+            </a>
+        </div>
+    </div>
+
+    <!-- Status Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-xl font-bold text-discord-dark">World Status</h3>
+                <div class="text-4xl text-discord">
+                    <i class="fas fa-globe"></i>
+                </div>
+            </div>
+            <div class="text-3xl font-bold text-gray-700">{{ world_count }}</div>
+            <p class="text-gray-500">VRChat worlds in showcase</p>
+            <a href="/guild/{{ guild.id }}/worlds" class="text-discord hover:text-blue-700 inline-flex items-center mt-4">
+                <span>View all worlds</span>
+                <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-xl font-bold text-discord-dark">Tag Status</h3>
+                <div class="text-4xl text-discord">
+                    <i class="fas fa-tags"></i>
+                </div>
+            </div>
+            <div class="text-3xl font-bold text-gray-700">{{ tag_count }}</div>
+            <p class="text-gray-500">Tags configured for worlds</p>
+            <a href="/guild/{{ guild.id }}/tags" class="text-discord hover:text-blue-700 inline-flex items-center mt-4">
+                <span>Manage tags</span>
+                <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-xl font-bold text-discord-dark">Forum Status</h3>
+                <div class="text-4xl text-discord">
+                    <i class="fas fa-comments"></i>
+                </div>
+            </div>
+            {% if forum_config %}
+            <div class="text-green-500 font-bold">
+                <i class="fas fa-check-circle mr-2"></i> Configured
+            </div>
+            <p class="text-gray-500">Forum channel is set up</p>
+            <a href="/guild/{{ guild.id }}/settings" class="text-discord hover:text-blue-700 inline-flex items-center mt-4">
+                <span>View settings</span>
+                <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+            {% else %}
+            <div class="text-red-500 font-bold">
+                <i class="fas fa-times-circle mr-2"></i> Not Configured
+            </div>
+            <p class="text-gray-500">Forum channel not set up</p>
+            <a href="/guild/{{ guild.id }}/settings" class="text-discord hover:text-blue-700 inline-flex items-center mt-4">
+                <span>Configure now</span>
+                <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+        <h3 class="text-xl font-bold text-discord-dark mb-4">Recent Activity</h3>
+        
+        {% if world_count > 0 %}
+        <div class="mb-4">
+            <div class="flex items-center text-green-600 mb-2">
+                <i class="fas fa-check-circle mr-2"></i>
+                <span class="font-medium">Bot is active and configured</span>
+            </div>
+            <p class="text-gray-600">Your bot is successfully running and serving VRChat worlds to your community!</p>
+        </div>
+            
+        <div class="border-t pt-4">
+            <p class="text-gray-500">Here are some actions you can take:</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                <a href="/guild/{{ guild.id }}/worlds" class="border border-discord text-discord hover:bg-discord hover:text-white px-4 py-2 rounded inline-flex items-center justify-center transition-colors">
+                    <i class="fas fa-globe mr-2"></i>
+                    <span>Manage Worlds</span>
+                </a>
+                <a href="/guild/{{ guild.id }}/tags" class="border border-discord text-discord hover:bg-discord hover:text-white px-4 py-2 rounded inline-flex items-center justify-center transition-colors">
+                    <i class="fas fa-tags mr-2"></i>
+                    <span>Configure Tags</span>
+                </a>
+                <a href="/guild/{{ guild.id }}/settings" class="border border-discord text-discord hover:bg-discord hover:text-white px-4 py-2 rounded inline-flex items-center justify-center transition-colors">
+                    <i class="fas fa-cog mr-2"></i>
+                    <span>Edit Settings</span>
+                </a>
+                <a href="https://discord.com/channels/{{ guild.id }}/{% if forum_config %}{{ forum_config[0] }}{% endif %}" target="_blank" class="border border-discord text-discord hover:bg-discord hover:text-white px-4 py-2 rounded inline-flex items-center justify-center transition-colors">
+                    <i class="fas fa-external-link-alt mr-2"></i>
+                    <span>View in Discord</span>
+                </a>
+            </div>
+        </div>
+        {% else %}
+        <div class="mb-4">
+            <div class="flex items-center text-yellow-600 mb-2">
+                <i class="fas fa-exclamation-circle mr-2"></i>
+                <span class="font-medium">Bot needs configuration</span>
+            </div>
+            <p class="text-gray-600">Your bot is running but needs to be configured to properly showcase VRChat worlds.</p>
+        </div>
+            
+        <div class="border-t pt-4">
+            <p class="text-gray-500">Here are some steps to get started:</p>
+            
+            <ol class="mt-4 pl-5 list-decimal text-gray-600 space-y-2">
+                <li>Go to your Discord server</li>
+                <li>Type <code class="bg-gray-100 px-2 py-1 rounded">/world-create</code> to create a new forum channel for VRChat worlds, or <code class="bg-gray-100 px-2 py-1 rounded">/world-set</code> to use an existing one</li>
+                <li>Once configured, come back here to manage your showcase!</li>
+            </ol>
+                
+            <div class="mt-6">
+                <a href="https://discord.com/channels/{{ guild.id }}" target="_blank" class="bg-discord hover:bg-blue-600 text-white font-bold py-2 px-4 rounded inline-flex items-center">
+                    <i class="fas fa-external-link-alt mr-2"></i>
+                    <span>Go to Discord Server</span>
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

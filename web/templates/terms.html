@@ -4,46 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Terms of Service - VRChat World Showcase Bot</title>
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        .terms-container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 2rem;
-            background-color: var(--card-bg);
-            border-radius: 8px;
-        }
-        
-        .terms-container h2 {
-            color: var(--primary);
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-        }
-        
-        .terms-container h3 {
-            color: var(--text-primary);
-            margin-top: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .terms-container p, .terms-container ul {
-            margin-bottom: 1rem;
-        }
-        
-        .terms-container ul {
-            padding-left: 2rem;
-        }
-        
-        .terms-container li {
-            margin-bottom: 0.5rem;
-        }
-        
-        .last-updated {
-            font-style: italic;
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-        }
-    </style>
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <meta name="description" content="Terms of Service for the VRChat World Showcase Discord Bot">
 </head>
 <body>
     <header>
@@ -129,7 +91,7 @@
             <p>We reserve the right to terminate or restrict your access to our Bot for violations of these Terms or for any other reason at our discretion.</p>
             
             <h2>9. Contact Information</h2>
-            <p>If you have any questions about these Terms, please contact us through our Discord support server or via email at [contact email].</p>
+            <p>If you have any questions about these Terms, please contact us through our Discord support server or via email at <a href="mailto:contact@vrchat-showcase-bot.com" style="color: var(--primary);">contact@vrchat-showcase-bot.com</a>.</p>
         </div>
     </section>
     
@@ -141,11 +103,32 @@
             <div class="footer-links">
                 <a href="index.html">Home</a>
                 <a href="privacy.html">Privacy Policy</a>
+                <a href="https://discord.gg/vrchat-world-showcase">Discord Support</a>
             </div>
             <div class="copyright">
                 &copy; 2025 VRChat World Showcase Bot. Created by Hppedeaf. All rights reserved.
             </div>
         </div>
     </footer>
+
+    <a href="#" class="back-to-top" id="backToTop">↑</a>
+
+    <script>
+        // Back to top button functionality
+        const backToTopButton = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('visible');
+            } else {
+                backToTopButton.classList.remove('visible');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
 </body>
 </html>

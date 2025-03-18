@@ -1,47 +1,56 @@
 """
 Combined server for the VRChat World Showcase Bot.
-Runs both the Discord bot and web server.
+Runs both the Discord bot and web dashboard.
 """
 import asyncio
 import threading
 import os
 import sys
+import secrets
 
 # Add the bot directory to the Python path
 sys.path.append(os.path.join(os.path.dirname(__file__), 'bot'))
 
 from flask import Flask, request, jsonify, send_from_directory, Response
+from flask import render_template, redirect, url_for, session, flash
+from werkzeug.middleware.proxy_fix import ProxyFix
 import main as bot_main
 import config as config
+from datetime import datetime
 
-# Initialize PostgreSQL when on Railway
-if os.getenv("RAILWAY_ENVIRONMENT") or os.getenv("DATABASE_URL"):
-    try:
-        from database.pg_handler import setup_postgres_tables
-        print("Initializing PostgreSQL database for Railway deployment...")
-        setup_postgres_tables()
-        print("PostgreSQL database initialized successfully.")
-    except Exception as e:
-        print(f"Error initializing PostgreSQL database: {e}")
-        config.logger.error(f"Error initializing PostgreSQL database: {e}")
+# Initialize Flask application with correct static folder and template folder paths
+current_dir = os.path.dirname(os.path.abspath(__file__))
+static_folder = os.path.join(current_dir, 'web', 'static')
+template_folder = os.path.join(current_dir, 'web', 'templates')
 
-# Initialize Flask application
-app = Flask(__name__, static_folder='web')
+# Print paths for debugging
+print(f"Static folder path: {static_folder}")
+print(f"Template folder path: {template_folder}")
 
-@app.route('/')
-def index():
-    """Serve the main website page."""
-    return send_from_directory('web', 'index.html')
+app = Flask(__name__, 
+           static_folder=static_folder, 
+           static_url_path='/static',
+           template_folder=template_folder)
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
 
-@app.route('/<path:path>')
-def static_files(path):
-    """Serve static files from the web directory."""
-    # Check if the file exists
-    if os.path.exists(os.path.join('web', path)):
-        return send_from_directory('web', path)
-    else:
-        # If not found, try to serve index.html
-        return send_from_directory('web', 'index.html')
+# Set secret key for sessions - generate a new one on startup or use an env var
+app.secret_key = os.getenv("FLASK_SECRET_KEY", secrets.token_hex(16))
+
+# Import the web dashboard setup
+from web_dashboard import setup_routes, user_guilds_cache
+
+#########################################
+# Template Filters
+#########################################
+
+@app.template_filter('now')
+def filter_now(format_string):
+    """Return the current time in the specified format."""
+    return datetime.now().strftime(format_string)
+
+#########################################
+# API Routes
+#########################################
 
 @app.route('/api/interactions', methods=['POST'])
 def interactions():
@@ -68,48 +77,63 @@ def status():
     guilds_count = getattr(bot_main, 'guild_count', 0)
     worlds_count = getattr(bot_main, 'worlds_count', 0)
     
-    # Check database connection status
-    db_status = "unknown"
-    try:
-        if os.getenv("DATABASE_URL"):
-            # Check PostgreSQL connection
-            from database.pg_handler import get_postgres_connection
-            conn = get_postgres_connection()
-            cursor = conn.cursor()
-            cursor.execute("SELECT 1")
-            result = cursor.fetchone()
-            if result and result[0] == 1:
-                db_status = "connected (PostgreSQL)"
-            conn.close()
-        else:
-            # Check SQLite connection
-            import sqlite3
-            conn = sqlite3.connect(config.DATABASE_FILE)
-            cursor = conn.cursor()
-            cursor.execute("SELECT 1")
-            result = cursor.fetchone()
-            if result and result[0] == 1:
-                db_status = "connected (SQLite)"
-            conn.close()
-    except Exception as e:
-        db_status = f"error ({str(e)[:50]}...)" if len(str(e)) > 50 else f"error ({str(e)})"
-    
     # Construct status response
     status_data = {
         "status": "online",
         "guilds": guilds_count,
         "worlds": worlds_count,
         "version": "1.0.0",
-        "uptime": getattr(bot_main, 'uptime', 'Unknown'),
-        "database": db_status,
-        "environment": os.getenv("RAILWAY_ENVIRONMENT", "local")
+        "uptime": getattr(bot_main, 'uptime', 'Unknown')
     }
     
     return jsonify(status_data)
 
+#########################################
+# Static Files and Direct Template Routes
+#########################################
+
+@app.route('/terms')
+def terms():
+    """Serve the terms of service page."""
+    return render_template('terms.html')
+
+@app.route('/privacy')
+def privacy():
+    """Serve the privacy policy page."""
+    return render_template('privacy.html')
+
+# Fallback route to catch any undefined routes
+@app.route('/<path:path>')
+def catch_all(path):
+    """
+    Catch-all route to handle undefined paths.
+    First tries to serve as static file, then checks for templates.
+    """
+    # First try to serve as a static file
+    static_path = os.path.join(static_folder, path)
+    if os.path.exists(static_path) and os.path.isfile(static_path):
+        return send_from_directory(static_folder, path)
+    
+    # Then check if it's a template
+    template_path = f"{path}.html"
+    try:
+        return render_template(template_path)
+    except:
+        # If not a template, pass to the next handler
+        pass
+    
+    # Pass to the next route handler or return 404
+    return render_template('error.html', message=f"Page not found: {path}"), 404
+
+#########################################
+# Bot Thread
+#########################################
+
 def run_bot():
     """Run the Discord bot in a separate thread."""
     try:
+        # Store a reference to the bot for the web dashboard
+        global bot
         # Run the bot's main function
         asyncio.run(bot_main.main())
     except Exception as e:
@@ -121,8 +145,26 @@ if __name__ == '__main__':
     bot_thread = threading.Thread(target=run_bot, daemon=True)
     bot_thread.start()
     
+    # Set up the web dashboard routes
+    # Debug bot guilds
+    bot = getattr(bot_main, 'bot', None)
+    if bot:
+        print(f"Bot is in {len(bot.guilds)} guilds:")
+        for guild in bot.guilds:
+            print(f"- {guild.name} (ID: {guild.id})")
+    else:
+        print("Bot instance is None or not properly initialized")
+
+    # Then pass bot to setup_routes
+    setup_routes(app, bot)
+    
     # Get the port from environment variable
     port = int(os.environ.get("PORT", 8080))
     
+    # Whether to run in debug mode
+    debug = os.environ.get("FLASK_DEBUG", "0") == "1"
+    
+    print(f"Starting web server on port {port}, debug mode: {debug}")
+    
     # Start the Flask app
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=port, debug=debug)

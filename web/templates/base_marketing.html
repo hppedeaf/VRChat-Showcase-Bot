@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}VRChat World Showcase Bot{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/marketing-styles.css') }}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <span>🌎</span> VRChat World Showcase Bot
+            </div>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#commands">Commands</a>
+                <a href="#howto">How To Use</a>
+            </div>
+            <div class="nav-buttons">
+                {% if user %}
+                <a href="/dashboard" class="btn">Dashboard</a>
+                {% else %}
+                <a href="{{ bot_invite_url }}" class="btn">Add to Discord</a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+    
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="logo">
+                <span>🌎</span> VRChat World Showcase Bot
+            </div>
+            <div class="footer-links">
+                <a href="#features">Features</a>
+                <a href="#commands">Commands</a>
+                <a href="#howto">How To Use</a>
+                <a href="#bot-links">Bot Resources</a>
+                <a href="{{ bot_invite_url }}">Add to Discord</a>
+                {% if user %}
+                <a href="/dashboard">Dashboard</a>
+                {% else %}
+                <a href="/login">Login</a>
+                {% endif %}
+            </div>
+            <div class="copyright">
+                &copy; {{ current_year }} VRChat World Showcase Bot. All rights reserved.
+            </div>
+        </div>
+    </footer>
+    
+    {% block scripts %}{% endblock %}
+</body>
+</html>

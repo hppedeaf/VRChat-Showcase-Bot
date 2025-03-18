@@ -307,3 +307,1549 @@ connector: <aiohttp.connector.TCPConnector object at 0x000002BEC9D5E120>
 2025-03-18 16:18:28,949 - vrchat_bot - INFO - Formatted world size: 83.64 MB
 2025-03-18 16:18:28,949 - vrchat_bot - INFO - Building embed with size: 83.64 MB
 2025-03-18 16:18:29,541 - vrchat_bot - INFO - Added tags ['Horror'] to thread 1351575519191367781
+2025-03-18 16:42:36,820 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 16:42:36,821 - discord.client - INFO - logging in using static token
+2025-03-18 16:42:37,535 - vrchat_bot - INFO - Persistent views registered
+2025-03-18 16:42:37,537 - vrchat_bot - INFO - Cogs loaded
+2025-03-18 16:42:37,876 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 2aa3bd98e438e60116b3d64c04f7ead1).
+2025-03-18 16:42:38,083 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.8:8080
+2025-03-18 16:42:38,083 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 16:42:39,909 - vrchat_bot - INFO - Logged in as VRC World Helper
+2025-03-18 16:42:40,179 - vrchat_bot - INFO - Synced 11 command(s)
+2025-03-18 16:42:40,179 - vrchat_bot - INFO - Setting up database: database\vrchat_worlds.db
+2025-03-18 16:42:40,180 - vrchat_bot - INFO - Database setup completed successfully
+2025-03-18 16:42:40,382 - vrchat_bot - INFO - Button already exists in thread 1351529703533445201
+2025-03-18 16:42:40,591 - vrchat_bot - INFO - Button already exists in thread 1351575466821029888
+2025-03-18 16:42:40,592 - vrchat_bot - INFO - All threads have been checked and world buttons added where needed.
+2025-03-18 16:43:06,142 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 16:43:06,298 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 16:43:06,445 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 16:43:06,445 - vrchat_bot - INFO - World name: NeoWorlds
+2025-03-18 16:43:06,446 - vrchat_bot - INFO - Author: Widget365
+2025-03-18 16:43:20,029 - vrchat_bot - INFO - User 237736981130510336 selected tags: ['Game', 'Adventure', 'Mind Blown', 'Relaxing'] for world wrld_544e7879-d870-42a2-9c7a-99eb95a8e62f
+2025-03-18 16:43:20,213 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 16:43:20,240 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 16:43:20,360 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 16:43:20,360 - vrchat_bot - INFO - World name: NeoWorlds
+2025-03-18 16:43:20,360 - vrchat_bot - INFO - Author: Widget365
+2025-03-18 16:43:20,361 - vrchat_bot - INFO - File ID for world wrld_544e7879-d870-42a2-9c7a-99eb95a8e62f: file_96cccb89-9e2e-42f1-b6cd-3d8925a9763a
+2025-03-18 16:43:20,361 - vrchat_bot - INFO - ===== VRCHAT WORLD DEBUG =====
+2025-03-18 16:43:20,361 - vrchat_bot - INFO - World info keys: ['authorId', 'authorName', 'capacity', 'created_at', 'defaultContentSettings', 'description', 'favorites', 'featured', 'heat', 'id', 'imageUrl', 'instances', 'labsPublicationDate', 'name', 'occupants', 'organization', 'popularity', 'previewYoutubeId', 'privateOccupants', 'publicOccupants', 'publicationDate', 'recommendedCapacity', 'releaseStatus', 'tags', 'thumbnailImageUrl', 'udonProducts', 'unityPackages', 'updated_at', 'urlList', 'version', 'visits']
+2025-03-18 16:43:20,361 - vrchat_bot - INFO - Found 5 unity packages
+2025-03-18 16:43:20,361 - vrchat_bot - INFO - Package 1 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'unitySortNumber', 'unityVersion']
+2025-03-18 16:43:20,361 - vrchat_bot - INFO - Package 1 assetUrl: https://api.vrchat.cloud/api/1/file/file_eda0412a-bbb0-474b-9e90-c0f1ac602ecc/10/file
+2025-03-18 16:43:20,361 - vrchat_bot - INFO - Package 1 platform: android
+2025-03-18 16:43:20,361 - vrchat_bot - INFO - Package 2 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'unitySortNumber', 'unityVersion', 'worldSignature']
+2025-03-18 16:43:20,362 - vrchat_bot - INFO - Package 2 assetUrl: https://api.vrchat.cloud/api/1/file/file_eda0412a-bbb0-474b-9e90-c0f1ac602ecc/54/file
+2025-03-18 16:43:20,362 - vrchat_bot - INFO - Package 2 platform: android
+2025-03-18 16:43:20,362 - vrchat_bot - INFO - Package 3 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'unitySortNumber', 'unityVersion']
+2025-03-18 16:43:20,362 - vrchat_bot - INFO - Package 3 assetUrl: https://api.vrchat.cloud/api/1/file/file_96cccb89-9e2e-42f1-b6cd-3d8925a9763a/61/file
+2025-03-18 16:43:20,362 - vrchat_bot - INFO - Package 3 platform: standalonewindows
+2025-03-18 16:43:20,362 - vrchat_bot - INFO - Package 4 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'unitySortNumber', 'unityVersion']
+2025-03-18 16:43:20,362 - vrchat_bot - INFO - Package 4 assetUrl: https://api.vrchat.cloud/api/1/file/file_96cccb89-9e2e-42f1-b6cd-3d8925a9763a/86/file
+2025-03-18 16:43:20,362 - vrchat_bot - INFO - Package 4 platform: standalonewindows
+2025-03-18 16:43:20,362 - vrchat_bot - INFO - Package 5 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'unitySortNumber', 'unityVersion', 'worldSignature']
+2025-03-18 16:43:20,363 - vrchat_bot - INFO - Package 5 assetUrl: https://api.vrchat.cloud/api/1/file/file_96cccb89-9e2e-42f1-b6cd-3d8925a9763a/133/file
+2025-03-18 16:43:20,363 - vrchat_bot - INFO - Package 5 platform: standalonewindows
+2025-03-18 16:43:20,363 - vrchat_bot - INFO - Found potential file ID pattern in imageUrl: file_099180d0-9656-460d-8db7-3b937a734976
+2025-03-18 16:43:20,363 - vrchat_bot - INFO - Found potential file ID pattern in thumbnailImageUrl: file_099180d0-9656-460d-8db7-3b937a734976
+2025-03-18 16:43:20,363 - vrchat_bot - INFO - File ID for world: file_96cccb89-9e2e-42f1-b6cd-3d8925a9763a
+2025-03-18 16:43:20,534 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 16:43:20,559 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 16:43:20,720 - vrchat_bot - INFO - File info retrieved successfully
+2025-03-18 16:43:20,720 - vrchat_bot - INFO - File info keys: ['extension', 'id', 'mimeType', 'name', 'ownerId', 'tags', 'versions']
+2025-03-18 16:43:20,721 - vrchat_bot - INFO - Found 134 versions
+2025-03-18 16:43:20,721 - vrchat_bot - INFO - Last version keys: ['created_at', 'file', 'signature', 'status', 'version']
+2025-03-18 16:43:20,721 - vrchat_bot - INFO - File data keys: ['category', 'fileName', 'md5', 'sizeInBytes', 'status', 'uploadId', 'url']
+2025-03-18 16:43:20,721 - vrchat_bot - INFO - Size in bytes: 35723961
+2025-03-18 16:43:20,721 - vrchat_bot - INFO - Formatted size: 34.07 MB
+2025-03-18 16:43:20,722 - vrchat_bot - INFO - ===== END VRCHAT WORLD DEBUG =====
+2025-03-18 16:43:20,853 - vrchat_bot - INFO - World size raw value: 35723961
+2025-03-18 16:43:20,853 - vrchat_bot - INFO - Formatted world size: 34.07 MB
+2025-03-18 16:43:20,990 - vrchat_bot - INFO - World size raw value: 35723961
+2025-03-18 16:43:20,991 - vrchat_bot - INFO - Formatted world size: 34.07 MB
+2025-03-18 16:43:20,991 - vrchat_bot - INFO - Building embed with size: 34.07 MB
+2025-03-18 16:43:21,433 - vrchat_bot - INFO - Added tags ['Game', 'Adventure', 'Mind Blown', 'Relaxing'] to thread 1351581777075896372
+2025-03-18 16:44:46,444 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 16:44:46,585 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 16:44:46,586 - vrchat_bot - INFO - Scanning 7 threads in forum channel 1351569341413589053 for server 1190336327888146442
+2025-03-18 16:44:47,157 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 16:44:47,158 - vrchat_bot - INFO - World name: Gaming Hideout
+2025-03-18 16:44:47,158 - vrchat_bot - INFO - Author: ohmiwa
+2025-03-18 16:44:47,537 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 16:44:47,538 - vrchat_bot - INFO - World name: Tachppe Home 2024
+2025-03-18 16:44:47,538 - vrchat_bot - INFO - Author: TachDeaf
+2025-03-18 16:44:47,796 - vrchat_bot - INFO - Scan completed: Found 6 worlds, 0 duplicates, and 0 threads with issues
+2025-03-18 16:47:09,312 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 16:47:09,449 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 16:47:09,588 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 16:47:09,588 - vrchat_bot - INFO - World name: Terrors of Nowhere
+2025-03-18 16:47:09,588 - vrchat_bot - INFO - Author: Beyond
+2025-03-18 16:47:20,464 - vrchat_bot - INFO - User 237736981130510336 selected tags: ['Game', 'Horror', 'Funny', 'Mind Blown'] for world wrld_a61cdabe-1218-4287-9ffc-2a4d1414e5bd
+2025-03-18 16:47:20,895 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 16:47:20,920 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 16:47:21,053 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 16:47:21,053 - vrchat_bot - INFO - World name: Terrors of Nowhere
+2025-03-18 16:47:21,053 - vrchat_bot - INFO - Author: Beyond
+2025-03-18 16:47:21,054 - vrchat_bot - INFO - File ID for world wrld_a61cdabe-1218-4287-9ffc-2a4d1414e5bd: file_47f6bd4a-7711-495a-b168-a8167d0d1e9b
+2025-03-18 16:47:21,054 - vrchat_bot - INFO - ===== VRCHAT WORLD DEBUG =====
+2025-03-18 16:47:21,054 - vrchat_bot - INFO - World info keys: ['authorId', 'authorName', 'capacity', 'created_at', 'defaultContentSettings', 'description', 'favorites', 'featured', 'heat', 'id', 'imageUrl', 'instances', 'labsPublicationDate', 'name', 'occupants', 'organization', 'popularity', 'previewYoutubeId', 'privateOccupants', 'publicOccupants', 'publicationDate', 'recommendedCapacity', 'releaseStatus', 'tags', 'thumbnailImageUrl', 'udonProducts', 'unityPackages', 'updated_at', 'urlList', 'version', 'visits']
+2025-03-18 16:47:21,054 - vrchat_bot - INFO - Found 2 unity packages
+2025-03-18 16:47:21,054 - vrchat_bot - INFO - Package 1 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'unitySortNumber', 'unityVersion']
+2025-03-18 16:47:21,054 - vrchat_bot - INFO - Package 1 assetUrl: https://api.vrchat.cloud/api/1/file/file_47f6bd4a-7711-495a-b168-a8167d0d1e9b/51/file
+2025-03-18 16:47:21,054 - vrchat_bot - INFO - Package 1 platform: standalonewindows
+2025-03-18 16:47:21,055 - vrchat_bot - INFO - Package 2 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'unitySortNumber', 'unityVersion', 'worldSignature']
+2025-03-18 16:47:21,055 - vrchat_bot - INFO - Package 2 assetUrl: https://api.vrchat.cloud/api/1/file/file_47f6bd4a-7711-495a-b168-a8167d0d1e9b/125/file
+2025-03-18 16:47:21,055 - vrchat_bot - INFO - Package 2 platform: standalonewindows
+2025-03-18 16:47:21,055 - vrchat_bot - INFO - Found potential file ID pattern in imageUrl: file_e64ab59f-00e8-4704-a561-98d0ea69c76c
+2025-03-18 16:47:21,055 - vrchat_bot - INFO - Found potential file ID pattern in thumbnailImageUrl: file_e64ab59f-00e8-4704-a561-98d0ea69c76c
+2025-03-18 16:47:21,055 - vrchat_bot - INFO - File ID for world: file_47f6bd4a-7711-495a-b168-a8167d0d1e9b
+2025-03-18 16:47:21,235 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 16:47:21,269 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 16:47:21,479 - vrchat_bot - INFO - File info retrieved successfully
+2025-03-18 16:47:21,479 - vrchat_bot - INFO - File info keys: ['extension', 'id', 'mimeType', 'name', 'ownerId', 'tags', 'versions']
+2025-03-18 16:47:21,479 - vrchat_bot - INFO - Found 126 versions
+2025-03-18 16:47:21,480 - vrchat_bot - INFO - Last version keys: ['created_at', 'file', 'signature', 'status', 'version']
+2025-03-18 16:47:21,480 - vrchat_bot - INFO - File data keys: ['category', 'fileName', 'md5', 'sizeInBytes', 'status', 'uploadId', 'url']
+2025-03-18 16:47:21,480 - vrchat_bot - INFO - Size in bytes: 712445990
+2025-03-18 16:47:21,480 - vrchat_bot - INFO - Formatted size: 679.44 MB
+2025-03-18 16:47:21,480 - vrchat_bot - INFO - ===== END VRCHAT WORLD DEBUG =====
+2025-03-18 16:47:21,618 - vrchat_bot - INFO - World size raw value: 712445990
+2025-03-18 16:47:21,619 - vrchat_bot - INFO - Formatted world size: 679.44 MB
+2025-03-18 16:47:21,750 - vrchat_bot - INFO - World size raw value: 712445990
+2025-03-18 16:47:21,750 - vrchat_bot - INFO - Formatted world size: 679.44 MB
+2025-03-18 16:47:21,751 - vrchat_bot - INFO - Building embed with size: 679.44 MB
+2025-03-18 16:47:22,210 - vrchat_bot - INFO - Added tags ['Game', 'Horror', 'Funny', 'Mind Blown'] to thread 1351582786992996383
+2025-03-18 16:47:41,146 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 16:47:41,172 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 16:47:41,286 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 16:47:41,286 - vrchat_bot - INFO - World name: Xenial Hideout
+2025-03-18 16:47:41,287 - vrchat_bot - INFO - Author: MediumCup
+2025-03-18 16:47:50,200 - vrchat_bot - INFO - User 237736981130510336 selected tags: ['Game', 'Photograph', 'Liminal', 'Funny', 'PVE'] for world wrld_967769c6-5901-47b2-bb09-d1b50eca261a
+2025-03-18 16:47:50,432 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 16:47:50,466 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 16:47:50,581 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 16:47:50,582 - vrchat_bot - INFO - World name: Xenial Hideout
+2025-03-18 16:47:50,582 - vrchat_bot - INFO - Author: MediumCup
+2025-03-18 16:47:50,582 - vrchat_bot - INFO - File ID for world wrld_967769c6-5901-47b2-bb09-d1b50eca261a: file_2ddd963f-456e-4434-abab-1763e3fa9406
+2025-03-18 16:47:50,582 - vrchat_bot - INFO - ===== VRCHAT WORLD DEBUG =====
+2025-03-18 16:47:50,582 - vrchat_bot - INFO - World info keys: ['authorId', 'authorName', 'capacity', 'created_at', 'defaultContentSettings', 'description', 'favorites', 'featured', 'heat', 'id', 'imageUrl', 'instances', 'labsPublicationDate', 'name', 'occupants', 'organization', 'popularity', 'previewYoutubeId', 'privateOccupants', 'publicOccupants', 'publicationDate', 'recommendedCapacity', 'releaseStatus', 'tags', 'thumbnailImageUrl', 'udonProducts', 'unityPackages', 'updated_at', 'urlList', 'version', 'visits']
+2025-03-18 16:47:50,582 - vrchat_bot - INFO - Found 4 unity packages
+2025-03-18 16:47:50,582 - vrchat_bot - INFO - Package 1 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'unitySortNumber', 'unityVersion']
+2025-03-18 16:47:50,583 - vrchat_bot - INFO - Package 1 assetUrl: https://api.vrchat.cloud/api/1/file/file_fbcb6314-9abc-4b27-ac7d-a5982e898f8a/1/file
+2025-03-18 16:47:50,583 - vrchat_bot - INFO - Package 1 platform: android
+2025-03-18 16:47:50,583 - vrchat_bot - INFO - Package 2 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'unitySortNumber', 'unityVersion', 'worldSignature']
+2025-03-18 16:47:50,583 - vrchat_bot - INFO - Package 2 assetUrl: https://api.vrchat.cloud/api/1/file/file_fbcb6314-9abc-4b27-ac7d-a5982e898f8a/9/file
+2025-03-18 16:47:50,583 - vrchat_bot - INFO - Package 2 platform: android
+2025-03-18 16:47:50,583 - vrchat_bot - INFO - Package 3 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'unitySortNumber', 'unityVersion']
+2025-03-18 16:47:50,583 - vrchat_bot - INFO - Package 3 assetUrl: https://api.vrchat.cloud/api/1/file/file_2ddd963f-456e-4434-abab-1763e3fa9406/2/file
+2025-03-18 16:47:50,583 - vrchat_bot - INFO - Package 3 platform: standalonewindows
+2025-03-18 16:47:50,584 - vrchat_bot - INFO - Package 4 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'unitySortNumber', 'unityVersion', 'worldSignature']
+2025-03-18 16:47:50,584 - vrchat_bot - INFO - Package 4 assetUrl: https://api.vrchat.cloud/api/1/file/file_2ddd963f-456e-4434-abab-1763e3fa9406/7/file
+2025-03-18 16:47:50,584 - vrchat_bot - INFO - Package 4 platform: standalonewindows
+2025-03-18 16:47:50,584 - vrchat_bot - INFO - Found potential file ID pattern in imageUrl: file_1775a6f7-ad6d-4837-af5f-a1d006d9247d
+2025-03-18 16:47:50,584 - vrchat_bot - INFO - Found potential file ID pattern in thumbnailImageUrl: file_1775a6f7-ad6d-4837-af5f-a1d006d9247d
+2025-03-18 16:47:50,584 - vrchat_bot - INFO - File ID for world: file_2ddd963f-456e-4434-abab-1763e3fa9406
+2025-03-18 16:47:50,764 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 16:47:50,789 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 16:47:50,930 - vrchat_bot - INFO - File info retrieved successfully
+2025-03-18 16:47:50,931 - vrchat_bot - INFO - File info keys: ['extension', 'id', 'mimeType', 'name', 'ownerId', 'tags', 'versions']
+2025-03-18 16:47:50,931 - vrchat_bot - INFO - Found 8 versions
+2025-03-18 16:47:50,931 - vrchat_bot - INFO - Last version keys: ['created_at', 'file', 'signature', 'status', 'version']
+2025-03-18 16:47:50,931 - vrchat_bot - INFO - File data keys: ['category', 'fileName', 'md5', 'sizeInBytes', 'status', 'uploadId', 'url']
+2025-03-18 16:47:50,931 - vrchat_bot - INFO - Size in bytes: 125369483
+2025-03-18 16:47:50,932 - vrchat_bot - INFO - Formatted size: 119.56 MB
+2025-03-18 16:47:50,932 - vrchat_bot - INFO - ===== END VRCHAT WORLD DEBUG =====
+2025-03-18 16:47:51,173 - vrchat_bot - INFO - World size raw value: 125369483
+2025-03-18 16:47:51,173 - vrchat_bot - INFO - Formatted world size: 119.56 MB
+2025-03-18 16:47:51,308 - vrchat_bot - INFO - World size raw value: 125369483
+2025-03-18 16:47:51,308 - vrchat_bot - INFO - Formatted world size: 119.56 MB
+2025-03-18 16:47:51,309 - vrchat_bot - INFO - Building embed with size: 119.56 MB
+2025-03-18 16:47:51,993 - vrchat_bot - INFO - Added tags ['Game', 'Photograph', 'Liminal', 'Funny', 'PVE'] to thread 1351582911593447465
+2025-03-18 16:48:08,127 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 16:48:08,162 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 16:48:08,373 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 16:48:08,373 - vrchat_bot - INFO - World name: ºo FRUTIGER AERO oº
+2025-03-18 16:48:08,373 - vrchat_bot - INFO - Author: NoveRedWolf
+2025-03-18 16:48:18,742 - vrchat_bot - INFO - User 237736981130510336 selected tags: ['Heavy Render', 'Horror', 'Adventure', 'R-18'] for world wrld_071601e6-adda-4d17-8607-a69dc7e86bbe
+2025-03-18 16:48:18,928 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 16:48:19,075 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 16:48:19,219 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 16:48:19,219 - vrchat_bot - INFO - World name: ºo FRUTIGER AERO oº
+2025-03-18 16:48:19,220 - vrchat_bot - INFO - Author: NoveRedWolf
+2025-03-18 16:48:19,220 - vrchat_bot - INFO - File ID for world wrld_071601e6-adda-4d17-8607-a69dc7e86bbe: file_edfaacfe-44cf-4adb-a258-85861633ece5
+2025-03-18 16:48:19,220 - vrchat_bot - INFO - ===== VRCHAT WORLD DEBUG =====
+2025-03-18 16:48:19,220 - vrchat_bot - INFO - World info keys: ['authorId', 'authorName', 'capacity', 'created_at', 'defaultContentSettings', 'description', 'favorites', 'featured', 'heat', 'id', 'imageUrl', 'instances', 'labsPublicationDate', 'name', 'occupants', 'organization', 'popularity', 'previewYoutubeId', 'privateOccupants', 'publicOccupants', 'publicationDate', 'recommendedCapacity', 'releaseStatus', 'tags', 'thumbnailImageUrl', 'udonProducts', 'unityPackages', 'updated_at', 'urlList', 'version', 'visits']
+2025-03-18 16:48:19,220 - vrchat_bot - INFO - Found 2 unity packages
+2025-03-18 16:48:19,220 - vrchat_bot - INFO - Package 1 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'unitySortNumber', 'unityVersion']
+2025-03-18 16:48:19,220 - vrchat_bot - INFO - Package 1 assetUrl: https://api.vrchat.cloud/api/1/file/file_edfaacfe-44cf-4adb-a258-85861633ece5/2/file
+2025-03-18 16:48:19,221 - vrchat_bot - INFO - Package 1 platform: standalonewindows
+2025-03-18 16:48:19,221 - vrchat_bot - INFO - Package 2 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'unitySortNumber', 'unityVersion']
+2025-03-18 16:48:19,221 - vrchat_bot - INFO - Package 2 assetUrl: https://api.vrchat.cloud/api/1/file/file_edfaacfe-44cf-4adb-a258-85861633ece5/35/file
+2025-03-18 16:48:19,221 - vrchat_bot - INFO - Package 2 platform: standalonewindows
+2025-03-18 16:48:19,221 - vrchat_bot - INFO - Found potential file ID pattern in imageUrl: file_53cc8dea-83a3-4390-814c-c2785ea11de9
+2025-03-18 16:48:19,221 - vrchat_bot - INFO - Found potential file ID pattern in thumbnailImageUrl: file_53cc8dea-83a3-4390-814c-c2785ea11de9
+2025-03-18 16:48:19,222 - vrchat_bot - INFO - File ID for world: file_edfaacfe-44cf-4adb-a258-85861633ece5
+2025-03-18 16:48:19,412 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 16:48:19,440 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 16:48:19,553 - vrchat_bot - INFO - File info retrieved successfully
+2025-03-18 16:48:19,553 - vrchat_bot - INFO - File info keys: ['extension', 'id', 'mimeType', 'name', 'ownerId', 'tags', 'versions']
+2025-03-18 16:48:19,553 - vrchat_bot - INFO - Found 36 versions
+2025-03-18 16:48:19,554 - vrchat_bot - INFO - Last version keys: ['created_at', 'file', 'signature', 'status', 'version']
+2025-03-18 16:48:19,554 - vrchat_bot - INFO - File data keys: ['category', 'fileName', 'md5', 'sizeInBytes', 'status', 'uploadId', 'url']
+2025-03-18 16:48:19,554 - vrchat_bot - INFO - Size in bytes: 64308620
+2025-03-18 16:48:19,554 - vrchat_bot - INFO - Formatted size: 61.33 MB
+2025-03-18 16:48:19,554 - vrchat_bot - INFO - ===== END VRCHAT WORLD DEBUG =====
+2025-03-18 16:48:19,730 - vrchat_bot - INFO - World size raw value: 64308620
+2025-03-18 16:48:19,730 - vrchat_bot - INFO - Formatted world size: 61.33 MB
+2025-03-18 16:48:19,844 - vrchat_bot - INFO - World size raw value: 64308620
+2025-03-18 16:48:19,844 - vrchat_bot - INFO - Formatted world size: 61.33 MB
+2025-03-18 16:48:19,845 - vrchat_bot - INFO - Building embed with size: 61.33 MB
+2025-03-18 16:48:20,425 - vrchat_bot - INFO - Added tags ['Heavy Render', 'Horror', 'Adventure', 'R-18'] to thread 1351583030845902939
+2025-03-18 16:48:31,598 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 16:48:31,624 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 16:48:31,759 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 16:48:31,760 - vrchat_bot - INFO - World name: Self Reflection
+2025-03-18 16:48:31,760 - vrchat_bot - INFO - Author: Synt
+2025-03-18 16:48:37,905 - vrchat_bot - INFO - User 237736981130510336 selected tags: ['PVE', 'Liminal', 'Relaxing'] for world wrld_2b607897-9c0e-4356-962f-6ba33f59a413
+2025-03-18 16:48:38,098 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 16:48:38,123 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 16:48:38,291 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 16:48:38,291 - vrchat_bot - INFO - World name: Self Reflection
+2025-03-18 16:48:38,292 - vrchat_bot - INFO - Author: Synt
+2025-03-18 16:48:38,292 - vrchat_bot - INFO - File ID for world wrld_2b607897-9c0e-4356-962f-6ba33f59a413: file_d7193ad4-6578-4e1f-97f5-919b57711e79
+2025-03-18 16:48:38,292 - vrchat_bot - INFO - ===== VRCHAT WORLD DEBUG =====
+2025-03-18 16:48:38,292 - vrchat_bot - INFO - World info keys: ['authorId', 'authorName', 'capacity', 'created_at', 'defaultContentSettings', 'description', 'favorites', 'featured', 'heat', 'id', 'imageUrl', 'instances', 'labsPublicationDate', 'name', 'occupants', 'organization', 'popularity', 'previewYoutubeId', 'privateOccupants', 'publicOccupants', 'publicationDate', 'recommendedCapacity', 'releaseStatus', 'tags', 'thumbnailImageUrl', 'udonProducts', 'unityPackages', 'updated_at', 'urlList', 'version', 'visits']
+2025-03-18 16:48:38,292 - vrchat_bot - INFO - Found 3 unity packages
+2025-03-18 16:48:38,292 - vrchat_bot - INFO - Package 1 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'unitySortNumber', 'unityVersion']
+2025-03-18 16:48:38,293 - vrchat_bot - INFO - Package 1 assetUrl: https://api.vrchat.cloud/api/1/file/file_d7193ad4-6578-4e1f-97f5-919b57711e79/7/file
+2025-03-18 16:48:38,293 - vrchat_bot - INFO - Package 1 platform: standalonewindows
+2025-03-18 16:48:38,293 - vrchat_bot - INFO - Package 2 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'unitySortNumber', 'unityVersion']
+2025-03-18 16:48:38,293 - vrchat_bot - INFO - Package 2 assetUrl: https://api.vrchat.cloud/api/1/file/file_d7193ad4-6578-4e1f-97f5-919b57711e79/9/file
+2025-03-18 16:48:38,293 - vrchat_bot - INFO - Package 2 platform: standalonewindows
+2025-03-18 16:48:38,293 - vrchat_bot - INFO - Package 3 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'unitySortNumber', 'unityVersion']
+2025-03-18 16:48:38,293 - vrchat_bot - INFO - Package 3 assetUrl: https://api.vrchat.cloud/api/1/file/file_d7193ad4-6578-4e1f-97f5-919b57711e79/10/file
+2025-03-18 16:48:38,293 - vrchat_bot - INFO - Package 3 platform: standalonewindows
+2025-03-18 16:48:38,294 - vrchat_bot - INFO - Found potential file ID pattern in imageUrl: file_37d54f5c-bb4c-4102-9f25-f5d87ff07c47
+2025-03-18 16:48:38,294 - vrchat_bot - INFO - Found potential file ID pattern in thumbnailImageUrl: file_37d54f5c-bb4c-4102-9f25-f5d87ff07c47
+2025-03-18 16:48:38,294 - vrchat_bot - INFO - File ID for world: file_d7193ad4-6578-4e1f-97f5-919b57711e79
+2025-03-18 16:48:38,494 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 16:48:38,530 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 16:48:38,652 - vrchat_bot - INFO - File info retrieved successfully
+2025-03-18 16:48:38,653 - vrchat_bot - INFO - File info keys: ['extension', 'id', 'mimeType', 'name', 'ownerId', 'tags', 'versions']
+2025-03-18 16:48:38,653 - vrchat_bot - INFO - Found 11 versions
+2025-03-18 16:48:38,653 - vrchat_bot - INFO - Last version keys: ['created_at', 'file', 'signature', 'status', 'version']
+2025-03-18 16:48:38,653 - vrchat_bot - INFO - File data keys: ['category', 'fileName', 'md5', 'sizeInBytes', 'status', 'uploadId', 'url']
+2025-03-18 16:48:38,653 - vrchat_bot - INFO - Size in bytes: 159670351
+2025-03-18 16:48:38,653 - vrchat_bot - INFO - Formatted size: 152.27 MB
+2025-03-18 16:48:38,653 - vrchat_bot - INFO - ===== END VRCHAT WORLD DEBUG =====
+2025-03-18 16:48:38,790 - vrchat_bot - INFO - World size raw value: 159670351
+2025-03-18 16:48:38,790 - vrchat_bot - INFO - Formatted world size: 152.27 MB
+2025-03-18 16:48:38,900 - vrchat_bot - INFO - World size raw value: 159670351
+2025-03-18 16:48:38,900 - vrchat_bot - INFO - Formatted world size: 152.27 MB
+2025-03-18 16:48:38,901 - vrchat_bot - INFO - Building embed with size: 152.27 MB
+2025-03-18 16:48:39,457 - vrchat_bot - INFO - Added tags ['PVE', 'Liminal', 'Relaxing'] to thread 1351583110818693152
+2025-03-18 16:49:53,768 - discord.http - WARNING - We are being rate limited. PATCH https://discord.com/api/v10/channels/1351583377752461314 responded with 429. Retrying in 4.28 seconds.
+2025-03-18 16:50:02,350 - vrchat_bot - INFO - Created 15 tags for server 1190336327888146442
+2025-03-18 16:50:02,552 - vrchat_bot - INFO - Successfully set forum settings for 1351583377752461314
+2025-03-18 16:53:37,729 - vrchat_bot - ERROR - Error in clean_db_slash: type object 'WorldPosts' has no attribute 'remove_thread'
+2025-03-18 16:57:50,861 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 16:57:50,861 - discord.client - INFO - logging in using static token
+2025-03-18 16:57:51,527 - vrchat_bot - INFO - Persistent views registered
+2025-03-18 16:57:51,535 - vrchat_bot - CRITICAL - Failed to start bot: Extension 'cogs.admin_commands' raised an error: ModuleNotFoundError: No module named 'bot'
+2025-03-18 16:57:52,128 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.8:8080
+2025-03-18 16:57:52,128 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 16:59:12,811 - asyncio - ERROR - Unclosed connector
+connections: ['deque([(<aiohttp.client_proto.ResponseHandler object at 0x000002099558AC90>, 415475.7167485)])']
+connector: <aiohttp.connector.TCPConnector object at 0x00000209955BE120>
+2025-03-18 16:59:14,133 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 16:59:14,134 - discord.client - INFO - logging in using static token
+2025-03-18 16:59:14,861 - vrchat_bot - INFO - Persistent views registered
+2025-03-18 16:59:14,874 - vrchat_bot - CRITICAL - Failed to start bot: Extension 'cogs.maintenance' raised an error: CommandAlreadyRegistered: Command 'clean-db' already registered.
+2025-03-18 16:59:15,397 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.8:8080
+2025-03-18 16:59:15,397 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 17:14:55,904 - asyncio - ERROR - Unclosed connector
+connections: ['deque([(<aiohttp.client_proto.ResponseHandler object at 0x000001DA7F66A510>, 415558.9983282)])']
+connector: <aiohttp.connector.TCPConnector object at 0x000001DA7F69E660>
+2025-03-18 17:14:57,425 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 17:14:57,426 - discord.client - INFO - logging in using static token
+2025-03-18 17:14:58,167 - vrchat_bot - INFO - Persistent views registered
+2025-03-18 17:14:58,173 - vrchat_bot - CRITICAL - Failed to start bot: Extension 'cogs.admin_commands' raised an error: ModuleNotFoundError: No module named 'bot'
+2025-03-18 17:14:58,686 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.8:8080
+2025-03-18 17:14:58,686 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 17:15:23,757 - asyncio - ERROR - Unclosed connector
+connections: ['deque([(<aiohttp.client_proto.ResponseHandler object at 0x000001C5EDFFE1B0>, 416502.3701644)])']
+connector: <aiohttp.connector.TCPConnector object at 0x000001C5EE02DFD0>
+2025-03-18 17:15:25,306 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 17:15:25,306 - discord.client - INFO - logging in using static token
+2025-03-18 17:15:26,019 - vrchat_bot - INFO - Persistent views registered
+2025-03-18 17:15:26,030 - vrchat_bot - INFO - Cogs loaded
+2025-03-18 17:15:26,406 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: fa827a0ee509d24691d62244eb53dcf1).
+2025-03-18 17:15:26,573 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.8:8080
+2025-03-18 17:15:26,573 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 17:15:28,446 - vrchat_bot - INFO - Logged in as VRC World Helper
+2025-03-18 17:15:28,924 - vrchat_bot - INFO - Synced 12 command(s)
+2025-03-18 17:15:28,924 - vrchat_bot - INFO - Setting up database: database\vrchat_worlds.db
+2025-03-18 17:15:28,925 - vrchat_bot - INFO - Database setup completed successfully
+2025-03-18 17:15:29,125 - vrchat_bot - INFO - Button already exists in thread 1351529703533445201
+2025-03-18 17:15:29,342 - vrchat_bot - INFO - Button already exists in thread 1351583461718360169
+2025-03-18 17:15:29,342 - vrchat_bot - INFO - All threads have been checked and world buttons added where needed.
+2025-03-18 17:28:39,575 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 17:28:39,718 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 17:28:39,718 - vrchat_bot - INFO - Scanning 36 threads in forum channel 1348539036775616564 for server 914869780584992789
+2025-03-18 17:28:40,219 - vrchat_bot - INFO - Scan completed: Found 35 worlds, 0 duplicates, and 0 threads with issues
+2025-03-18 17:28:53,172 - discord.ui.view - ERROR - Ignoring exception in view <ScanActionButtons timeout=600 children=4> for item <Button style=<ButtonStyle.success: 3> url=None disabled=False label='Fix All Issues' emoji=<PartialEmoji animated=False name='✅' id=None> row=1 sku_id=None>
+Traceback (most recent call last):
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\discord\ui\view.py", line 435, in _scheduled_task
+    await item.callback(interaction)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\ui\buttons.py", line 410, in fix_all_callback
+    await self.fix_tags_callback(interaction)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\ui\buttons.py", line 220, in fix_tags_callback
+    await interaction.response.defer(thinking=True)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\discord\interactions.py", line 822, in defer
+    raise InteractionResponded(self._parent)
+discord.errors.InteractionResponded: This interaction has already been responded to before
+2025-03-18 17:31:43,377 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 17:31:43,517 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 17:35:30,838 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 17:35:30,838 - discord.client - INFO - logging in using static token
+2025-03-18 17:35:31,624 - vrchat_bot - INFO - Persistent views registered
+2025-03-18 17:35:31,628 - vrchat_bot - INFO - Cogs loaded
+2025-03-18 17:35:31,972 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 542ba2aa81ff2170264cab4206daf853).
+2025-03-18 17:35:32,096 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.8:8080
+2025-03-18 17:35:32,096 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 17:35:33,999 - vrchat_bot - INFO - Logged in as VRC World Helper
+2025-03-18 17:35:34,299 - vrchat_bot - INFO - Synced 12 command(s)
+2025-03-18 17:35:34,300 - vrchat_bot - INFO - Setting up database: database\vrchat_worlds.db
+2025-03-18 17:35:34,301 - vrchat_bot - INFO - Database setup completed successfully
+2025-03-18 17:35:34,508 - vrchat_bot - INFO - Button already exists in thread 1351529703533445201
+2025-03-18 17:35:34,715 - vrchat_bot - INFO - Button already exists in thread 1351593964280610856
+2025-03-18 17:35:34,716 - vrchat_bot - INFO - All threads have been checked and world buttons added where needed.
+2025-03-18 17:36:02,733 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 17:36:02,881 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 17:36:02,881 - vrchat_bot - INFO - Scanning 36 threads in forum channel 1348539036775616564 for server 914869780584992789
+2025-03-18 17:36:03,323 - vrchat_bot - INFO - Scan completed: Found 35 worlds, 0 duplicates, and 0 threads with issues
+2025-03-18 17:36:21,586 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 17:36:21,624 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 17:36:21,624 - vrchat_bot - INFO - Scanning 36 threads in forum channel 1348539036775616564 for server 914869780584992789
+2025-03-18 17:36:22,150 - vrchat_bot - INFO - Scan completed: Found 35 worlds, 0 duplicates, and 0 threads with issues
+2025-03-18 17:37:56,976 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 17:37:57,429 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 17:37:57,429 - vrchat_bot - INFO - Scanning 11 threads in forum channel 1351569341413589053 for server 1190336327888146442
+2025-03-18 17:37:57,890 - vrchat_bot - INFO - Scan completed: Found 10 worlds, 0 duplicates, and 0 threads with issues
+2025-03-18 17:50:27,410 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 17:50:27,558 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 17:50:27,716 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 17:50:27,716 - vrchat_bot - INFO - World name: The Black Cat
+2025-03-18 17:50:27,716 - vrchat_bot - INFO - Author: spookyghostboo
+2025-03-18 17:50:34,003 - vrchat_bot - INFO - User 244188921309691904 selected tags: ['R-18', 'Horror'] for world wrld_4cf554b4-430c-4f8f-b53e-1f294eed230b
+2025-03-18 17:50:34,207 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 17:50:34,232 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 17:50:34,374 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 17:50:34,374 - vrchat_bot - INFO - World name: The Black Cat
+2025-03-18 17:50:34,374 - vrchat_bot - INFO - Author: spookyghostboo
+2025-03-18 17:50:34,374 - vrchat_bot - INFO - File ID for world wrld_4cf554b4-430c-4f8f-b53e-1f294eed230b: file_ba180a57-a93c-4334-97d7-9d46122646a2
+2025-03-18 17:50:34,375 - vrchat_bot - INFO - ===== VRCHAT WORLD DEBUG =====
+2025-03-18 17:50:34,375 - vrchat_bot - INFO - World info keys: ['authorId', 'authorName', 'capacity', 'created_at', 'defaultContentSettings', 'description', 'favorites', 'featured', 'heat', 'id', 'imageUrl', 'instances', 'labsPublicationDate', 'name', 'occupants', 'organization', 'popularity', 'previewYoutubeId', 'privateOccupants', 'publicOccupants', 'publicationDate', 'recommendedCapacity', 'releaseStatus', 'tags', 'thumbnailImageUrl', 'udonProducts', 'unityPackages', 'updated_at', 'urlList', 'version', 'visits']
+2025-03-18 17:50:34,375 - vrchat_bot - INFO - Found 21 unity packages
+2025-03-18 17:50:34,375 - vrchat_bot - INFO - Package 1 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 17:50:34,375 - vrchat_bot - INFO - Package 1 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/46/file
+2025-03-18 17:50:34,375 - vrchat_bot - INFO - Package 1 platform: android
+2025-03-18 17:50:34,375 - vrchat_bot - INFO - Package 2 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 17:50:34,375 - vrchat_bot - INFO - Package 2 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/101/file
+2025-03-18 17:50:34,376 - vrchat_bot - INFO - Package 2 platform: android
+2025-03-18 17:50:34,376 - vrchat_bot - INFO - Package 3 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 17:50:34,376 - vrchat_bot - INFO - Package 3 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/108/file
+2025-03-18 17:50:34,376 - vrchat_bot - INFO - Package 3 platform: android
+2025-03-18 17:50:34,376 - vrchat_bot - INFO - Package 4 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 17:50:34,376 - vrchat_bot - INFO - Package 4 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/214/file
+2025-03-18 17:50:34,376 - vrchat_bot - INFO - Package 4 platform: android
+2025-03-18 17:50:34,376 - vrchat_bot - INFO - Package 5 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 17:50:34,376 - vrchat_bot - INFO - Package 5 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/222/file
+2025-03-18 17:50:34,376 - vrchat_bot - INFO - Package 5 platform: android
+2025-03-18 17:50:34,376 - vrchat_bot - INFO - Package 6 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 17:50:34,376 - vrchat_bot - INFO - Package 6 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/232/file
+2025-03-18 17:50:34,376 - vrchat_bot - INFO - Package 6 platform: android
+2025-03-18 17:50:34,376 - vrchat_bot - INFO - Package 7 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'unitySortNumber', 'unityVersion']
+2025-03-18 17:50:34,377 - vrchat_bot - INFO - Package 7 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/335/file
+2025-03-18 17:50:34,377 - vrchat_bot - INFO - Package 7 platform: android
+2025-03-18 17:50:34,377 - vrchat_bot - INFO - Package 8 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'unitySortNumber', 'unityVersion']
+2025-03-18 17:50:34,377 - vrchat_bot - INFO - Package 8 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/381/file
+2025-03-18 17:50:34,377 - vrchat_bot - INFO - Package 8 platform: android
+2025-03-18 17:50:34,377 - vrchat_bot - INFO - Package 9 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'unitySortNumber', 'unityVersion']
+2025-03-18 17:50:34,377 - vrchat_bot - INFO - Package 9 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/399/file
+2025-03-18 17:50:34,377 - vrchat_bot - INFO - Package 9 platform: android
+2025-03-18 17:50:34,377 - vrchat_bot - INFO - Package 10 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'unitySortNumber', 'unityVersion', 'worldSignature']
+2025-03-18 17:50:34,377 - vrchat_bot - INFO - Package 10 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/433/file
+2025-03-18 17:50:34,377 - vrchat_bot - INFO - Package 10 platform: android
+2025-03-18 17:50:34,378 - vrchat_bot - INFO - Package 11 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 17:50:34,378 - vrchat_bot - INFO - Package 11 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/47/file
+2025-03-18 17:50:34,378 - vrchat_bot - INFO - Package 11 platform: standalonewindows
+2025-03-18 17:50:34,378 - vrchat_bot - INFO - Package 12 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 17:50:34,378 - vrchat_bot - INFO - Package 12 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/102/file
+2025-03-18 17:50:34,378 - vrchat_bot - INFO - Package 12 platform: standalonewindows
+2025-03-18 17:50:34,378 - vrchat_bot - INFO - Package 13 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 17:50:34,378 - vrchat_bot - INFO - Package 13 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/107/file
+2025-03-18 17:50:34,378 - vrchat_bot - INFO - Package 13 platform: standalonewindows
+2025-03-18 17:50:34,378 - vrchat_bot - INFO - Package 14 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 17:50:34,378 - vrchat_bot - INFO - Package 14 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/212/file
+2025-03-18 17:50:34,378 - vrchat_bot - INFO - Package 14 platform: standalonewindows
+2025-03-18 17:50:34,378 - vrchat_bot - INFO - Package 15 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 17:50:34,378 - vrchat_bot - INFO - Package 15 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/223/file
+2025-03-18 17:50:34,379 - vrchat_bot - INFO - Package 15 platform: standalonewindows
+2025-03-18 17:50:34,379 - vrchat_bot - INFO - Package 16 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 17:50:34,379 - vrchat_bot - INFO - Package 16 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/231/file
+2025-03-18 17:50:34,379 - vrchat_bot - INFO - Package 16 platform: standalonewindows
+2025-03-18 17:50:34,379 - vrchat_bot - INFO - Package 17 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'unitySortNumber', 'unityVersion']
+2025-03-18 17:50:34,379 - vrchat_bot - INFO - Package 17 assetUrl: 
+2025-03-18 17:50:34,379 - vrchat_bot - INFO - Package 17 platform: standalonewindows
+2025-03-18 17:50:34,379 - vrchat_bot - INFO - Package 18 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'unitySortNumber', 'unityVersion']
+2025-03-18 17:50:34,379 - vrchat_bot - INFO - Package 18 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/334/file
+2025-03-18 17:50:34,379 - vrchat_bot - INFO - Package 18 platform: standalonewindows
+2025-03-18 17:50:34,380 - vrchat_bot - INFO - Package 19 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'unitySortNumber', 'unityVersion']
+2025-03-18 17:50:34,380 - vrchat_bot - INFO - Package 19 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/380/file
+2025-03-18 17:50:34,380 - vrchat_bot - INFO - Package 19 platform: standalonewindows
+2025-03-18 17:50:34,380 - vrchat_bot - INFO - Package 20 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'unitySortNumber', 'unityVersion']
+2025-03-18 17:50:34,380 - vrchat_bot - INFO - Package 20 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/398/file
+2025-03-18 17:50:34,380 - vrchat_bot - INFO - Package 20 platform: standalonewindows
+2025-03-18 17:50:34,380 - vrchat_bot - INFO - Package 21 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'unitySortNumber', 'unityVersion', 'worldSignature']
+2025-03-18 17:50:34,381 - vrchat_bot - INFO - Package 21 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/434/file
+2025-03-18 17:50:34,381 - vrchat_bot - INFO - Package 21 platform: standalonewindows
+2025-03-18 17:50:34,381 - vrchat_bot - INFO - Found potential file ID pattern in imageUrl: file_ab2d3af4-c6da-41b9-8a3d-6f554462cfaf
+2025-03-18 17:50:34,381 - vrchat_bot - INFO - Found potential file ID pattern in thumbnailImageUrl: file_ab2d3af4-c6da-41b9-8a3d-6f554462cfaf
+2025-03-18 17:50:34,381 - vrchat_bot - INFO - File ID for world: file_ba180a57-a93c-4334-97d7-9d46122646a2
+2025-03-18 17:50:34,589 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 17:50:34,617 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 17:50:34,781 - vrchat_bot - INFO - File info retrieved successfully
+2025-03-18 17:50:34,781 - vrchat_bot - INFO - File info keys: ['extension', 'id', 'mimeType', 'name', 'ownerId', 'tags', 'versions']
+2025-03-18 17:50:34,781 - vrchat_bot - INFO - Found 435 versions
+2025-03-18 17:50:34,781 - vrchat_bot - INFO - Last version keys: ['created_at', 'file', 'signature', 'status', 'version']
+2025-03-18 17:50:34,782 - vrchat_bot - INFO - File data keys: ['category', 'fileName', 'md5', 'sizeInBytes', 'status', 'uploadId', 'url']
+2025-03-18 17:50:34,782 - vrchat_bot - INFO - Size in bytes: 85112856
+2025-03-18 17:50:34,782 - vrchat_bot - INFO - Formatted size: 81.17 MB
+2025-03-18 17:50:34,782 - vrchat_bot - INFO - ===== END VRCHAT WORLD DEBUG =====
+2025-03-18 17:50:34,922 - vrchat_bot - INFO - World size raw value: 85112856
+2025-03-18 17:50:34,923 - vrchat_bot - INFO - Formatted world size: 81.17 MB
+2025-03-18 17:50:35,052 - vrchat_bot - INFO - World size raw value: 85112856
+2025-03-18 17:50:35,053 - vrchat_bot - INFO - Formatted world size: 81.17 MB
+2025-03-18 17:50:35,053 - vrchat_bot - INFO - Building embed with size: 81.17 MB
+2025-03-18 17:50:35,832 - vrchat_bot - INFO - Added tags ['R-18', 'Horror'] to thread 1351598698148134922
+2025-03-18 17:53:37,338 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 17:53:37,338 - discord.client - INFO - logging in using static token
+2025-03-18 17:53:38,242 - vrchat_bot - INFO - Persistent views registered
+2025-03-18 17:53:38,254 - vrchat_bot - INFO - Cogs loaded
+2025-03-18 17:53:38,607 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.8:8080
+2025-03-18 17:53:38,607 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 17:53:38,630 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 49317d9820c3c16a5b24e85cb73ee65a).
+2025-03-18 17:53:40,658 - vrchat_bot - INFO - Logged in as VRC World Helper
+2025-03-18 17:53:40,966 - vrchat_bot - INFO - Synced 12 command(s)
+2025-03-18 17:53:40,966 - vrchat_bot - INFO - Setting up database: database\vrchat_worlds.db
+2025-03-18 17:53:40,968 - vrchat_bot - INFO - Database setup completed successfully
+2025-03-18 17:53:41,219 - vrchat_bot - INFO - Button already exists in thread 1351529703533445201
+2025-03-18 17:53:41,494 - vrchat_bot - INFO - Button already exists in thread 1351593964280610856
+2025-03-18 17:53:41,495 - vrchat_bot - INFO - All threads have been checked and world buttons added where needed.
+2025-03-18 17:58:34,710 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 17:58:34,710 - discord.client - INFO - logging in using static token
+2025-03-18 17:58:35,463 - vrchat_bot - INFO - Persistent views registered
+2025-03-18 17:58:35,467 - vrchat_bot - INFO - Cogs loaded
+2025-03-18 17:58:35,787 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 4200116849fd3cee0ada41962967e155).
+2025-03-18 17:58:35,973 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.8:8080
+2025-03-18 17:58:35,973 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 17:58:37,827 - vrchat_bot - INFO - Logged in as VRC World Helper
+2025-03-18 17:58:38,092 - vrchat_bot - INFO - Synced 12 command(s)
+2025-03-18 17:58:38,092 - vrchat_bot - INFO - Setting up database: database\vrchat_worlds.db
+2025-03-18 17:58:38,093 - vrchat_bot - INFO - Database setup completed successfully
+2025-03-18 17:58:38,346 - vrchat_bot - INFO - Button already exists in thread 1351529703533445201
+2025-03-18 17:58:38,586 - vrchat_bot - INFO - Button already exists in thread 1351593964280610856
+2025-03-18 17:58:38,586 - vrchat_bot - INFO - All threads have been checked and world buttons added where needed.
+2025-03-18 17:58:46,637 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 17:58:46] "[36mGET / HTTP/1.1[0m" 304 -
+2025-03-18 17:58:47,119 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 17:58:47] "[36mGET /styles.css HTTP/1.1[0m" 304 -
+2025-03-18 17:58:47,193 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 17:58:47] "[36mGET /api/placeholder/1200/600 HTTP/1.1[0m" 304 -
+2025-03-18 17:58:47,355 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 17:58:47] "[36mGET /favicon.ico HTTP/1.1[0m" 304 -
+2025-03-18 18:00:26,231 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 18:00:26,232 - discord.client - INFO - logging in using static token
+2025-03-18 18:00:26,921 - vrchat_bot - INFO - Persistent views registered
+2025-03-18 18:00:26,924 - vrchat_bot - INFO - Cogs loaded
+2025-03-18 18:00:27,384 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 0925f296e5486a6eb218b9e900a3fbba).
+2025-03-18 18:00:27,502 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.8:8080
+2025-03-18 18:00:27,502 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 18:00:29,417 - vrchat_bot - INFO - Logged in as VRC World Helper
+2025-03-18 18:00:29,713 - vrchat_bot - INFO - Synced 12 command(s)
+2025-03-18 18:00:29,713 - vrchat_bot - INFO - Setting up database: database\vrchat_worlds.db
+2025-03-18 18:00:29,714 - vrchat_bot - INFO - Database setup completed successfully
+2025-03-18 18:00:29,921 - vrchat_bot - INFO - Button already exists in thread 1351529703533445201
+2025-03-18 18:00:30,129 - vrchat_bot - INFO - Button already exists in thread 1351593964280610856
+2025-03-18 18:00:30,129 - vrchat_bot - INFO - All threads have been checked and world buttons added where needed.
+2025-03-18 18:00:48,627 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:00:48] "[33mGET / HTTP/1.1[0m" 404 -
+2025-03-18 18:00:49,078 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:00:49] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-03-18 18:00:50,005 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:00:50] "[33mGET / HTTP/1.1[0m" 404 -
+2025-03-18 18:00:58,742 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:00:58] "[33mGET /index.html HTTP/1.1[0m" 404 -
+2025-03-18 18:03:10,195 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 18:03:10,196 - discord.client - INFO - logging in using static token
+2025-03-18 18:03:11,157 - vrchat_bot - INFO - Persistent views registered
+2025-03-18 18:03:11,162 - vrchat_bot - INFO - Cogs loaded
+2025-03-18 18:03:11,462 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.8:8080
+2025-03-18 18:03:11,463 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 18:03:11,576 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: f5427ec6a2e912fdda69700946444af5).
+2025-03-18 18:03:13,543 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:03:13] "[33mGET / HTTP/1.1[0m" 404 -
+2025-03-18 18:03:13,632 - vrchat_bot - INFO - Logged in as VRC World Helper
+2025-03-18 18:03:13,906 - vrchat_bot - INFO - Synced 12 command(s)
+2025-03-18 18:03:13,907 - vrchat_bot - INFO - Setting up database: database\vrchat_worlds.db
+2025-03-18 18:03:13,907 - vrchat_bot - INFO - Database setup completed successfully
+2025-03-18 18:03:14,112 - vrchat_bot - INFO - Button already exists in thread 1351529703533445201
+2025-03-18 18:03:14,347 - vrchat_bot - INFO - Button already exists in thread 1351593964280610856
+2025-03-18 18:03:14,347 - vrchat_bot - INFO - All threads have been checked and world buttons added where needed.
+2025-03-18 18:05:17,621 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:05:17] "[33mGET / HTTP/1.1[0m" 404 -
+2025-03-18 18:08:36,109 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 18:08:36,110 - discord.client - INFO - logging in using static token
+2025-03-18 18:08:36,598 - vrchat_bot - INFO - Persistent views registered
+2025-03-18 18:08:36,601 - vrchat_bot - INFO - Cogs loaded
+2025-03-18 18:08:36,973 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: c3178a9524e4e44f839b8a8ff43c9609).
+2025-03-18 18:08:37,384 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.8:8080
+2025-03-18 18:08:37,384 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 18:08:39,009 - vrchat_bot - INFO - Logged in as VRC World Helper
+2025-03-18 18:08:39,265 - vrchat_bot - INFO - Synced 12 command(s)
+2025-03-18 18:08:39,265 - vrchat_bot - INFO - Setting up database: database\vrchat_worlds.db
+2025-03-18 18:08:39,266 - vrchat_bot - INFO - Database setup completed successfully
+2025-03-18 18:08:39,466 - vrchat_bot - INFO - Button already exists in thread 1351529703533445201
+2025-03-18 18:08:39,857 - vrchat_bot - INFO - Button already exists in thread 1351593964280610856
+2025-03-18 18:08:39,857 - vrchat_bot - INFO - All threads have been checked and world buttons added where needed.
+2025-03-18 18:08:46,675 - server - ERROR - Exception on / [GET]
+Traceback (most recent call last):
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\developpeur\VRChat-World-Showcase-Bot\web_dashboard.py", line 46, in index
+    return render_template('marketing_index.html')
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\web\templates\marketing_index.html", line 1, in top-level template code
+    {% extends "base_marketing.html" %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\web\templates\base_marketing.html", line 53, in template
+    &copy; {% now 'Y' %} VRChat World Showcase Bot. All rights reserved.
+    ^^^^^^^^^
+jinja2.exceptions.TemplateSyntaxError: Encountered unknown tag 'now'.
+2025-03-18 18:08:46,679 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:08:46] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-03-18 18:08:52,624 - server - ERROR - Exception on / [GET]
+Traceback (most recent call last):
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\developpeur\VRChat-World-Showcase-Bot\web_dashboard.py", line 46, in index
+    return render_template('marketing_index.html')
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\web\templates\marketing_index.html", line 1, in top-level template code
+    {% extends "base_marketing.html" %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\web\templates\base_marketing.html", line 53, in template
+    &copy; {% now 'Y' %} VRChat World Showcase Bot. All rights reserved.
+    ^^^^^^^^^
+jinja2.exceptions.TemplateSyntaxError: Encountered unknown tag 'now'.
+2025-03-18 18:08:52,627 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:08:52] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-03-18 18:11:48,888 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 18:11:48,889 - discord.client - INFO - logging in using static token
+2025-03-18 18:11:49,355 - vrchat_bot - INFO - Persistent views registered
+2025-03-18 18:11:49,359 - vrchat_bot - INFO - Cogs loaded
+2025-03-18 18:11:49,725 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 06495a2a5e5a070d03ca8a622f1e20c5).
+2025-03-18 18:11:50,146 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.8:8080
+2025-03-18 18:11:50,146 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 18:11:51,751 - vrchat_bot - INFO - Logged in as VRC World Helper
+2025-03-18 18:11:51,997 - vrchat_bot - INFO - Synced 12 command(s)
+2025-03-18 18:11:51,997 - vrchat_bot - INFO - Setting up database: database\vrchat_worlds.db
+2025-03-18 18:11:51,998 - vrchat_bot - INFO - Database setup completed successfully
+2025-03-18 18:11:52,202 - vrchat_bot - INFO - Button already exists in thread 1351529703533445201
+2025-03-18 18:11:52,396 - vrchat_bot - INFO - Button already exists in thread 1351593964280610856
+2025-03-18 18:11:52,397 - vrchat_bot - INFO - All threads have been checked and world buttons added where needed.
+2025-03-18 18:11:53,650 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:11:53] "GET /debug-templates HTTP/1.1" 200 -
+2025-03-18 18:11:57,497 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:11:57] "GET / HTTP/1.1" 200 -
+2025-03-18 18:11:57,599 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:11:57] "GET /static/css/marketing-styles.css HTTP/1.1" 200 -
+2025-03-18 18:11:57,640 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:11:57] "[33mGET /static/img/hero-bg.jpg HTTP/1.1[0m" 404 -
+2025-03-18 18:12:35,968 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:12:35] "GET /login HTTP/1.1" 200 -
+2025-03-18 18:12:39,684 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:12:39] "GET /login HTTP/1.1" 200 -
+2025-03-18 18:12:42,715 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:12:42] "GET /login HTTP/1.1" 200 -
+2025-03-18 18:12:43,283 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:12:43] "GET /login HTTP/1.1" 200 -
+2025-03-18 18:12:43,637 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:12:43] "GET /login HTTP/1.1" 200 -
+2025-03-18 18:12:45,531 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:12:45] "GET / HTTP/1.1" 200 -
+2025-03-18 18:12:45,692 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:12:45] "[36mGET /static/css/marketing-styles.css HTTP/1.1[0m" 304 -
+2025-03-18 18:12:45,758 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:12:45] "[33mGET /static/img/hero-bg.jpg HTTP/1.1[0m" 404 -
+2025-03-18 18:12:49,754 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:12:49] "GET /login HTTP/1.1" 200 -
+2025-03-18 18:13:05,509 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:13:05] "GET / HTTP/1.1" 200 -
+2025-03-18 18:13:05,583 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:13:05] "[36mGET /static/css/marketing-styles.css HTTP/1.1[0m" 304 -
+2025-03-18 18:13:05,621 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:13:05] "[33mGET /static/img/hero-bg.jpg HTTP/1.1[0m" 404 -
+2025-03-18 18:13:10,530 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:13:10] "[33mGET /loginghjkfhgj HTTP/1.1[0m" 404 -
+2025-03-18 18:13:12,960 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:13:12] "GET / HTTP/1.1" 200 -
+2025-03-18 18:13:13,021 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:13:13] "[36mGET /static/css/marketing-styles.css HTTP/1.1[0m" 304 -
+2025-03-18 18:13:17,137 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:13:17] "GET /login HTTP/1.1" 200 -
+2025-03-18 18:13:19,524 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:13:19] "GET / HTTP/1.1" 200 -
+2025-03-18 18:13:19,606 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:13:19] "[36mGET /static/css/marketing-styles.css HTTP/1.1[0m" 304 -
+2025-03-18 18:16:59,033 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:16:59] "GET /login HTTP/1.1" 200 -
+2025-03-18 18:17:02,140 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:17:02] "GET /login HTTP/1.1" 200 -
+2025-03-18 18:17:06,439 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 18:17:06,440 - discord.client - INFO - logging in using static token
+2025-03-18 18:17:06,965 - vrchat_bot - INFO - Persistent views registered
+2025-03-18 18:17:06,968 - vrchat_bot - INFO - Cogs loaded
+2025-03-18 18:17:07,588 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 1cc659762b60defd13b3312da878563c).
+2025-03-18 18:17:07,706 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.8:8080
+2025-03-18 18:17:07,706 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 18:17:09,610 - vrchat_bot - INFO - Logged in as VRC World Helper
+2025-03-18 18:17:09,973 - vrchat_bot - INFO - Synced 12 command(s)
+2025-03-18 18:17:09,974 - vrchat_bot - INFO - Setting up database: database\vrchat_worlds.db
+2025-03-18 18:17:09,975 - vrchat_bot - INFO - Database setup completed successfully
+2025-03-18 18:17:10,267 - vrchat_bot - INFO - Button already exists in thread 1351529703533445201
+2025-03-18 18:17:10,683 - vrchat_bot - INFO - Button already exists in thread 1351593964280610856
+2025-03-18 18:17:10,683 - vrchat_bot - INFO - All threads have been checked and world buttons added where needed.
+2025-03-18 18:17:18,913 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:17:18] "GET / HTTP/1.1" 200 -
+2025-03-18 18:17:19,019 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:17:19] "[36mGET /static/css/marketing-styles.css HTTP/1.1[0m" 304 -
+2025-03-18 18:17:42,335 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:17:42] "[32mGET /login HTTP/1.1[0m" 302 -
+2025-03-18 18:17:49,830 - server - ERROR - Exception on /callback [GET]
+Traceback (most recent call last):
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\developpeur\VRChat-World-Showcase-Bot\web_dashboard.py", line 110, in callback
+    session['user_id'] = user_json['id']
+    ~~~~~~~^^^^^^^^^^^
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\sessions.py", line 104, in _fail
+    raise RuntimeError(
+    ...<3 lines>...
+    )
+RuntimeError: The session is unavailable because no secret key was set.  Set the secret_key on the application to something unique and secret.
+2025-03-18 18:17:49,833 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:17:49] "[35m[1mGET /callback?code=pJXapJiPCpnN2bo8d1ZQb9N3LHQOza HTTP/1.1[0m" 500 -
+2025-03-18 18:17:50,517 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:17:50] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-03-18 18:20:31,422 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 18:20:31,423 - discord.client - INFO - logging in using static token
+2025-03-18 18:20:31,889 - vrchat_bot - INFO - Persistent views registered
+2025-03-18 18:20:31,892 - vrchat_bot - INFO - Cogs loaded
+2025-03-18 18:20:32,234 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: ad76973aeeb77260cf53bd7b3f5a9c7e).
+2025-03-18 18:20:32,691 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.8:8080
+2025-03-18 18:20:32,691 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 18:20:34,265 - vrchat_bot - INFO - Logged in as VRC World Helper
+2025-03-18 18:20:34,593 - vrchat_bot - INFO - Synced 12 command(s)
+2025-03-18 18:20:34,593 - vrchat_bot - INFO - Setting up database: database\vrchat_worlds.db
+2025-03-18 18:20:34,594 - vrchat_bot - INFO - Database setup completed successfully
+2025-03-18 18:20:34,822 - vrchat_bot - INFO - Button already exists in thread 1351529703533445201
+2025-03-18 18:20:35,035 - vrchat_bot - INFO - Button already exists in thread 1351593964280610856
+2025-03-18 18:20:35,035 - vrchat_bot - INFO - All threads have been checked and world buttons added where needed.
+2025-03-18 18:20:38,336 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:20:38] "GET / HTTP/1.1" 200 -
+2025-03-18 18:20:38,477 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:20:38] "[36mGET /static/css/marketing-styles.css HTTP/1.1[0m" 304 -
+2025-03-18 18:20:38,564 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:20:38] "[33mGET /static/img/hero-bg.jpg HTTP/1.1[0m" 404 -
+2025-03-18 18:20:41,008 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:20:41] "[32mGET /login HTTP/1.1[0m" 302 -
+2025-03-18 18:20:52,710 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:20:52] "[32mGET /callback?code=Zje28qfEKnDR92C5hm7c1YDKe0DwoV HTTP/1.1[0m" 302 -
+2025-03-18 18:20:52,715 - server - ERROR - Exception on /dashboard [GET]
+Traceback (most recent call last):
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\developpeur\VRChat-World-Showcase-Bot\web_dashboard.py", line 139, in dashboard
+    admin_guilds = [g for g in user_guilds if has_admin_permission(g)]
+                                              ~~~~~~~~~~~~~~~~~~~~^^^
+  File "D:\developpeur\VRChat-World-Showcase-Bot\web_dashboard.py", line 385, in has_admin_permission
+    (guild_data['permissions'] & 0x8) == 0x8)  # Check for ADMINISTRATOR permission
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~
+TypeError: unsupported operand type(s) for &: 'str' and 'int'
+2025-03-18 18:20:52,717 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:20:52] "[35m[1mGET /dashboard HTTP/1.1[0m" 500 -
+2025-03-18 18:21:57,987 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 18:21:57,988 - discord.client - INFO - logging in using static token
+2025-03-18 18:21:58,587 - vrchat_bot - INFO - Persistent views registered
+2025-03-18 18:21:58,590 - vrchat_bot - INFO - Cogs loaded
+2025-03-18 18:21:59,020 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: c8d2b5275f4b808c104c1a2902494595).
+2025-03-18 18:21:59,250 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.8:8080
+2025-03-18 18:21:59,251 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 18:22:01,068 - vrchat_bot - INFO - Logged in as VRC World Helper
+2025-03-18 18:22:01,340 - vrchat_bot - INFO - Synced 12 command(s)
+2025-03-18 18:22:01,340 - vrchat_bot - INFO - Setting up database: database\vrchat_worlds.db
+2025-03-18 18:22:01,342 - vrchat_bot - INFO - Database setup completed successfully
+2025-03-18 18:22:01,625 - vrchat_bot - INFO - Button already exists in thread 1351529703533445201
+2025-03-18 18:22:01,855 - vrchat_bot - INFO - Button already exists in thread 1351593964280610856
+2025-03-18 18:22:01,855 - vrchat_bot - INFO - All threads have been checked and world buttons added where needed.
+2025-03-18 18:22:04,979 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:22:04] "[32mGET /callback?code=aUiFXrHVUkfZ2DVjb8DMPyeatWJoF2 HTTP/1.1[0m" 302 -
+2025-03-18 18:22:04,995 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:22:04] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 18:30:33,164 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 18:30:33,165 - discord.client - INFO - logging in using static token
+2025-03-18 18:33:42,298 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 18:33:42,299 - discord.client - INFO - logging in using static token
+2025-03-18 18:33:43,382 - vrchat_bot - INFO - Persistent views registered
+2025-03-18 18:33:43,385 - vrchat_bot - INFO - Cogs loaded
+2025-03-18 18:33:43,563 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.8:8080
+2025-03-18 18:33:43,563 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 18:33:43,767 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 6c8e01fbb40d5d38e197a30ec4456471).
+2025-03-18 18:33:45,800 - vrchat_bot - INFO - Logged in as VRC World Helper
+2025-03-18 18:33:46,082 - vrchat_bot - INFO - Synced 12 command(s)
+2025-03-18 18:33:46,082 - vrchat_bot - INFO - Setting up database: database\vrchat_worlds.db
+2025-03-18 18:33:46,083 - vrchat_bot - INFO - Database setup completed successfully
+2025-03-18 18:33:46,309 - vrchat_bot - INFO - Button already exists in thread 1351529703533445201
+2025-03-18 18:33:46,576 - vrchat_bot - INFO - Button already exists in thread 1351593964280610856
+2025-03-18 18:33:46,577 - vrchat_bot - INFO - All threads have been checked and world buttons added where needed.
+2025-03-18 18:34:04,083 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:34:04] "[33mGET /static/img/hero-bg.jpg HTTP/1.1[0m" 404 -
+2025-03-18 18:34:11,986 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:34:11] "GET / HTTP/1.1" 200 -
+2025-03-18 18:34:12,134 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:34:12] "[36mGET /static/css/marketing-styles.css HTTP/1.1[0m" 304 -
+2025-03-18 18:34:12,337 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:34:12] "[33mGET /static/img/hero-bg.jpg HTTP/1.1[0m" 404 -
+2025-03-18 18:34:20,244 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:34:20] "[32mGET /login HTTP/1.1[0m" 302 -
+2025-03-18 18:34:26,622 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:34:26] "[32mGET /callback?code=d4Ye2jXLzIOs44hJXvK5r3u1oYzUnJ HTTP/1.1[0m" 302 -
+2025-03-18 18:34:26,638 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:34:26] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 18:39:11,544 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:39:11] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 18:39:13,985 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:39:13] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 18:39:22,613 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:39:22] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 18:39:26,590 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:39:26] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 18:43:33,184 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 18:43:33,186 - discord.client - INFO - logging in using static token
+2025-03-18 18:43:33,794 - vrchat_bot - INFO - Persistent views registered
+2025-03-18 18:43:33,797 - vrchat_bot - INFO - Cogs loaded
+2025-03-18 18:43:34,198 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 4ea3df895cce9cdf700e4cf9e7e985fb).
+2025-03-18 18:43:34,443 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.8:8080
+2025-03-18 18:43:34,443 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 18:43:35,320 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:43:35] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 18:43:36,254 - vrchat_bot - INFO - Logged in as VRC World Helper
+2025-03-18 18:43:36,664 - vrchat_bot - INFO - Synced 12 command(s)
+2025-03-18 18:43:36,665 - vrchat_bot - INFO - Setting up database: database\vrchat_worlds.db
+2025-03-18 18:43:36,666 - vrchat_bot - INFO - Database setup completed successfully
+2025-03-18 18:43:36,944 - vrchat_bot - INFO - Button already exists in thread 1351529703533445201
+2025-03-18 18:43:37,160 - vrchat_bot - INFO - Button already exists in thread 1351593964280610856
+2025-03-18 18:43:37,161 - vrchat_bot - INFO - All threads have been checked and world buttons added where needed.
+2025-03-18 18:43:40,531 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:43:40] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 18:43:44,077 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:43:44] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 18:43:46,079 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:43:46] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 18:43:50,523 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:43:50] "[32mGET /logout HTTP/1.1[0m" 302 -
+2025-03-18 18:43:50,787 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:43:50] "GET / HTTP/1.1" 200 -
+2025-03-18 18:43:50,910 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:43:50] "GET /static/css/marketing-styles.css HTTP/1.1" 200 -
+2025-03-18 18:43:51,233 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:43:51] "[33mGET /static/img/hero-bg.jpg HTTP/1.1[0m" 404 -
+2025-03-18 18:44:05,083 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:44:05] "[32mGET /login HTTP/1.1[0m" 302 -
+2025-03-18 18:44:12,374 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:44:12] "[32mGET /callback?code=9xIjleF8UvuhOX2QGNsXJRlXykmFQP HTTP/1.1[0m" 302 -
+2025-03-18 18:44:12,480 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:44:12] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 18:44:20,640 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:44:20] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 18:50:13,496 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 18:50:13,498 - discord.client - INFO - logging in using static token
+2025-03-18 18:50:13,993 - vrchat_bot - INFO - Persistent views registered
+2025-03-18 18:50:13,996 - vrchat_bot - INFO - Cogs loaded
+2025-03-18 18:50:14,631 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 1ad9ed663c54f71f7d181edbfb097e69).
+2025-03-18 18:50:14,769 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.8:8080
+2025-03-18 18:50:14,770 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 18:50:16,672 - vrchat_bot - INFO - Logged in as VRC World Helper
+2025-03-18 18:50:16,951 - vrchat_bot - INFO - Synced 12 command(s)
+2025-03-18 18:50:16,951 - vrchat_bot - INFO - Setting up database: database\vrchat_worlds.db
+2025-03-18 18:50:16,952 - vrchat_bot - INFO - Database setup completed successfully
+2025-03-18 18:50:17,171 - vrchat_bot - INFO - Button already exists in thread 1351529703533445201
+2025-03-18 18:50:17,385 - vrchat_bot - INFO - Button already exists in thread 1351593964280610856
+2025-03-18 18:50:17,386 - vrchat_bot - INFO - All threads have been checked and world buttons added where needed.
+2025-03-18 18:50:23,636 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:50:23] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 18:50:31,743 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:50:31] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 18:50:33,341 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:50:33] "[32mGET /logout HTTP/1.1[0m" 302 -
+2025-03-18 18:50:33,597 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:50:33] "GET / HTTP/1.1" 200 -
+2025-03-18 18:50:33,728 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:50:33] "[36mGET /static/css/marketing-styles.css HTTP/1.1[0m" 304 -
+2025-03-18 18:50:34,068 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:50:34] "[33mGET /static/img/hero-bg.jpg HTTP/1.1[0m" 404 -
+2025-03-18 18:50:38,335 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:50:38] "[32mGET /login HTTP/1.1[0m" 302 -
+2025-03-18 18:50:59,375 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:50:59] "[32mGET /callback?code=0zxh3ASuatDyDuuBwJgA02VMZGMCa4 HTTP/1.1[0m" 302 -
+2025-03-18 18:50:59,382 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:50:59] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 18:52:20,487 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:52:20] "[33mGET /debug-templates HTTP/1.1[0m" 404 -
+2025-03-18 18:52:31,084 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:52:31] "[32mGET /login HTTP/1.1[0m" 302 -
+2025-03-18 18:52:36,944 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:52:36] "[32mGET /callback?code=mb4MqF3iWZOuQ0Xup8prss9H5uTmPr HTTP/1.1[0m" 302 -
+2025-03-18 18:52:36,952 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 18:52:36] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 19:29:05,365 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 19:29:05,366 - discord.client - INFO - logging in using static token
+2025-03-18 19:29:05,911 - vrchat_bot - INFO - Persistent views registered
+2025-03-18 19:29:05,914 - vrchat_bot - INFO - Cogs loaded
+2025-03-18 19:29:06,263 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 5b224850343475ffe46525e4ca5ce0c2).
+2025-03-18 19:29:06,638 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.8:8080
+2025-03-18 19:29:06,638 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 19:29:08,355 - vrchat_bot - INFO - Logged in as VRC World Helper
+2025-03-18 19:29:08,792 - vrchat_bot - INFO - Synced 12 command(s)
+2025-03-18 19:29:08,793 - vrchat_bot - INFO - Setting up database: database\vrchat_worlds.db
+2025-03-18 19:29:08,794 - vrchat_bot - INFO - Database setup completed successfully
+2025-03-18 19:29:09,030 - vrchat_bot - INFO - Button already exists in thread 1351622713034145852
+2025-03-18 19:29:09,232 - vrchat_bot - INFO - Button already exists in thread 1351593964280610856
+2025-03-18 19:29:09,232 - vrchat_bot - INFO - All threads have been checked and world buttons added where needed.
+2025-03-18 19:29:13,420 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:29:13] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 19:29:16,017 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:29:16] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 19:29:18,458 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:29:18] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 19:29:19,929 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:29:19] "[32mGET /logout HTTP/1.1[0m" 302 -
+2025-03-18 19:29:20,245 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:29:20] "GET / HTTP/1.1" 200 -
+2025-03-18 19:29:20,570 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:29:20] "[36mGET /static/css/marketing-styles.css HTTP/1.1[0m" 304 -
+2025-03-18 19:29:20,605 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:29:20] "[33mGET /static/img/hero-bg.jpg HTTP/1.1[0m" 404 -
+2025-03-18 19:29:23,166 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:29:23] "[32mGET /login HTTP/1.1[0m" 302 -
+2025-03-18 19:29:29,383 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:29:29] "[32mGET /callback?code=c316vz5yjguDs5BjyfFw5Rd72gnxJD HTTP/1.1[0m" 302 -
+2025-03-18 19:29:29,389 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:29:29] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 19:29:32,596 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:29:32] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 19:29:55,758 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:29:55] "[32mGET /force-refresh-guilds HTTP/1.1[0m" 302 -
+2025-03-18 19:29:56,080 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:29:56] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 19:40:05,174 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:40:05] "[32mGET / HTTP/1.1[0m" 302 -
+2025-03-18 19:40:05,438 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:40:05] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 19:40:07,327 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:40:07] "[32mGET / HTTP/1.1[0m" 302 -
+2025-03-18 19:40:07,640 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:40:07] "GET /dashboard HTTP/1.1" 200 -
+2025-03-18 19:40:10,109 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:40:10] "[32mGET /logout HTTP/1.1[0m" 302 -
+2025-03-18 19:40:10,429 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:40:10] "GET / HTTP/1.1" 200 -
+2025-03-18 19:40:11,019 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:40:11] "[36mGET /static/css/marketing-styles.css HTTP/1.1[0m" 304 -
+2025-03-18 19:40:11,357 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:40:11] "[33mGET /static/img/hero-bg.jpg HTTP/1.1[0m" 404 -
+2025-03-18 19:40:13,963 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:40:13] "GET / HTTP/1.1" 200 -
+2025-03-18 19:40:14,348 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:40:14] "[36mGET /static/css/marketing-styles.css HTTP/1.1[0m" 304 -
+2025-03-18 19:40:14,595 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:40:14] "[33mGET /static/img/hero-bg.jpg HTTP/1.1[0m" 404 -
+2025-03-18 19:40:19,650 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 19:40:19,651 - discord.client - INFO - logging in using static token
+2025-03-18 19:40:20,146 - vrchat_bot - INFO - Persistent views registered
+2025-03-18 19:40:20,153 - vrchat_bot - INFO - Cogs loaded
+2025-03-18 19:40:20,526 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 8b4c4943018e762269f2d833e7cf3ddf).
+2025-03-18 19:40:20,928 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.8:8080
+2025-03-18 19:40:20,928 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 19:40:22,421 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:40:22] "GET / HTTP/1.1" 200 -
+2025-03-18 19:40:22,586 - vrchat_bot - INFO - Logged in as VRC World Helper
+2025-03-18 19:40:22,716 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:40:22] "[36mGET /static/css/marketing-styles.css HTTP/1.1[0m" 304 -
+2025-03-18 19:40:22,804 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:40:22] "[33mGET /static/img/hero-bg.jpg HTTP/1.1[0m" 404 -
+2025-03-18 19:40:22,819 - vrchat_bot - INFO - Synced 12 command(s)
+2025-03-18 19:40:22,819 - vrchat_bot - INFO - Setting up database: database\vrchat_worlds.db
+2025-03-18 19:40:22,820 - vrchat_bot - INFO - Database setup completed successfully
+2025-03-18 19:40:23,041 - vrchat_bot - INFO - Button already exists in thread 1351622713034145852
+2025-03-18 19:40:23,418 - vrchat_bot - INFO - Button already exists in thread 1351593964280610856
+2025-03-18 19:40:23,418 - vrchat_bot - INFO - All threads have been checked and world buttons added where needed.
+2025-03-18 19:40:27,313 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:40:27] "GET / HTTP/1.1" 200 -
+2025-03-18 19:40:27,673 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:40:27] "[36mGET /static/css/marketing-styles.css HTTP/1.1[0m" 304 -
+2025-03-18 19:40:27,947 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:40:27] "[33mGET /static/img/hero-bg.jpg HTTP/1.1[0m" 404 -
+2025-03-18 19:40:38,686 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:40:38] "[32mGET /login HTTP/1.1[0m" 302 -
+2025-03-18 19:40:43,237 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:40:43] "GET /callback?error=access_denied&error_description=The+resource+owner+or+authorization+server+denied+the+request HTTP/1.1" 200 -
+2025-03-18 19:40:45,401 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:40:45] "GET / HTTP/1.1" 200 -
+2025-03-18 19:40:45,774 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:40:45] "[36mGET /static/css/marketing-styles.css HTTP/1.1[0m" 304 -
+2025-03-18 19:40:46,035 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:40:46] "[33mGET /static/img/hero-bg.jpg HTTP/1.1[0m" 404 -
+2025-03-18 19:40:52,180 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:40:52] "[33mGET /api/interactions HTTP/1.1[0m" 404 -
+2025-03-18 19:40:56,455 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:40:56] "GET /terms HTTP/1.1" 200 -
+2025-03-18 19:40:56,699 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:40:56] "[33mGET /styles.css HTTP/1.1[0m" 404 -
+2025-03-18 19:41:05,567 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:41:05] "GET /terms HTTP/1.1" 200 -
+2025-03-18 19:41:06,009 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:41:06] "[33mGET /styles.css HTTP/1.1[0m" 404 -
+2025-03-18 19:43:44,131 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:43:44] "GET /terms HTTP/1.1" 200 -
+2025-03-18 19:43:44,373 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:43:44] "[33mGET /styles.css HTTP/1.1[0m" 404 -
+2025-03-18 19:43:45,897 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:43:45] "GET /terms HTTP/1.1" 200 -
+2025-03-18 19:43:46,269 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:43:46] "[33mGET /styles.css HTTP/1.1[0m" 404 -
+2025-03-18 19:43:49,344 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 19:43:49,344 - discord.client - INFO - logging in using static token
+2025-03-18 19:43:50,062 - vrchat_bot - INFO - Persistent views registered
+2025-03-18 19:43:50,070 - vrchat_bot - INFO - Cogs loaded
+2025-03-18 19:43:50,616 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.8:8080
+2025-03-18 19:43:50,616 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 19:43:51,686 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: fde842fdd314dc4fdd370ea6bb4a1ca8).
+2025-03-18 19:43:52,881 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:43:52] "GET /terms HTTP/1.1" 200 -
+2025-03-18 19:43:53,152 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:43:53] "[33mGET /styles.css HTTP/1.1[0m" 404 -
+2025-03-18 19:43:53,733 - vrchat_bot - INFO - Logged in as VRC World Helper
+2025-03-18 19:43:54,122 - vrchat_bot - INFO - Synced 12 command(s)
+2025-03-18 19:43:54,122 - vrchat_bot - INFO - Setting up database: database\vrchat_worlds.db
+2025-03-18 19:43:54,124 - vrchat_bot - INFO - Database setup completed successfully
+2025-03-18 19:43:54,336 - vrchat_bot - INFO - Button already exists in thread 1351622713034145852
+2025-03-18 19:43:54,536 - vrchat_bot - INFO - Button already exists in thread 1351593964280610856
+2025-03-18 19:43:54,537 - vrchat_bot - INFO - All threads have been checked and world buttons added where needed.
+2025-03-18 19:43:54,849 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:43:54] "[33mGET /index.html HTTP/1.1[0m" 404 -
+2025-03-18 19:43:56,210 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:43:56] "GET / HTTP/1.1" 200 -
+2025-03-18 19:43:56,533 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:43:56] "[36mGET /static/css/marketing-styles.css HTTP/1.1[0m" 304 -
+2025-03-18 19:43:56,875 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:43:56] "[33mGET /static/img/hero-bg.jpg HTTP/1.1[0m" 404 -
+2025-03-18 19:43:58,742 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:43:58] "GET /terms HTTP/1.1" 200 -
+2025-03-18 19:43:59,005 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:43:59] "[33mGET /styles.css HTTP/1.1[0m" 404 -
+2025-03-18 19:44:16,913 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:44:16] "GET /terms HTTP/1.1" 200 -
+2025-03-18 19:44:17,293 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:44:17] "[33mGET /styles.css HTTP/1.1[0m" 404 -
+2025-03-18 19:44:22,404 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 19:44:22,406 - discord.client - INFO - logging in using static token
+2025-03-18 19:44:22,891 - vrchat_bot - INFO - Persistent views registered
+2025-03-18 19:44:22,895 - vrchat_bot - INFO - Cogs loaded
+2025-03-18 19:44:23,310 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: bdcc0ae69e1acaab8a5c37a2c1c3c49b).
+2025-03-18 19:44:23,671 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.8:8080
+2025-03-18 19:44:23,672 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 19:44:25,427 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:44:25] "GET /terms HTTP/1.1" 200 -
+2025-03-18 19:44:25,499 - vrchat_bot - INFO - Logged in as VRC World Helper
+2025-03-18 19:44:25,702 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:44:25] "GET /static/css/styles.css HTTP/1.1" 200 -
+2025-03-18 19:44:26,880 - vrchat_bot - INFO - Synced 12 command(s)
+2025-03-18 19:44:26,880 - vrchat_bot - INFO - Setting up database: database\vrchat_worlds.db
+2025-03-18 19:44:26,881 - vrchat_bot - INFO - Database setup completed successfully
+2025-03-18 19:44:27,098 - vrchat_bot - INFO - Button already exists in thread 1351622713034145852
+2025-03-18 19:44:27,316 - vrchat_bot - INFO - Button already exists in thread 1351593964280610856
+2025-03-18 19:44:27,316 - vrchat_bot - INFO - All threads have been checked and world buttons added where needed.
+2025-03-18 19:44:36,930 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:44:36] "[33mGET /privacy.html HTTP/1.1[0m" 404 -
+2025-03-18 19:45:03,836 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:45:03] "[33mGET /privacy.html HTTP/1.1[0m" 404 -
+2025-03-18 19:45:24,253 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:45:24] "[33mGET /index.html HTTP/1.1[0m" 404 -
+2025-03-18 19:45:26,712 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:45:26] "[33mGET /index.html HTTP/1.1[0m" 404 -
+2025-03-18 19:45:28,224 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:45:28] "[33mGET /index.html HTTP/1.1[0m" 404 -
+2025-03-18 19:45:30,769 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:45:30] "[33mGET /index.html HTTP/1.1[0m" 404 -
+2025-03-18 19:45:42,063 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:45:42] "[33mGET /index.html HTTP/1.1[0m" 404 -
+2025-03-18 19:45:46,741 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:45:46] "GET / HTTP/1.1" 200 -
+2025-03-18 19:45:46,992 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:45:46] "[36mGET /static/css/marketing-styles.css HTTP/1.1[0m" 304 -
+2025-03-18 19:45:47,137 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 19:45:47] "[33mGET /static/img/hero-bg.jpg HTTP/1.1[0m" 404 -
+2025-03-18 19:48:29,289 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 19:48:29,434 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 19:48:29,579 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 19:48:29,579 - vrchat_bot - INFO - World name: The Black Cat
+2025-03-18 19:48:29,579 - vrchat_bot - INFO - Author: spookyghostboo
+2025-03-18 19:48:37,788 - vrchat_bot - INFO - User 244188921309691904 selected tags: ['R-18', 'Horror'] for world wrld_4cf554b4-430c-4f8f-b53e-1f294eed230b
+2025-03-18 19:48:37,967 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 19:48:37,995 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 19:48:38,147 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 19:48:38,147 - vrchat_bot - INFO - World name: The Black Cat
+2025-03-18 19:48:38,148 - vrchat_bot - INFO - Author: spookyghostboo
+2025-03-18 19:48:38,148 - vrchat_bot - INFO - File ID for world wrld_4cf554b4-430c-4f8f-b53e-1f294eed230b: file_ba180a57-a93c-4334-97d7-9d46122646a2
+2025-03-18 19:48:38,148 - vrchat_bot - INFO - ===== VRCHAT WORLD DEBUG =====
+2025-03-18 19:48:38,148 - vrchat_bot - INFO - World info keys: ['authorId', 'authorName', 'capacity', 'created_at', 'defaultContentSettings', 'description', 'favorites', 'featured', 'heat', 'id', 'imageUrl', 'instances', 'labsPublicationDate', 'name', 'occupants', 'organization', 'popularity', 'previewYoutubeId', 'privateOccupants', 'publicOccupants', 'publicationDate', 'recommendedCapacity', 'releaseStatus', 'tags', 'thumbnailImageUrl', 'udonProducts', 'unityPackages', 'updated_at', 'urlList', 'version', 'visits']
+2025-03-18 19:48:38,148 - vrchat_bot - INFO - Found 21 unity packages
+2025-03-18 19:48:38,148 - vrchat_bot - INFO - Package 1 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:48:38,149 - vrchat_bot - INFO - Package 1 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/46/file
+2025-03-18 19:48:38,149 - vrchat_bot - INFO - Package 1 platform: android
+2025-03-18 19:48:38,149 - vrchat_bot - INFO - Package 2 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:48:38,149 - vrchat_bot - INFO - Package 2 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/101/file
+2025-03-18 19:48:38,149 - vrchat_bot - INFO - Package 2 platform: android
+2025-03-18 19:48:38,149 - vrchat_bot - INFO - Package 3 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:48:38,149 - vrchat_bot - INFO - Package 3 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/108/file
+2025-03-18 19:48:38,149 - vrchat_bot - INFO - Package 3 platform: android
+2025-03-18 19:48:38,150 - vrchat_bot - INFO - Package 4 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:48:38,150 - vrchat_bot - INFO - Package 4 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/214/file
+2025-03-18 19:48:38,150 - vrchat_bot - INFO - Package 4 platform: android
+2025-03-18 19:48:38,150 - vrchat_bot - INFO - Package 5 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:48:38,150 - vrchat_bot - INFO - Package 5 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/222/file
+2025-03-18 19:48:38,150 - vrchat_bot - INFO - Package 5 platform: android
+2025-03-18 19:48:38,150 - vrchat_bot - INFO - Package 6 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:48:38,150 - vrchat_bot - INFO - Package 6 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/232/file
+2025-03-18 19:48:38,151 - vrchat_bot - INFO - Package 6 platform: android
+2025-03-18 19:48:38,151 - vrchat_bot - INFO - Package 7 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:48:38,151 - vrchat_bot - INFO - Package 7 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/335/file
+2025-03-18 19:48:38,151 - vrchat_bot - INFO - Package 7 platform: android
+2025-03-18 19:48:38,151 - vrchat_bot - INFO - Package 8 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:48:38,151 - vrchat_bot - INFO - Package 8 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/381/file
+2025-03-18 19:48:38,151 - vrchat_bot - INFO - Package 8 platform: android
+2025-03-18 19:48:38,151 - vrchat_bot - INFO - Package 9 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:48:38,151 - vrchat_bot - INFO - Package 9 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/399/file
+2025-03-18 19:48:38,152 - vrchat_bot - INFO - Package 9 platform: android
+2025-03-18 19:48:38,152 - vrchat_bot - INFO - Package 10 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'unitySortNumber', 'unityVersion', 'worldSignature']
+2025-03-18 19:48:38,152 - vrchat_bot - INFO - Package 10 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/433/file
+2025-03-18 19:48:38,152 - vrchat_bot - INFO - Package 10 platform: android
+2025-03-18 19:48:38,152 - vrchat_bot - INFO - Package 11 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:48:38,152 - vrchat_bot - INFO - Package 11 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/47/file
+2025-03-18 19:48:38,152 - vrchat_bot - INFO - Package 11 platform: standalonewindows
+2025-03-18 19:48:38,152 - vrchat_bot - INFO - Package 12 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:48:38,152 - vrchat_bot - INFO - Package 12 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/102/file
+2025-03-18 19:48:38,152 - vrchat_bot - INFO - Package 12 platform: standalonewindows
+2025-03-18 19:48:38,153 - vrchat_bot - INFO - Package 13 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:48:38,153 - vrchat_bot - INFO - Package 13 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/107/file
+2025-03-18 19:48:38,153 - vrchat_bot - INFO - Package 13 platform: standalonewindows
+2025-03-18 19:48:38,153 - vrchat_bot - INFO - Package 14 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:48:38,153 - vrchat_bot - INFO - Package 14 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/212/file
+2025-03-18 19:48:38,153 - vrchat_bot - INFO - Package 14 platform: standalonewindows
+2025-03-18 19:48:38,153 - vrchat_bot - INFO - Package 15 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:48:38,153 - vrchat_bot - INFO - Package 15 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/223/file
+2025-03-18 19:48:38,153 - vrchat_bot - INFO - Package 15 platform: standalonewindows
+2025-03-18 19:48:38,154 - vrchat_bot - INFO - Package 16 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:48:38,154 - vrchat_bot - INFO - Package 16 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/231/file
+2025-03-18 19:48:38,154 - vrchat_bot - INFO - Package 16 platform: standalonewindows
+2025-03-18 19:48:38,154 - vrchat_bot - INFO - Package 17 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:48:38,154 - vrchat_bot - INFO - Package 17 assetUrl: 
+2025-03-18 19:48:38,154 - vrchat_bot - INFO - Package 17 platform: standalonewindows
+2025-03-18 19:48:38,154 - vrchat_bot - INFO - Package 18 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:48:38,154 - vrchat_bot - INFO - Package 18 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/334/file
+2025-03-18 19:48:38,155 - vrchat_bot - INFO - Package 18 platform: standalonewindows
+2025-03-18 19:48:38,155 - vrchat_bot - INFO - Package 19 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:48:38,155 - vrchat_bot - INFO - Package 19 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/380/file
+2025-03-18 19:48:38,155 - vrchat_bot - INFO - Package 19 platform: standalonewindows
+2025-03-18 19:48:38,155 - vrchat_bot - INFO - Package 20 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:48:38,155 - vrchat_bot - INFO - Package 20 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/398/file
+2025-03-18 19:48:38,155 - vrchat_bot - INFO - Package 20 platform: standalonewindows
+2025-03-18 19:48:38,155 - vrchat_bot - INFO - Package 21 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'unitySortNumber', 'unityVersion', 'worldSignature']
+2025-03-18 19:48:38,156 - vrchat_bot - INFO - Package 21 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/434/file
+2025-03-18 19:48:38,156 - vrchat_bot - INFO - Package 21 platform: standalonewindows
+2025-03-18 19:48:38,156 - vrchat_bot - INFO - Found potential file ID pattern in imageUrl: file_ab2d3af4-c6da-41b9-8a3d-6f554462cfaf
+2025-03-18 19:48:38,156 - vrchat_bot - INFO - Found potential file ID pattern in thumbnailImageUrl: file_ab2d3af4-c6da-41b9-8a3d-6f554462cfaf
+2025-03-18 19:48:38,156 - vrchat_bot - INFO - File ID for world: file_ba180a57-a93c-4334-97d7-9d46122646a2
+2025-03-18 19:48:38,333 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 19:48:38,362 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 19:48:38,510 - vrchat_bot - INFO - File info retrieved successfully
+2025-03-18 19:48:38,511 - vrchat_bot - INFO - File info keys: ['extension', 'id', 'mimeType', 'name', 'ownerId', 'tags', 'versions']
+2025-03-18 19:48:38,511 - vrchat_bot - INFO - Found 435 versions
+2025-03-18 19:48:38,511 - vrchat_bot - INFO - Last version keys: ['created_at', 'file', 'signature', 'status', 'version']
+2025-03-18 19:48:38,511 - vrchat_bot - INFO - File data keys: ['category', 'fileName', 'md5', 'sizeInBytes', 'status', 'uploadId', 'url']
+2025-03-18 19:48:38,511 - vrchat_bot - INFO - Size in bytes: 85112856
+2025-03-18 19:48:38,511 - vrchat_bot - INFO - Formatted size: 81.17 MB
+2025-03-18 19:48:38,512 - vrchat_bot - INFO - ===== END VRCHAT WORLD DEBUG =====
+2025-03-18 19:48:38,672 - vrchat_bot - INFO - World size raw value: 85112856
+2025-03-18 19:48:38,672 - vrchat_bot - INFO - Formatted world size: 81.17 MB
+2025-03-18 19:48:38,817 - vrchat_bot - INFO - World size raw value: 85112856
+2025-03-18 19:48:38,817 - vrchat_bot - INFO - Formatted world size: 81.17 MB
+2025-03-18 19:48:38,818 - vrchat_bot - INFO - Building embed with size: 81.17 MB
+2025-03-18 19:48:39,309 - vrchat_bot - INFO - Added tags ['R-18', 'Horror'] to thread 1351628409310019776
+2025-03-18 19:49:49,844 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 19:49:49,982 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 19:49:50,125 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 19:49:50,125 - vrchat_bot - INFO - World name: The Black Cat
+2025-03-18 19:49:50,125 - vrchat_bot - INFO - Author: spookyghostboo
+2025-03-18 19:49:55,442 - vrchat_bot - INFO - User 244188921309691904 selected tags: ['PVE', 'Horror'] for world wrld_4cf554b4-430c-4f8f-b53e-1f294eed230b
+2025-03-18 19:49:55,785 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 19:49:55,815 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 19:49:55,958 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 19:49:55,959 - vrchat_bot - INFO - World name: The Black Cat
+2025-03-18 19:49:55,959 - vrchat_bot - INFO - Author: spookyghostboo
+2025-03-18 19:49:55,959 - vrchat_bot - INFO - File ID for world wrld_4cf554b4-430c-4f8f-b53e-1f294eed230b: file_ba180a57-a93c-4334-97d7-9d46122646a2
+2025-03-18 19:49:55,959 - vrchat_bot - INFO - ===== VRCHAT WORLD DEBUG =====
+2025-03-18 19:49:55,959 - vrchat_bot - INFO - World info keys: ['authorId', 'authorName', 'capacity', 'created_at', 'defaultContentSettings', 'description', 'favorites', 'featured', 'heat', 'id', 'imageUrl', 'instances', 'labsPublicationDate', 'name', 'occupants', 'organization', 'popularity', 'previewYoutubeId', 'privateOccupants', 'publicOccupants', 'publicationDate', 'recommendedCapacity', 'releaseStatus', 'tags', 'thumbnailImageUrl', 'udonProducts', 'unityPackages', 'updated_at', 'urlList', 'version', 'visits']
+2025-03-18 19:49:55,960 - vrchat_bot - INFO - Found 21 unity packages
+2025-03-18 19:49:55,960 - vrchat_bot - INFO - Package 1 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:49:55,960 - vrchat_bot - INFO - Package 1 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/46/file
+2025-03-18 19:49:55,960 - vrchat_bot - INFO - Package 1 platform: android
+2025-03-18 19:49:55,960 - vrchat_bot - INFO - Package 2 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:49:55,960 - vrchat_bot - INFO - Package 2 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/101/file
+2025-03-18 19:49:55,960 - vrchat_bot - INFO - Package 2 platform: android
+2025-03-18 19:49:55,961 - vrchat_bot - INFO - Package 3 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:49:55,961 - vrchat_bot - INFO - Package 3 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/108/file
+2025-03-18 19:49:55,961 - vrchat_bot - INFO - Package 3 platform: android
+2025-03-18 19:49:55,961 - vrchat_bot - INFO - Package 4 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:49:55,961 - vrchat_bot - INFO - Package 4 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/214/file
+2025-03-18 19:49:55,961 - vrchat_bot - INFO - Package 4 platform: android
+2025-03-18 19:49:55,961 - vrchat_bot - INFO - Package 5 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:49:55,962 - vrchat_bot - INFO - Package 5 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/222/file
+2025-03-18 19:49:55,962 - vrchat_bot - INFO - Package 5 platform: android
+2025-03-18 19:49:55,962 - vrchat_bot - INFO - Package 6 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:49:55,962 - vrchat_bot - INFO - Package 6 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/232/file
+2025-03-18 19:49:55,962 - vrchat_bot - INFO - Package 6 platform: android
+2025-03-18 19:49:55,962 - vrchat_bot - INFO - Package 7 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:49:55,962 - vrchat_bot - INFO - Package 7 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/335/file
+2025-03-18 19:49:55,962 - vrchat_bot - INFO - Package 7 platform: android
+2025-03-18 19:49:55,962 - vrchat_bot - INFO - Package 8 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:49:55,962 - vrchat_bot - INFO - Package 8 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/381/file
+2025-03-18 19:49:55,962 - vrchat_bot - INFO - Package 8 platform: android
+2025-03-18 19:49:55,963 - vrchat_bot - INFO - Package 9 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:49:55,963 - vrchat_bot - INFO - Package 9 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/399/file
+2025-03-18 19:49:55,963 - vrchat_bot - INFO - Package 9 platform: android
+2025-03-18 19:49:55,963 - vrchat_bot - INFO - Package 10 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'unitySortNumber', 'unityVersion', 'worldSignature']
+2025-03-18 19:49:55,963 - vrchat_bot - INFO - Package 10 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/433/file
+2025-03-18 19:49:55,963 - vrchat_bot - INFO - Package 10 platform: android
+2025-03-18 19:49:55,963 - vrchat_bot - INFO - Package 11 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:49:55,963 - vrchat_bot - INFO - Package 11 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/47/file
+2025-03-18 19:49:55,963 - vrchat_bot - INFO - Package 11 platform: standalonewindows
+2025-03-18 19:49:55,963 - vrchat_bot - INFO - Package 12 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:49:55,963 - vrchat_bot - INFO - Package 12 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/102/file
+2025-03-18 19:49:55,964 - vrchat_bot - INFO - Package 12 platform: standalonewindows
+2025-03-18 19:49:55,964 - vrchat_bot - INFO - Package 13 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:49:55,964 - vrchat_bot - INFO - Package 13 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/107/file
+2025-03-18 19:49:55,964 - vrchat_bot - INFO - Package 13 platform: standalonewindows
+2025-03-18 19:49:55,964 - vrchat_bot - INFO - Package 14 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:49:55,964 - vrchat_bot - INFO - Package 14 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/212/file
+2025-03-18 19:49:55,964 - vrchat_bot - INFO - Package 14 platform: standalonewindows
+2025-03-18 19:49:55,964 - vrchat_bot - INFO - Package 15 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:49:55,964 - vrchat_bot - INFO - Package 15 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/223/file
+2025-03-18 19:49:55,964 - vrchat_bot - INFO - Package 15 platform: standalonewindows
+2025-03-18 19:49:55,965 - vrchat_bot - INFO - Package 16 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:49:55,965 - vrchat_bot - INFO - Package 16 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/231/file
+2025-03-18 19:49:55,965 - vrchat_bot - INFO - Package 16 platform: standalonewindows
+2025-03-18 19:49:55,965 - vrchat_bot - INFO - Package 17 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:49:55,965 - vrchat_bot - INFO - Package 17 assetUrl: 
+2025-03-18 19:49:55,965 - vrchat_bot - INFO - Package 17 platform: standalonewindows
+2025-03-18 19:49:55,965 - vrchat_bot - INFO - Package 18 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:49:55,965 - vrchat_bot - INFO - Package 18 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/334/file
+2025-03-18 19:49:55,965 - vrchat_bot - INFO - Package 18 platform: standalonewindows
+2025-03-18 19:49:55,966 - vrchat_bot - INFO - Package 19 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:49:55,966 - vrchat_bot - INFO - Package 19 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/380/file
+2025-03-18 19:49:55,966 - vrchat_bot - INFO - Package 19 platform: standalonewindows
+2025-03-18 19:49:55,966 - vrchat_bot - INFO - Package 20 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:49:55,966 - vrchat_bot - INFO - Package 20 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/398/file
+2025-03-18 19:49:55,966 - vrchat_bot - INFO - Package 20 platform: standalonewindows
+2025-03-18 19:49:55,966 - vrchat_bot - INFO - Package 21 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'unitySortNumber', 'unityVersion', 'worldSignature']
+2025-03-18 19:49:55,967 - vrchat_bot - INFO - Package 21 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/434/file
+2025-03-18 19:49:55,967 - vrchat_bot - INFO - Package 21 platform: standalonewindows
+2025-03-18 19:49:55,967 - vrchat_bot - INFO - Found potential file ID pattern in imageUrl: file_ab2d3af4-c6da-41b9-8a3d-6f554462cfaf
+2025-03-18 19:49:55,967 - vrchat_bot - INFO - Found potential file ID pattern in thumbnailImageUrl: file_ab2d3af4-c6da-41b9-8a3d-6f554462cfaf
+2025-03-18 19:49:55,967 - vrchat_bot - INFO - File ID for world: file_ba180a57-a93c-4334-97d7-9d46122646a2
+2025-03-18 19:49:56,183 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 19:49:56,211 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 19:49:56,354 - vrchat_bot - INFO - File info retrieved successfully
+2025-03-18 19:49:56,354 - vrchat_bot - INFO - File info keys: ['extension', 'id', 'mimeType', 'name', 'ownerId', 'tags', 'versions']
+2025-03-18 19:49:56,354 - vrchat_bot - INFO - Found 435 versions
+2025-03-18 19:49:56,354 - vrchat_bot - INFO - Last version keys: ['created_at', 'file', 'signature', 'status', 'version']
+2025-03-18 19:49:56,354 - vrchat_bot - INFO - File data keys: ['category', 'fileName', 'md5', 'sizeInBytes', 'status', 'uploadId', 'url']
+2025-03-18 19:49:56,354 - vrchat_bot - INFO - Size in bytes: 85112856
+2025-03-18 19:49:56,354 - vrchat_bot - INFO - Formatted size: 81.17 MB
+2025-03-18 19:49:56,354 - vrchat_bot - INFO - ===== END VRCHAT WORLD DEBUG =====
+2025-03-18 19:49:56,510 - vrchat_bot - INFO - World size raw value: 85112856
+2025-03-18 19:49:56,510 - vrchat_bot - INFO - Formatted world size: 81.17 MB
+2025-03-18 19:49:56,654 - vrchat_bot - INFO - World size raw value: 85112856
+2025-03-18 19:49:56,655 - vrchat_bot - INFO - Formatted world size: 81.17 MB
+2025-03-18 19:49:56,655 - vrchat_bot - INFO - Building embed with size: 81.17 MB
+2025-03-18 19:49:57,256 - vrchat_bot - INFO - Added tags ['PVE', 'Horror'] to thread 1351628736071729193
+2025-03-18 19:52:08,087 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 19:52:08,229 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 19:52:08,343 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 19:52:08,344 - vrchat_bot - INFO - World name: Vibrations Test
+2025-03-18 19:52:08,344 - vrchat_bot - INFO - Author: Jordo
+2025-03-18 19:52:12,917 - vrchat_bot - INFO - User 552268901409488917 selected tags: ['Funny', 'PVP'] for world wrld_7f010f63-7a82-4668-b1a5-412b57fb08f5
+2025-03-18 19:52:13,100 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 19:52:13,133 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 19:52:13,244 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 19:52:13,244 - vrchat_bot - INFO - World name: Vibrations Test
+2025-03-18 19:52:13,244 - vrchat_bot - INFO - Author: Jordo
+2025-03-18 19:52:13,244 - vrchat_bot - INFO - File ID for world wrld_7f010f63-7a82-4668-b1a5-412b57fb08f5: file_de152a9d-d68a-4071-b524-ad815f1b8a4c
+2025-03-18 19:52:13,245 - vrchat_bot - INFO - ===== VRCHAT WORLD DEBUG =====
+2025-03-18 19:52:13,245 - vrchat_bot - INFO - World info keys: ['authorId', 'authorName', 'capacity', 'created_at', 'defaultContentSettings', 'description', 'favorites', 'featured', 'heat', 'id', 'imageUrl', 'instances', 'labsPublicationDate', 'name', 'occupants', 'organization', 'popularity', 'previewYoutubeId', 'privateOccupants', 'publicOccupants', 'publicationDate', 'recommendedCapacity', 'releaseStatus', 'tags', 'thumbnailImageUrl', 'udonProducts', 'unityPackages', 'updated_at', 'urlList', 'version', 'visits']
+2025-03-18 19:52:13,245 - vrchat_bot - INFO - Found 2 unity packages
+2025-03-18 19:52:13,245 - vrchat_bot - INFO - Package 1 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:52:13,245 - vrchat_bot - INFO - Package 1 assetUrl: https://api.vrchat.cloud/api/1/file/file_ea83c4bf-297c-4af6-b3e7-10f3372f6a2c/8/file
+2025-03-18 19:52:13,246 - vrchat_bot - INFO - Package 1 platform: android
+2025-03-18 19:52:13,246 - vrchat_bot - INFO - Package 2 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:52:13,246 - vrchat_bot - INFO - Package 2 assetUrl: https://api.vrchat.cloud/api/1/file/file_de152a9d-d68a-4071-b524-ad815f1b8a4c/6/file
+2025-03-18 19:52:13,246 - vrchat_bot - INFO - Package 2 platform: standalonewindows
+2025-03-18 19:52:13,246 - vrchat_bot - INFO - Found potential file ID pattern in imageUrl: file_9f63cd44-4822-4a9f-84eb-a4dcc5e69255
+2025-03-18 19:52:13,247 - vrchat_bot - INFO - Found potential file ID pattern in thumbnailImageUrl: file_9f63cd44-4822-4a9f-84eb-a4dcc5e69255
+2025-03-18 19:52:13,247 - vrchat_bot - INFO - File ID for world: file_de152a9d-d68a-4071-b524-ad815f1b8a4c
+2025-03-18 19:52:13,650 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 19:52:13,686 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 19:52:13,832 - vrchat_bot - INFO - File info retrieved successfully
+2025-03-18 19:52:13,833 - vrchat_bot - INFO - File info keys: ['extension', 'id', 'mimeType', 'name', 'ownerId', 'tags', 'versions']
+2025-03-18 19:52:13,833 - vrchat_bot - INFO - Found 7 versions
+2025-03-18 19:52:13,833 - vrchat_bot - INFO - Last version keys: ['created_at', 'file', 'signature', 'status', 'version']
+2025-03-18 19:52:13,833 - vrchat_bot - INFO - File data keys: ['category', 'fileName', 'md5', 'sizeInBytes', 'status', 'uploadId', 'url']
+2025-03-18 19:52:13,833 - vrchat_bot - INFO - Size in bytes: 34080
+2025-03-18 19:52:13,834 - vrchat_bot - INFO - Formatted size: 33.3 KB
+2025-03-18 19:52:13,834 - vrchat_bot - INFO - ===== END VRCHAT WORLD DEBUG =====
+2025-03-18 19:52:13,970 - vrchat_bot - INFO - World size raw value: 34080
+2025-03-18 19:52:13,970 - vrchat_bot - INFO - Formatted world size: 33.3 KB
+2025-03-18 19:52:14,125 - vrchat_bot - INFO - World size raw value: 34080
+2025-03-18 19:52:14,125 - vrchat_bot - INFO - Formatted world size: 33.3 KB
+2025-03-18 19:52:14,125 - vrchat_bot - INFO - Building embed with size: 33.3 KB
+2025-03-18 19:52:14,548 - vrchat_bot - INFO - Added tags ['Funny', 'PVP'] to thread 1351629312008392748
+2025-03-18 19:54:57,311 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 19:54:57,312 - discord.client - INFO - logging in using static token
+2025-03-18 19:54:57,892 - vrchat_bot - INFO - Persistent views registered
+2025-03-18 19:54:57,896 - vrchat_bot - INFO - Cogs loaded
+2025-03-18 19:54:58,289 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: d8d4811e92902a9f1a29e5df15e30f20).
+2025-03-18 19:54:58,583 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.8:8080
+2025-03-18 19:54:58,583 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 19:55:00,326 - vrchat_bot - INFO - Logged in as VRC World Helper
+2025-03-18 19:55:00,568 - vrchat_bot - INFO - Synced 12 command(s)
+2025-03-18 19:55:00,568 - vrchat_bot - INFO - Setting up database: database\vrchat_worlds.db
+2025-03-18 19:55:00,570 - vrchat_bot - INFO - Database setup completed successfully
+2025-03-18 19:55:00,770 - vrchat_bot - INFO - Button already exists in thread 1351622713034145852
+2025-03-18 19:55:01,077 - vrchat_bot - INFO - Button already exists in thread 1351593964280610856
+2025-03-18 19:55:01,078 - vrchat_bot - INFO - All threads have been checked and world buttons added where needed.
+2025-03-18 19:55:16,195 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 19:55:16,327 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 19:55:16,470 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 19:55:16,471 - vrchat_bot - INFO - World name: Doll House - Horror World
+2025-03-18 19:55:16,471 - vrchat_bot - INFO - Author: 『 도비 』
+2025-03-18 19:55:18,918 - vrchat_bot - INFO - User 552268901409488917 selected tags: ['PVP'] for world wrld_c634c31c-116a-4aaa-a130-1010929d979c
+2025-03-18 19:55:19,106 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 19:55:19,138 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 19:55:19,282 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 19:55:19,283 - vrchat_bot - INFO - World name: Doll House - Horror World
+2025-03-18 19:55:19,283 - vrchat_bot - INFO - Author: 『 도비 』
+2025-03-18 19:55:19,283 - vrchat_bot - INFO - File ID for world wrld_c634c31c-116a-4aaa-a130-1010929d979c: file_49085812-b6ef-4234-ae3b-cdb43b4f99db
+2025-03-18 19:55:19,283 - vrchat_bot - INFO - ===== VRCHAT WORLD DEBUG =====
+2025-03-18 19:55:19,283 - vrchat_bot - INFO - World info keys: ['authorId', 'authorName', 'capacity', 'created_at', 'defaultContentSettings', 'description', 'favorites', 'featured', 'heat', 'id', 'imageUrl', 'instances', 'labsPublicationDate', 'name', 'occupants', 'organization', 'popularity', 'previewYoutubeId', 'privateOccupants', 'publicOccupants', 'publicationDate', 'recommendedCapacity', 'releaseStatus', 'tags', 'thumbnailImageUrl', 'udonProducts', 'unityPackages', 'updated_at', 'urlList', 'version', 'visits']
+2025-03-18 19:55:19,284 - vrchat_bot - INFO - Found 2 unity packages
+2025-03-18 19:55:19,284 - vrchat_bot - INFO - Package 1 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:55:19,284 - vrchat_bot - INFO - Package 1 assetUrl: https://api.vrchat.cloud/api/1/file/file_49085812-b6ef-4234-ae3b-cdb43b4f99db/2/file
+2025-03-18 19:55:19,284 - vrchat_bot - INFO - Package 1 platform: standalonewindows
+2025-03-18 19:55:19,284 - vrchat_bot - INFO - Package 2 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:55:19,284 - vrchat_bot - INFO - Package 2 assetUrl: https://api.vrchat.cloud/api/1/file/file_49085812-b6ef-4234-ae3b-cdb43b4f99db/12/file
+2025-03-18 19:55:19,284 - vrchat_bot - INFO - Package 2 platform: standalonewindows
+2025-03-18 19:55:19,285 - vrchat_bot - INFO - Found potential file ID pattern in imageUrl: file_0b9e644f-928a-4e68-aab7-1f012521387f
+2025-03-18 19:55:19,285 - vrchat_bot - INFO - Found potential file ID pattern in thumbnailImageUrl: file_0b9e644f-928a-4e68-aab7-1f012521387f
+2025-03-18 19:55:19,285 - vrchat_bot - INFO - File ID for world: file_49085812-b6ef-4234-ae3b-cdb43b4f99db
+2025-03-18 19:55:19,511 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 19:55:19,536 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 19:55:19,841 - vrchat_bot - INFO - File info retrieved successfully
+2025-03-18 19:55:19,842 - vrchat_bot - INFO - File info keys: ['extension', 'id', 'mimeType', 'name', 'ownerId', 'tags', 'versions']
+2025-03-18 19:55:19,842 - vrchat_bot - INFO - Found 13 versions
+2025-03-18 19:55:19,842 - vrchat_bot - INFO - Last version keys: ['created_at', 'file', 'signature', 'status', 'version']
+2025-03-18 19:55:19,842 - vrchat_bot - INFO - File data keys: ['category', 'fileName', 'md5', 'sizeInBytes', 'status', 'uploadId', 'url']
+2025-03-18 19:55:19,842 - vrchat_bot - INFO - Size in bytes: 826444481
+2025-03-18 19:55:19,842 - vrchat_bot - INFO - Formatted size: 788.16 MB
+2025-03-18 19:55:19,842 - vrchat_bot - INFO - ===== END VRCHAT WORLD DEBUG =====
+2025-03-18 19:55:20,015 - vrchat_bot - INFO - World size raw value: 826444481
+2025-03-18 19:55:20,015 - vrchat_bot - INFO - Formatted world size: 788.16 MB
+2025-03-18 19:55:20,156 - vrchat_bot - INFO - World size raw value: 826444481
+2025-03-18 19:55:20,156 - vrchat_bot - INFO - Formatted world size: 788.16 MB
+2025-03-18 19:55:20,156 - vrchat_bot - INFO - Building embed with size: 788.16 MB
+2025-03-18 19:55:20,601 - vrchat_bot - INFO - Added tags ['PVP'] to thread 1351630092769689600
+2025-03-18 19:55:35,651 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 19:55:35,680 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 19:55:35,828 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 19:55:35,829 - vrchat_bot - INFO - World name: The Black Cat
+2025-03-18 19:55:35,829 - vrchat_bot - INFO - Author: spookyghostboo
+2025-03-18 19:55:39,243 - vrchat_bot - INFO - User 244188921309691904 selected tags: ['R-18'] for world wrld_4cf554b4-430c-4f8f-b53e-1f294eed230b
+2025-03-18 19:55:39,425 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 19:55:39,453 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 19:55:39,601 - vrchat_bot - INFO - World info keys: authorId, authorName, capacity, created_at, defaultContentSettings, description, favorites, featured, heat, id...
+2025-03-18 19:55:39,601 - vrchat_bot - INFO - World name: The Black Cat
+2025-03-18 19:55:39,601 - vrchat_bot - INFO - Author: spookyghostboo
+2025-03-18 19:55:39,602 - vrchat_bot - INFO - File ID for world wrld_4cf554b4-430c-4f8f-b53e-1f294eed230b: file_ba180a57-a93c-4334-97d7-9d46122646a2
+2025-03-18 19:55:39,602 - vrchat_bot - INFO - ===== VRCHAT WORLD DEBUG =====
+2025-03-18 19:55:39,602 - vrchat_bot - INFO - World info keys: ['authorId', 'authorName', 'capacity', 'created_at', 'defaultContentSettings', 'description', 'favorites', 'featured', 'heat', 'id', 'imageUrl', 'instances', 'labsPublicationDate', 'name', 'occupants', 'organization', 'popularity', 'previewYoutubeId', 'privateOccupants', 'publicOccupants', 'publicationDate', 'recommendedCapacity', 'releaseStatus', 'tags', 'thumbnailImageUrl', 'udonProducts', 'unityPackages', 'updated_at', 'urlList', 'version', 'visits']
+2025-03-18 19:55:39,602 - vrchat_bot - INFO - Found 21 unity packages
+2025-03-18 19:55:39,602 - vrchat_bot - INFO - Package 1 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:55:39,603 - vrchat_bot - INFO - Package 1 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/46/file
+2025-03-18 19:55:39,603 - vrchat_bot - INFO - Package 1 platform: android
+2025-03-18 19:55:39,603 - vrchat_bot - INFO - Package 2 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:55:39,603 - vrchat_bot - INFO - Package 2 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/101/file
+2025-03-18 19:55:39,603 - vrchat_bot - INFO - Package 2 platform: android
+2025-03-18 19:55:39,603 - vrchat_bot - INFO - Package 3 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:55:39,604 - vrchat_bot - INFO - Package 3 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/108/file
+2025-03-18 19:55:39,604 - vrchat_bot - INFO - Package 3 platform: android
+2025-03-18 19:55:39,604 - vrchat_bot - INFO - Package 4 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:55:39,604 - vrchat_bot - INFO - Package 4 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/214/file
+2025-03-18 19:55:39,604 - vrchat_bot - INFO - Package 4 platform: android
+2025-03-18 19:55:39,605 - vrchat_bot - INFO - Package 5 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:55:39,605 - vrchat_bot - INFO - Package 5 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/222/file
+2025-03-18 19:55:39,605 - vrchat_bot - INFO - Package 5 platform: android
+2025-03-18 19:55:39,605 - vrchat_bot - INFO - Package 6 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:55:39,605 - vrchat_bot - INFO - Package 6 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/232/file
+2025-03-18 19:55:39,605 - vrchat_bot - INFO - Package 6 platform: android
+2025-03-18 19:55:39,605 - vrchat_bot - INFO - Package 7 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:55:39,606 - vrchat_bot - INFO - Package 7 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/335/file
+2025-03-18 19:55:39,606 - vrchat_bot - INFO - Package 7 platform: android
+2025-03-18 19:55:39,606 - vrchat_bot - INFO - Package 8 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:55:39,606 - vrchat_bot - INFO - Package 8 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/381/file
+2025-03-18 19:55:39,606 - vrchat_bot - INFO - Package 8 platform: android
+2025-03-18 19:55:39,607 - vrchat_bot - INFO - Package 9 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:55:39,607 - vrchat_bot - INFO - Package 9 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/399/file
+2025-03-18 19:55:39,607 - vrchat_bot - INFO - Package 9 platform: android
+2025-03-18 19:55:39,607 - vrchat_bot - INFO - Package 10 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'unitySortNumber', 'unityVersion', 'worldSignature']
+2025-03-18 19:55:39,607 - vrchat_bot - INFO - Package 10 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/433/file
+2025-03-18 19:55:39,608 - vrchat_bot - INFO - Package 10 platform: android
+2025-03-18 19:55:39,608 - vrchat_bot - INFO - Package 11 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:55:39,608 - vrchat_bot - INFO - Package 11 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/47/file
+2025-03-18 19:55:39,608 - vrchat_bot - INFO - Package 11 platform: standalonewindows
+2025-03-18 19:55:39,608 - vrchat_bot - INFO - Package 12 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:55:39,609 - vrchat_bot - INFO - Package 12 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/102/file
+2025-03-18 19:55:39,609 - vrchat_bot - INFO - Package 12 platform: standalonewindows
+2025-03-18 19:55:39,609 - vrchat_bot - INFO - Package 13 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:55:39,609 - vrchat_bot - INFO - Package 13 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/107/file
+2025-03-18 19:55:39,609 - vrchat_bot - INFO - Package 13 platform: standalonewindows
+2025-03-18 19:55:39,609 - vrchat_bot - INFO - Package 14 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:55:39,610 - vrchat_bot - INFO - Package 14 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/212/file
+2025-03-18 19:55:39,610 - vrchat_bot - INFO - Package 14 platform: standalonewindows
+2025-03-18 19:55:39,610 - vrchat_bot - INFO - Package 15 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:55:39,610 - vrchat_bot - INFO - Package 15 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/223/file
+2025-03-18 19:55:39,610 - vrchat_bot - INFO - Package 15 platform: standalonewindows
+2025-03-18 19:55:39,611 - vrchat_bot - INFO - Package 16 keys: ['assetUrl', 'assetUrlObject', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'pluginUrlObject', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:55:39,611 - vrchat_bot - INFO - Package 16 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/231/file
+2025-03-18 19:55:39,611 - vrchat_bot - INFO - Package 16 platform: standalonewindows
+2025-03-18 19:55:39,611 - vrchat_bot - INFO - Package 17 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:55:39,611 - vrchat_bot - INFO - Package 17 assetUrl: 
+2025-03-18 19:55:39,611 - vrchat_bot - INFO - Package 17 platform: standalonewindows
+2025-03-18 19:55:39,611 - vrchat_bot - INFO - Package 18 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:55:39,612 - vrchat_bot - INFO - Package 18 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/334/file
+2025-03-18 19:55:39,612 - vrchat_bot - INFO - Package 18 platform: standalonewindows
+2025-03-18 19:55:39,612 - vrchat_bot - INFO - Package 19 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'pluginUrl', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:55:39,612 - vrchat_bot - INFO - Package 19 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/380/file
+2025-03-18 19:55:39,612 - vrchat_bot - INFO - Package 19 platform: standalonewindows
+2025-03-18 19:55:39,613 - vrchat_bot - INFO - Package 20 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'unitySortNumber', 'unityVersion']
+2025-03-18 19:55:39,613 - vrchat_bot - INFO - Package 20 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/398/file
+2025-03-18 19:55:39,613 - vrchat_bot - INFO - Package 20 platform: standalonewindows
+2025-03-18 19:55:39,613 - vrchat_bot - INFO - Package 21 keys: ['assetUrl', 'assetVersion', 'created_at', 'id', 'platform', 'unitySortNumber', 'unityVersion', 'worldSignature']
+2025-03-18 19:55:39,613 - vrchat_bot - INFO - Package 21 assetUrl: https://api.vrchat.cloud/api/1/file/file_ba180a57-a93c-4334-97d7-9d46122646a2/434/file
+2025-03-18 19:55:39,614 - vrchat_bot - INFO - Package 21 platform: standalonewindows
+2025-03-18 19:55:39,614 - vrchat_bot - INFO - Found potential file ID pattern in imageUrl: file_ab2d3af4-c6da-41b9-8a3d-6f554462cfaf
+2025-03-18 19:55:39,614 - vrchat_bot - INFO - Found potential file ID pattern in thumbnailImageUrl: file_ab2d3af4-c6da-41b9-8a3d-6f554462cfaf
+2025-03-18 19:55:39,614 - vrchat_bot - INFO - File ID for world: file_ba180a57-a93c-4334-97d7-9d46122646a2
+2025-03-18 19:55:39,797 - vrchat_bot - INFO - Auth token valid for user: hppedeaf
+2025-03-18 19:55:39,824 - vrchat_bot - INFO - Successfully initialized VRChat API with key: JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26
+2025-03-18 19:55:39,982 - vrchat_bot - INFO - File info retrieved successfully
+2025-03-18 19:55:39,983 - vrchat_bot - INFO - File info keys: ['extension', 'id', 'mimeType', 'name', 'ownerId', 'tags', 'versions']
+2025-03-18 19:55:39,983 - vrchat_bot - INFO - Found 435 versions
+2025-03-18 19:55:39,983 - vrchat_bot - INFO - Last version keys: ['created_at', 'file', 'signature', 'status', 'version']
+2025-03-18 19:55:39,983 - vrchat_bot - INFO - File data keys: ['category', 'fileName', 'md5', 'sizeInBytes', 'status', 'uploadId', 'url']
+2025-03-18 19:55:39,983 - vrchat_bot - INFO - Size in bytes: 85112856
+2025-03-18 19:55:39,984 - vrchat_bot - INFO - Formatted size: 81.17 MB
+2025-03-18 19:55:39,984 - vrchat_bot - INFO - ===== END VRCHAT WORLD DEBUG =====
+2025-03-18 19:55:40,133 - vrchat_bot - INFO - World size raw value: 85112856
+2025-03-18 19:55:40,133 - vrchat_bot - INFO - Formatted world size: 81.17 MB
+2025-03-18 19:55:40,265 - vrchat_bot - INFO - World size raw value: 85112856
+2025-03-18 19:55:40,266 - vrchat_bot - INFO - Formatted world size: 81.17 MB
+2025-03-18 19:55:40,266 - vrchat_bot - INFO - Building embed with size: 81.17 MB
+2025-03-18 19:55:40,902 - vrchat_bot - INFO - Added tags ['R-18'] to thread 1351630176836124855
+2025-03-18 20:10:24,792 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 20:10:24,793 - discord.client - INFO - logging in using static token
+2025-03-18 20:10:25,372 - vrchat_bot - INFO - Persistent views registered
+2025-03-18 20:10:25,378 - vrchat_bot - INFO - Cogs loaded
+2025-03-18 20:10:25,757 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 5fbb4637424228733c5a8d1034099441).
+2025-03-18 20:10:26,070 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.8:8080
+2025-03-18 20:10:26,071 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 20:10:27,784 - vrchat_bot - INFO - Logged in as VRC World Helper
+2025-03-18 20:10:28,045 - vrchat_bot - INFO - Synced 12 command(s)
+2025-03-18 20:10:28,046 - vrchat_bot - INFO - Setting up database: database\vrchat_worlds.db
+2025-03-18 20:10:28,047 - vrchat_bot - INFO - Database setup completed successfully
+2025-03-18 20:10:28,699 - vrchat_bot - INFO - Button already exists in thread 1351622713034145852
+2025-03-18 20:10:28,901 - vrchat_bot - INFO - Button already exists in thread 1351593964280610856
+2025-03-18 20:10:28,902 - vrchat_bot - INFO - All threads have been checked and world buttons added where needed.
+2025-03-18 20:11:03,740 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:11:03] "GET / HTTP/1.1" 200 -
+2025-03-18 20:11:04,069 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:11:04] "[36mGET /static/css/marketing-styles.css HTTP/1.1[0m" 304 -
+2025-03-18 20:11:04,154 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:11:04] "[33mGET /static/img/hero-bg.jpg HTTP/1.1[0m" 404 -
+2025-03-18 20:11:12,414 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:11:12] "[32mGET /login HTTP/1.1[0m" 302 -
+2025-03-18 20:11:18,677 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:11:18] "[32mGET /callback?code=wMoS4w26PgtYOExi527moUWfx8T5Kk HTTP/1.1[0m" 302 -
+2025-03-18 20:11:19,039 - server - ERROR - Exception on /dashboard [GET]
+Traceback (most recent call last):
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\developpeur\VRChat-World-Showcase-Bot\web_dashboard.py", line 179, in dashboard
+    return render_template('dashboard.html',
+                          user=session,
+                          guilds=bot_guilds,
+                          bot_invite_url=BOT_INVITE_URL)  # Pass the bot invite URL to the template
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\web\templates\dashboard.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "D:\developpeur\VRChat-World-Showcase-Bot\web\templates\base.html", line 90, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^
+  File "D:\developpeur\VRChat-World-Showcase-Bot\web\templates\dashboard.html", line 104, in block 'content'
+    <div class="text-3xl font-bold text-gray-800">{{ stats.server_count|default('0') }}</div>
+    ^^^^^^^^^
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\jinja2\environment.py", line 490, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: 'stats' is undefined
+2025-03-18 20:11:19,048 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:11:19] "[35m[1mGET /dashboard HTTP/1.1[0m" 500 -
+2025-03-18 20:12:16,411 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:12:16] "[32mGET /callback?code=YwuAQC7Ut9T7RjfJCxUIuHj1Yqixzw HTTP/1.1[0m" 302 -
+2025-03-18 20:12:16,728 - server - ERROR - Exception on /dashboard [GET]
+Traceback (most recent call last):
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\developpeur\VRChat-World-Showcase-Bot\web_dashboard.py", line 179, in dashboard
+    return render_template('dashboard.html',
+                          user=session,
+                          guilds=bot_guilds,
+                          bot_invite_url=BOT_INVITE_URL)  # Pass the bot invite URL to the template
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\web\templates\dashboard.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "D:\developpeur\VRChat-World-Showcase-Bot\web\templates\base.html", line 90, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^
+  File "D:\developpeur\VRChat-World-Showcase-Bot\web\templates\dashboard.html", line 104, in block 'content'
+    <div class="text-3xl font-bold text-gray-800">{{ stats.server_count|default('0') }}</div>
+    ^^^^^^^^^
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\jinja2\environment.py", line 490, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: 'stats' is undefined
+2025-03-18 20:12:16,732 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:12:16] "[35m[1mGET /dashboard HTTP/1.1[0m" 500 -
+2025-03-18 20:12:34,463 - server - ERROR - Exception on /dashboard [GET]
+Traceback (most recent call last):
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\developpeur\VRChat-World-Showcase-Bot\web_dashboard.py", line 179, in dashboard
+    return render_template('dashboard.html',
+                          user=session,
+                          guilds=bot_guilds,
+                          bot_invite_url=BOT_INVITE_URL)  # Pass the bot invite URL to the template
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\web\templates\dashboard.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "D:\developpeur\VRChat-World-Showcase-Bot\web\templates\base.html", line 90, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^
+  File "D:\developpeur\VRChat-World-Showcase-Bot\web\templates\dashboard.html", line 104, in block 'content'
+    <div class="text-3xl font-bold text-gray-800">{{ stats.server_count|default('0') }}</div>
+    ^^^^^^^^^
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\jinja2\environment.py", line 490, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: 'stats' is undefined
+2025-03-18 20:12:34,467 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:12:34] "[35m[1mGET /dashboard HTTP/1.1[0m" 500 -
+2025-03-18 20:12:42,092 - discord.client - WARNING - PyNaCl is not installed, voice will NOT be supported
+2025-03-18 20:12:42,094 - discord.client - INFO - logging in using static token
+2025-03-18 20:12:42,731 - vrchat_bot - INFO - Persistent views registered
+2025-03-18 20:12:42,734 - vrchat_bot - INFO - Cogs loaded
+2025-03-18 20:12:43,075 - discord.gateway - INFO - Shard ID None has connected to Gateway (Session ID: 48a10e79f001b8d625bc2e7d034aa734).
+2025-03-18 20:12:43,356 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://192.168.1.8:8080
+2025-03-18 20:12:43,356 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 20:12:45,128 - vrchat_bot - INFO - Logged in as VRC World Helper
+2025-03-18 20:12:45,407 - vrchat_bot - INFO - Synced 12 command(s)
+2025-03-18 20:12:45,407 - vrchat_bot - INFO - Setting up database: database\vrchat_worlds.db
+2025-03-18 20:12:45,409 - vrchat_bot - INFO - Database setup completed successfully
+2025-03-18 20:12:45,657 - vrchat_bot - INFO - Button already exists in thread 1351622713034145852
+2025-03-18 20:12:45,878 - vrchat_bot - INFO - Button already exists in thread 1351593964280610856
+2025-03-18 20:12:45,878 - vrchat_bot - INFO - All threads have been checked and world buttons added where needed.
+2025-03-18 20:12:47,077 - server - ERROR - Exception on /dashboard [GET]
+Traceback (most recent call last):
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\developpeur\VRChat-World-Showcase-Bot\web_dashboard.py", line 179, in dashboard
+    return render_template('dashboard.html',
+                          user=session,
+                          guilds=bot_guilds,
+                          bot_invite_url=BOT_INVITE_URL)  # Pass the bot invite URL to the template
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\templating.py", line 150, in render_template
+    return _render(app, template, context)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\flask\templating.py", line 131, in _render
+    rv = template.render(context)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "D:\developpeur\VRChat-World-Showcase-Bot\web\templates\dashboard.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "D:\developpeur\VRChat-World-Showcase-Bot\web\templates\base.html", line 90, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^
+  File "D:\developpeur\VRChat-World-Showcase-Bot\web\templates\dashboard.html", line 104, in block 'content'
+    <div class="text-3xl font-bold text-gray-800">{{ stats.server_count|default('0') }}</div>
+    ^^^^^^^^^
+  File "D:\developpeur\VRChat-World-Showcase-Bot\venv\Lib\site-packages\jinja2\environment.py", line 490, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: 'stats' is undefined
+2025-03-18 20:12:47,082 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:12:47] "[35m[1mGET /dashboard HTTP/1.1[0m" 500 -
+2025-03-18 20:13:03,337 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 20:13:03] "[32mGET /callback?code=m5OifCCd5blJpHXRvuTCpWxAyr2ddV HTTP/1.1[0m" 302 -

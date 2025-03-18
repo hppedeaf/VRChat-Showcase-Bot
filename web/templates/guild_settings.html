@@ -1,0 +1,279 @@
+{% extends "base.html" %}
+
+{% block title %}{{ guild.name }} - Settings{% endblock %}
+
+{% block content %}
+<div class="bg-discord-dark text-white py-8">
+    <div class="container mx-auto px-4">
+        <div class="flex items-center">
+            {% if guild.icon %}
+            <img src="https://cdn.discordapp.com/icons/{{ guild.id }}/{{ guild.icon }}.png" alt="{{ guild.name }}" class="w-16 h-16 rounded-full mr-4">
+            {% else %}
+            <div class="w-16 h-16 rounded-full bg-gray-500 flex items-center justify-center text-white font-bold mr-4">
+                {{ guild.name[:1] }}
+            </div>
+            {% endif %}
+            <div>
+                <h1 class="text-3xl font-bold">{{ guild.name }}</h1>
+                <p class="text-gray-300">Settings</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mx-auto px-4 py-8">
+    <!-- Server Navigation -->
+    <div class="bg-white rounded-lg shadow-md overflow-hidden mb-8">
+        <div class="flex flex-wrap border-b">
+            <a href="/guild/{{ guild.id }}" class="px-6 py-3 font-medium text-gray-600 hover:text-discord-dark">
+                <i class="fas fa-home mr-2"></i> Overview
+            </a>
+            <a href="/guild/{{ guild.id }}/worlds" class="px-6 py-3 font-medium text-gray-600 hover:text-discord-dark">
+                <i class="fas fa-globe mr-2"></i> Worlds
+            </a>
+            <a href="/guild/{{ guild.id }}/tags" class="px-6 py-3 font-medium text-gray-600 hover:text-discord-dark">
+                <i class="fas fa-tags mr-2"></i> Tags
+            </a>
+            <a href="/guild/{{ guild.id }}/settings" class="px-6 py-3 font-medium text-discord-dark border-b-2 border-discord">
+                <i class="fas fa-cog mr-2"></i> Settings
+            </a>
+        </div>
+    </div>
+
+    <!-- Forum Settings -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+        <h2 class="text-2xl font-bold text-discord-dark mb-4">Forum Settings</h2>
+        
+        {% if forum_config %}
+            <div class="mb-6">
+                <div class="flex items-center text-green-600 mb-4">
+                    <i class="fas fa-check-circle mr-2 text-lg"></i>
+                    <span class="font-medium">Forum channel is configured</span>
+                </div>
+                
+                <div class="bg-gray-50 rounded-lg p-4 mb-4">
+                    <h3 class="font-bold mb-2">Current Configuration</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-gray-500 text-sm">Forum Channel ID</p>
+                            <p class="font-medium">{{ forum_config[0] }}</p>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-sm">Control Thread ID</p>
+                            <p class="font-medium">{{ forum_config[1] }}</p>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <a href="https://discord.com/channels/{{ guild.id }}/{{ forum_config[0] }}" target="_blank" class="text-discord hover:text-blue-700 inline-flex items-center">
+                            <i class="fas fa-external-link-alt mr-2"></i>
+                            <span>View Forum in Discord</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-exclamation-circle text-yellow-400"></i>
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-sm font-medium text-yellow-800">Important Note</h3>
+                            <div class="mt-2 text-sm text-yellow-700">
+                                <p>To change the forum channel, you must use the Discord bot commands:</p>
+                                <ul class="list-disc pl-5 mt-1">
+                                    <li>Use <code class="bg-gray-100 px-1">/world-create</code> to create a new forum</li>
+                                    <li>Or use <code class="bg-gray-100 px-1">/world-set</code> to use an existing forum</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button id="refreshSettings" class="bg-discord hover:bg-blue-600 text-white py-2 px-4 rounded flex items-center">
+                    <i class="fas fa-sync-alt mr-2"></i> Refresh Settings
+                </button>
+            </div>
+        {% else %}
+            <div class="mb-6">
+                <div class="flex items-center text-red-600 mb-4">
+                    <i class="fas fa-times-circle mr-2 text-lg"></i>
+                    <span class="font-medium">Forum channel is not configured</span>
+                </div>
+                
+                <div class="bg-red-50 border-l-4 border-red-400 p-4 mb-6">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-exclamation-circle text-red-400"></i>
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-sm font-medium text-red-800">Action Required</h3>
+                            <div class="mt-2 text-sm text-red-700">
+                                <p>You need to set up a forum channel in Discord using the bot commands:</p>
+                                <ul class="list-disc pl-5 mt-1">
+                                    <li>Use <code class="bg-gray-100 px-1">/world-create</code> to create a new forum</li>
+                                    <li>Or use <code class="bg-gray-100 px-1">/world-set</code> to use an existing forum</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="https://discord.com/channels/{{ guild.id }}" target="_blank" class="bg-discord hover:bg-blue-600 text-white py-2 px-4 rounded inline-flex items-center">
+                    <i class="fas fa-external-link-alt mr-2"></i>
+                    <span>Go to Discord Server</span>
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Management Actions -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+        <h2 class="text-2xl font-bold text-discord-dark mb-4">Management Actions</h2>
+        
+        <div class="space-y-4">
+            <div class="p-4 border rounded-lg hover:bg-gray-50 transition-colors">
+                <h3 class="font-bold text-lg mb-2">Scan for Issues</h3>
+                <p class="text-gray-600 mb-3">Scan your forum for issues and fix them automatically.</p>
+                <button id="scanAction" class="bg-discord hover:bg-blue-600 text-white py-2 px-4 rounded inline-flex items-center">
+                    <i class="fas fa-search mr-2"></i> Scan in Discord
+                </button>
+            </div>
+            
+            <div class="p-4 border rounded-lg hover:bg-gray-50 transition-colors">
+                <h3 class="font-bold text-lg mb-2">Clean Database</h3>
+                <p class="text-gray-600 mb-3">Clean up database entries for deleted channels and threads.</p>
+                <button id="cleanDbAction" class="bg-discord hover:bg-blue-600 text-white py-2 px-4 rounded inline-flex items-center">
+                    <i class="fas fa-broom mr-2"></i> Clean Database in Discord
+                </button>
+            </div>
+            
+            <div class="p-4 border rounded-lg hover:bg-gray-50 transition-colors">
+                <h3 class="font-bold text-lg mb-2">Repair Threads</h3>
+                <p class="text-gray-600 mb-3">Fix threads that don't have proper world links.</p>
+                <button id="repairThreadsAction" class="bg-discord hover:bg-blue-600 text-white py-2 px-4 rounded inline-flex items-center">
+                    <i class="fas fa-wrench mr-2"></i> Repair in Discord
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Danger Zone -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-bold text-red-600 mb-4">Danger Zone</h2>
+        
+        <div class="border border-red-300 rounded-lg p-4">
+            <h3 class="font-bold text-lg mb-2">Reset Configuration</h3>
+            <p class="text-gray-600 mb-4">This will remove the forum channel configuration from the database. It will not delete any Discord channels or threads, but the bot will no longer recognize them.</p>
+            
+            <button id="resetConfigBtn" class="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded inline-flex items-center">
+                <i class="fas fa-exclamation-triangle mr-2"></i> Reset Configuration
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Confirmation Modal -->
+<div id="confirmationModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
+        <h3 class="text-xl font-bold mb-4" id="modalTitle">Confirm Action</h3>
+        <p class="mb-6" id="modalMessage">Are you sure you want to perform this action?</p>
+        <div class="flex justify-end space-x-4">
+            <button id="cancelModal" class="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded">Cancel</button>
+            <button id="confirmModal" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">Confirm</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Refresh settings button
+    const refreshSettings = document.getElementById('refreshSettings');
+    if (refreshSettings) {
+        refreshSettings.addEventListener('click', function() {
+            window.location.reload();
+        });
+    }
+
+    // Discord command buttons
+    const scanAction = document.getElementById('scanAction');
+    const cleanDbAction = document.getElementById('cleanDbAction');
+    const repairThreadsAction = document.getElementById('repairThreadsAction');
+
+    if (scanAction) {
+        scanAction.addEventListener('click', function() {
+            alert("Please use the /scan command in your Discord server to perform this action.");
+        });
+    }
+
+    if (cleanDbAction) {
+        cleanDbAction.addEventListener('click', function() {
+            alert("Please use the /clean-db command in your Discord server to perform this action.");
+        });
+    }
+
+    if (repairThreadsAction) {
+        repairThreadsAction.addEventListener('click', function() {
+            alert("Please use the /repair-threads command in your Discord server to perform this action.");
+        });
+    }
+
+    // Reset configuration button
+    const resetConfigBtn = document.getElementById('resetConfigBtn');
+    const confirmationModal = document.getElementById('confirmationModal');
+    const cancelModal = document.getElementById('cancelModal');
+    const confirmModal = document.getElementById('confirmModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalMessage = document.getElementById('modalMessage');
+
+    if (resetConfigBtn) {
+        resetConfigBtn.addEventListener('click', function() {
+            modalTitle.textContent = "Reset Configuration";
+            modalMessage.textContent = "Are you sure you want to reset the forum configuration? This will require you to set up the forum channel again using Discord commands.";
+            confirmationModal.classList.remove('hidden');
+        });
+    }
+
+    if (cancelModal) {
+        cancelModal.addEventListener('click', function() {
+            confirmationModal.classList.add('hidden');
+        });
+    }
+
+    if (confirmModal) {
+        confirmModal.addEventListener('click', function() {
+            // Send API request to reset configuration
+            fetch(`/api/guild/{{ guild.id }}/reset-config`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.reload();
+                } else {
+                    alert("Error: " + (data.message || "Failed to reset configuration"));
+                }
+            })
+            .catch(error => {
+                alert("Error: " + error.message);
+            })
+            .finally(() => {
+                confirmationModal.classList.add('hidden');
+            });
+        });
+    }
+
+    // Close modal when clicking outside
+    confirmationModal.addEventListener('click', function(e) {
+        if (e.target === confirmationModal) {
+            confirmationModal.classList.add('hidden');
+        }
+    });
+});
+</script>
+{% endblock %}

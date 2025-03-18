@@ -5,66 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Privacy Policy - VRChat World Showcase Bot</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
-        .privacy-container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 2rem;
-            background-color: var(--card-bg);
-            border-radius: 8px;
-        }
-        
-        .privacy-container h2 {
-            color: var(--primary);
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-        }
-        
-        .privacy-container h3 {
-            color: var(--text-primary);
-            margin-top: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .privacy-container p, .privacy-container ul {
-            margin-bottom: 1rem;
-        }
-        
-        .privacy-container ul {
-            padding-left: 2rem;
-        }
-        
-        .privacy-container li {
-            margin-bottom: 0.5rem;
-        }
-        
-        .last-updated {
-            font-style: italic;
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-        }
-        
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1rem 0 2rem 0;
-        }
-        
-        .data-table th, .data-table td {
-            padding: 0.75rem;
-            text-align: left;
-            border-bottom: 1px solid #333;
-        }
-        
-        .data-table th {
-            background-color: rgba(255, 51, 51, 0.1);
-            color: var(--primary);
-        }
-        
-        .data-table tr:hover {
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-    </style>
+    <meta name="description" content="Privacy Policy for the VRChat World Showcase Discord Bot">
 </head>
 <body>
     <header>
@@ -165,11 +106,17 @@
             <h2>5. Data Security</h2>
             <p>We implement reasonable security measures to protect your information. However, please be aware that no method of electronic storage or transmission is 100% secure.</p>
             
-            <h2>6. Changes to This Privacy Policy</h2>
+            <h2>6. VRChat API Usage</h2>
+            <p>Our Bot interacts with the VRChat API to fetch world information. This interaction is governed by VRChat's own terms and policies. Our access to the VRChat API is limited to publicly available world information and does not include user authentication data or private information.</p>
+            
+            <h2>7. Children's Privacy</h2>
+            <p>Our services are not directed to individuals under the age of 13. We do not knowingly collect personal information from children under 13. If we learn we have collected personal information of a child under 13, we will take steps to delete such information as quickly as possible.</p>
+            
+            <h2>8. Changes to This Privacy Policy</h2>
             <p>We may update this Privacy Policy from time to time to reflect changes in our practices or for other operational, legal, or regulatory reasons. We will notify users of any material changes by updating the "Last Updated" date.</p>
             
-            <h2>7. Contact Us</h2>
-            <p>If you have any questions about our privacy practices or would like to exercise your rights regarding your data, please contact us through our Discord support server or via email at [contact email].</p>
+            <h2>9. Contact Us</h2>
+            <p>If you have any questions about our privacy practices or would like to exercise your rights regarding your data, please contact us through our <a href="https://discord.gg/vrchat-world-showcase" style="color: var(--primary);">Discord support server</a> or via email at <a href="mailto:contact@vrchat-showcase-bot.com" style="color: var(--primary);">contact@vrchat-showcase-bot.com</a>.</p>
         </div>
     </section>
     
@@ -181,11 +128,32 @@
             <div class="footer-links">
                 <a href="index.html">Home</a>
                 <a href="terms.html">Terms of Service</a>
+                <a href="https://discord.gg/vrchat-world-showcase">Discord Support</a>
             </div>
             <div class="copyright">
                 &copy; 2025 VRChat World Showcase Bot. Created by Hppedeaf. All rights reserved.
             </div>
         </div>
     </footer>
+
+    <a href="#" class="back-to-top" id="backToTop">↑</a>
+
+    <script>
+        // Back to top button functionality
+        const backToTopButton = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('visible');
+            } else {
+                backToTopButton.classList.remove('visible');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
 </body>
 </html>

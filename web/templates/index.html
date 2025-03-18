@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VRChat World Showcase Bot</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <meta name="description" content="Create a beautiful, organized gallery for VRChat worlds in your Discord server with automatic world information, tags, and more.">
+    <meta property="og:title" content="VRChat World Showcase Bot">
+    <meta property="og:description" content="Showcase VRChat Worlds in Your Discord with automatic world information, tags, and more.">
+    <meta property="og:image" content="https://cdn.discordapp.com/avatars/1156538533876613121/8acb3d0ce2c328987ad86355e0d0b528.png">
 </head>
 <body>
     <header>
@@ -17,7 +21,7 @@
                 <a href="#commands">Commands</a>
                 <a href="#howto">How To Use</a>
             </div>
-            <a href="https://discord.com/oauth2/authorize?client_id=YOUR_CLIENT_ID&scope=bot&permissions=8" class="btn">Add to Discord</a>
+            <a href="https://discord.com/oauth2/authorize?client_id=1156538533876613121&scope=bot&permissions=8" class="btn">Add to Discord</a>
         </nav>
     </header>
     
@@ -26,7 +30,7 @@
             <h1>Showcase VRChat Worlds in Your Discord</h1>
             <p>Create a beautiful, organized gallery for VRChat worlds in your Discord server with automatic world information, tags, and more.</p>
             <div class="cta-buttons">
-                <a href="https://discord.com/oauth2/authorize?client_id=YOUR_CLIENT_ID&scope=bot&permissions=8" class="btn">Add to Discord</a>
+                <a href="https://discord.com/oauth2/authorize?client_id=1156538533876613121&scope=bot&permissions=8" class="btn">Add to Discord</a>
                 <a href="#features" class="btn btn-secondary">Learn More</a>
             </div>
         </div>
@@ -101,11 +105,6 @@
                 </div>
                 
                 <div class="command-card">
-                    <div class="command-name">/world-remove</div>
-                    <div class="command-desc">Remove a specific world post by URL, ID, or thread selection.</div>
-                </div>
-                
-                <div class="command-card">
                     <div class="command-name">/scan</div>
                     <div class="command-desc">Scan the forum for issues and provide options to automatically fix them.</div>
                 </div>
@@ -113,6 +112,11 @@
                 <div class="command-card">
                     <div class="command-name">/clean-db</div>
                     <div class="command-desc">Clean the database by removing references to deleted channels.</div>
+                </div>
+                
+                <div class="command-card">
+                    <div class="command-name">/repair-threads</div>
+                    <div class="command-desc">Fix threads that don't have proper world links in the database.</div>
                 </div>
                 
                 <div class="command-card">
@@ -163,7 +167,7 @@
                 <div class="step-number"></div>
                 <div class="step-content">
                     <h3>Keep Your Showcase Clean</h3>
-                    <p>Periodically use the <code>/scan</code> command to check for issues and fix them automatically. You can also use <code>/world-remove</code> to delete specific world posts.</p>
+                    <p>Periodically use the <code>/scan</code> command to check for issues and fix them automatically. You can also use <code>/repair-threads</code> to fix any corrupted data.</p>
                 </div>
             </div>
         </div>
@@ -172,20 +176,20 @@
     <section class="section" id="bot-links">
         <div class="section-header">
             <h2>Bot Resources</h2>
-            <p>Important links for developers and administrators</p>
+            <p>Important links and documentation</p>
         </div>
         
         <div class="link-cards">
             <div class="link-card">
-                <h3>Interactions Endpoint URL</h3>
-                <p>Used for Discord's interaction webhook integration.</p>
-                <a href="https://example.com/api/interactions" class="link-btn">View Endpoint</a>
+                <h3>Discord Support Server</h3>
+                <p>Join our community for help, updates, and suggestions.</p>
+                <a href="https://discord.gg/vrchat-world-showcase" class="link-btn">Join Server</a>
             </div>
             
             <div class="link-card">
-                <h3>Linked Roles Verification URL</h3>
-                <p>For verifying and authorizing linked Discord roles.</p>
-                <a href="https://example.com/api/verify" class="link-btn">View Endpoint</a>
+                <h3>Command Documentation</h3>
+                <p>Detailed guide to all bot commands and features.</p>
+                <a href="#commands" class="link-btn">View Commands</a>
             </div>
             
             <div class="link-card">
@@ -212,12 +216,33 @@
                 <a href="#commands">Commands</a>
                 <a href="#howto">How To Use</a>
                 <a href="#bot-links">Bot Resources</a>
-                <a href="https://discord.com/oauth2/authorize?client_id=YOUR_CLIENT_ID&scope=bot&permissions=8">Add to Discord</a>
+                <a href="https://discord.com/oauth2/authorize?client_id=1156538533876613121&scope=bot&permissions=8">Add to Discord</a>
             </div>
             <div class="copyright">
                 &copy; 2025 VRChat World Showcase Bot. Created by Hppedeaf. All rights reserved.
             </div>
         </div>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

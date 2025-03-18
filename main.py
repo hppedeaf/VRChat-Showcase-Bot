@@ -5,37 +5,15 @@ import asyncio
 import discord
 from discord.ext import commands
 import os
+import sys
+
+# Add the bot directory to the Python path
+sys.path.append(os.path.join(os.path.dirname(__file__), 'bot'))
+
 import config as config
 from database.db import setup_database
 
-# Add these imports for Flask
-from flask import Flask, request, jsonify
-import threading
-import os
-
-# Flask app setup
-app = Flask(__name__)
-
-@app.route('/api/interactions', methods=['POST'])
-def interactions():
-    # Handle Discord interactions
-    return jsonify({"type": 1})
-
-@app.route('/api/verify', methods=['GET', 'POST'])
-def verify():
-    # Handle role verification
-    return jsonify({"success": True})
-
-# Add this route to serve your website's main page
-@app.route('/')
-def index():
-    return app.send_static_file('index.html')
-
-def run_flask():
-    port = int(os.environ.get("PORT", 8080))
-    app.run(host='0.0.0.0', port=port)
-    
-# Discord Bot setup
+# Create bot with proper intents
 intents = discord.Intents.default()
 intents.message_content = True
 
@@ -53,7 +31,7 @@ class VRChatBot(commands.Bot):
         self.add_view(WorldButton())
         config.logger.info("Persistent views registered")
         
-        # Load cogs
+        # Load cogs - make sure each cog is loaded only once
         await self.load_extension("cogs.user_commands")
         await self.load_extension("cogs.admin_commands")
         await self.load_extension("cogs.maintenance")

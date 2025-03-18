@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}VRChat World Showcase Manager{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Custom styles */
+        .bg-discord {
+            background-color: #5865F2;
+        }
+        .text-discord {
+            color: #5865F2;
+        }
+        .bg-discord-dark {
+            background-color: #36393f;
+        }
+        .bg-discord-darker {
+            background-color: #2f3136;
+        }
+        .bg-discord-light {
+            background-color: #40444b;
+        }
+    </style>
+    {% block head %}{% endblock %}
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+    <!-- Navigation Bar -->
+    <nav class="bg-discord-dark text-white shadow-md">
+        <div class="container mx-auto px-4 py-2 flex items-center justify-between">
+            <div class="flex items-center">
+                <a href="/" class="text-xl font-bold flex items-center">
+                    <i class="fas fa-globe mr-2"></i>
+                    <span>VRChat World Showcase</span>
+                </a>
+            </div>
+            <div class="flex items-center space-x-4">
+                {% if user %}
+                    <div class="dropdown relative inline-block">
+                        <button class="flex items-center space-x-2 hover:bg-discord-light rounded px-2 py-1">
+                            {% if user.avatar %}
+                                <img src="https://cdn.discordapp.com/avatars/{{ user.user_id }}/{{ user.avatar }}.png" alt="{{ user.username }}" class="w-8 h-8 rounded-full">
+                            {% else %}
+                                <div class="w-8 h-8 rounded-full bg-gray-500 flex items-center justify-center">
+                                    <span>{{ user.username[:1] }}</span>
+                                </div>
+                            {% endif %}
+                            <span>{{ user.username }}</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-content hidden absolute right-0 mt-2 w-48 bg-discord-darker rounded shadow-lg z-10">
+                            <a href="/dashboard" class="block px-4 py-2 text-white hover:bg-discord-light">
+                                <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
+                            </a>
+                            <a href="/logout" class="block px-4 py-2 text-white hover:bg-discord-light">
+                                <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                            </a>
+                        </div>
+                    </div>
+                {% else %}
+                    <a href="/login" class="bg-discord hover:bg-blue-600 text-white font-bold py-2 px-4 rounded inline-flex items-center">
+                        <i class="fab fa-discord mr-2"></i>
+                        <span>Login with Discord</span>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="container mx-auto mt-4 px-4">
+                {% for category, message in messages %}
+                    <div class="{% if category == 'error' %}bg-red-100 border-red-400 text-red-700{% else %}bg-green-100 border-green-400 text-green-700{% endif %} px-4 py-3 rounded relative mb-4 border" role="alert">
+                        <span class="block sm:inline">{{ message }}</span>
+                        <button type="button" class="absolute top-0 bottom-0 right-0 px-4 py-3" onclick="this.parentElement.style.display='none'">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-discord-dark text-white py-6 mt-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <p>&copy; 2025 VRChat World Showcase Manager</p>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-white hover:text-gray-300">
+                        <i class="fab fa-discord"></i>
+                    </a>
+                    <a href="#" class="text-white hover:text-gray-300">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="#" class="text-white hover:text-gray-300">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Dropdown toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdowns = document.querySelectorAll('.dropdown');
+            dropdowns.forEach(dropdown => {
+                const button = dropdown.querySelector('button');
+                const content = dropdown.querySelector('.dropdown-content');
+                
+                button.addEventListener('click', function() {
+                    content.classList.toggle('hidden');
+                });
+                
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(event) {
+                    if (!dropdown.contains(event.target)) {
+                        content.classList.add('hidden');
+                    }
+                });
+            });
+        });
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,256 @@
+{% extends "base.html" %}
+
+{% block title %}{{ guild.name }} - World Management{% endblock %}
+
+{% block content %}
+<div class="bg-discord-dark text-white py-8">
+    <div class="container mx-auto px-4">
+        <div class="flex items-center">
+            {% if guild.icon %}
+            <img src="https://cdn.discordapp.com/icons/{{ guild.id }}/{{ guild.icon }}.png" alt="{{ guild.name }}" class="w-16 h-16 rounded-full mr-4">
+            {% else %}
+            <div class="w-16 h-16 rounded-full bg-gray-500 flex items-center justify-center text-white font-bold mr-4">
+                {{ guild.name[:1] }}
+            </div>
+            {% endif %}
+            <div>
+                <h1 class="text-3xl font-bold">{{ guild.name }}</h1>
+                <p class="text-gray-300">World Management</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mx-auto px-4 py-8">
+    <!-- Server Navigation -->
+    <div class="bg-white rounded-lg shadow-md overflow-hidden mb-8">
+        <div class="flex flex-wrap border-b">
+            <a href="/guild/{{ guild.id }}" class="px-6 py-3 font-medium text-gray-600 hover:text-discord-dark">
+                <i class="fas fa-home mr-2"></i> Overview
+            </a>
+            <a href="/guild/{{ guild.id }}/worlds" class="px-6 py-3 font-medium text-discord-dark border-b-2 border-discord">
+                <i class="fas fa-globe mr-2"></i> Worlds
+            </a>
+            <a href="/guild/{{ guild.id }}/tags" class="px-6 py-3 font-medium text-gray-600 hover:text-discord-dark">
+                <i class="fas fa-tags mr-2"></i> Tags
+            </a>
+            <a href="/guild/{{ guild.id }}/settings" class="px-6 py-3 font-medium text-gray-600 hover:text-discord-dark">
+                <i class="fas fa-cog mr-2"></i> Settings
+            </a>
+        </div>
+    </div>
+
+    <!-- Worlds List -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-discord-dark">VRChat Worlds</h2>
+            <div class="flex space-x-2">
+                <button id="refreshWorlds" class="bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 px-4 rounded flex items-center">
+                    <i class="fas fa-sync-alt mr-2"></i> Refresh
+                </button>
+                <a href="https://discord.com/channels/{{ guild.id }}" target="_blank" class="bg-discord hover:bg-blue-600 text-white py-2 px-4 rounded flex items-center">
+                    <i class="fas fa-plus mr-2"></i> Add World
+                </a>
+            </div>
+        </div>
+
+        <!-- Search and Filter -->
+        <div class="mb-6">
+            <div class="flex flex-col md:flex-row gap-4">
+                <div class="flex-grow">
+                    <div class="relative">
+                        <input type="text" id="searchWorlds" placeholder="Search worlds..." class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-discord focus:border-transparent pl-10">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-search text-gray-400"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <select id="filterTag" class="px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-discord focus:border-transparent">
+                        <option value="">All Tags</option>
+                        <!-- Tags will be populated by JavaScript -->
+                    </select>
+                    <select id="sortBy" class="px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-discord focus:border-transparent">
+                        <option value="newest">Newest First</option>
+                        <option value="oldest">Oldest First</option>
+                        <option value="name">Name A-Z</option>
+                        <option value="name-desc">Name Z-A</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Worlds Grid -->
+        <div id="worldsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% if worlds %}
+                {% for world in worlds %}
+                <div class="world-card bg-white border rounded-lg overflow-hidden hover:shadow-md transition-shadow" data-world-id="{{ world.world_id }}" data-tags="{{ world.user_choices }}">
+                    <div class="h-40 bg-gray-200 flex items-center justify-center">
+                        <!-- We don't have world images from the database directly, so show a placeholder -->
+                        <i class="fas fa-globe text-gray-400 text-5xl"></i>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold text-lg mb-1 truncate">{{ world.world_id }}</h3>
+                        <div class="flex mb-3">
+                            {% if world.user_choices %}
+                                {% for tag in world.user_choices.split(',') %}
+                                <span class="bg-discord-dark text-white text-xs px-2 py-1 rounded mr-1">{{ tag }}</span>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <a href="{{ world.world_link }}" target="_blank" class="text-discord hover:text-blue-700">
+                                <i class="fas fa-external-link-alt mr-1"></i> Visit
+                            </a>
+                            <a href="https://discord.com/channels/{{ guild.id }}/{{ world.thread_id }}" target="_blank" class="text-gray-600 hover:text-gray-800">
+                                <i class="fab fa-discord mr-1"></i> View in Discord
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-span-full text-center py-12 bg-gray-50 rounded-lg">
+                    <div class="text-5xl text-gray-300 mb-4">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-600 mb-2">No worlds found</h3>
+                    <p class="text-gray-500 mb-4">No VRChat worlds have been added to your showcase yet.</p>
+                    <a href="https://discord.com/channels/{{ guild.id }}" target="_blank" class="bg-discord hover:bg-blue-600 text-white py-2 px-4 rounded inline-flex items-center">
+                        <i class="fas fa-plus mr-2"></i> Add World in Discord
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Pagination (if needed) -->
+        {% if worlds|length > 15 %}
+        <div class="mt-8 flex justify-center">
+            <nav class="inline-flex rounded">
+                <a href="#" class="px-3 py-2 border rounded-l hover:bg-gray-100">Previous</a>
+                <a href="#" class="px-3 py-2 border-t border-b border-r bg-discord text-white">1</a>
+                <a href="#" class="px-3 py-2 border-t border-b border-r hover:bg-gray-100">2</a>
+                <a href="#" class="px-3 py-2 border-t border-b border-r hover:bg-gray-100">3</a>
+                <a href="#" class="px-3 py-2 border rounded-r hover:bg-gray-100">Next</a>
+            </nav>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Elements
+    const searchInput = document.getElementById('searchWorlds');
+    const filterTagSelect = document.getElementById('filterTag');
+    const sortBySelect = document.getElementById('sortBy');
+    const worldCards = document.querySelectorAll('.world-card');
+    const refreshButton = document.getElementById('refreshWorlds');
+
+    // Collect all unique tags
+    const allTags = new Set();
+    worldCards.forEach(card => {
+        const tagsStr = card.dataset.tags;
+        if (tagsStr) {
+            tagsStr.split(',').forEach(tag => {
+                allTags.add(tag.trim());
+            });
+        }
+    });
+
+    // Populate tag filter
+    allTags.forEach(tag => {
+        const option = document.createElement('option');
+        option.value = tag;
+        option.textContent = tag;
+        filterTagSelect.appendChild(option);
+    });
+
+    // Search and filter function
+    function filterWorlds() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const tagFilter = filterTagSelect.value;
+        const sortBy = sortBySelect.value;
+
+        // Filter cards
+        const filteredCards = Array.from(worldCards).filter(card => {
+            const worldId = card.dataset.worldId.toLowerCase();
+            const worldTags = (card.dataset.tags || '').split(',').map(t => t.trim());
+
+            const matchesSearch = worldId.includes(searchTerm);
+            const matchesTag = !tagFilter || worldTags.includes(tagFilter);
+
+            return matchesSearch && matchesTag;
+        });
+
+        // Sort cards
+        filteredCards.sort((a, b) => {
+            const idA = a.dataset.worldId;
+            const idB = b.dataset.worldId;
+
+            if (sortBy === 'name') {
+                return idA.localeCompare(idB);
+            } else if (sortBy === 'name-desc') {
+                return idB.localeCompare(idA);
+            } else if (sortBy === 'oldest') {
+                // Since we don't have real timestamps, just use the DOM order
+                return 1;
+            } else { // newest
+                return -1;
+            }
+        });
+
+        // Hide all cards
+        worldCards.forEach(card => {
+            card.style.display = 'none';
+        });
+
+        // Show filtered cards
+        filteredCards.forEach(card => {
+            card.style.display = 'block';
+        });
+
+        // Show no results message if needed
+        const worldsGrid = document.getElementById('worldsGrid');
+        if (filteredCards.length === 0) {
+            // Check if no-results message already exists
+            let noResults = document.getElementById('no-results');
+            if (!noResults) {
+                noResults = document.createElement('div');
+                noResults.id = 'no-results';
+                noResults.className = 'col-span-full text-center py-12 bg-gray-50 rounded-lg';
+                noResults.innerHTML = `
+                    <div class="text-5xl text-gray-300 mb-4">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-600 mb-2">No worlds found</h3>
+                    <p class="text-gray-500">No worlds match your search criteria.</p>
+                `;
+                worldsGrid.appendChild(noResults);
+            }
+        } else {
+            // Remove no-results message if it exists
+            const noResults = document.getElementById('no-results');
+            if (noResults) {
+                noResults.remove();
+            }
+        }
+    }
+
+    // Event listeners
+    searchInput.addEventListener('input', filterWorlds);
+    filterTagSelect.addEventListener('change', filterWorlds);
+    sortBySelect.addEventListener('change', filterWorlds);
+
+    // Refresh button
+    refreshButton.addEventListener('click', function() {
+        window.location.reload();
+    });
+
+    // Initial filter
+    filterWorlds();
+});
+</script>
+{% endblock %}

@@ -391,31 +391,189 @@ class ScanActionButtons(discord.ui.View):
         Args:
             interaction: Discord interaction
         """
+        # First defer the response to avoid interaction timeout
         await interaction.response.defer(thinking=True)
         
         results = []
         
-        # Fix duplicate worlds
-        if not self.children[0].disabled:
-            await self.remove_duplicates_callback(interaction)
-            results.append("🔄 Removed duplicate world threads")
+        # Process duplicate worlds
+        duplicate_worlds = self.scan_data.get('duplicate_worlds', [])
+        if duplicate_worlds and not self.children[0].disabled:
+            server_id = self.scan_data.get('server_id')
+            forum_channel_id = self.scan_data.get('forum_channel_id')
+            forum_channel = interaction.guild.get_channel(forum_channel_id)
+            
+            removed_count = 0
+            failed_count = 0
+            
+            for world_id, thread_id1, thread_id2 in duplicate_worlds:
+                try:
+                    # Try to get the duplicate thread (thread_id2)
+                    thread = forum_channel.get_thread(thread_id2)
+                    if thread:
+                        # First remove from database if it exists
+                        from database.models import WorldPosts
+                        WorldPosts.remove_post_by_thread(server_id, thread_id2)
+                        
+                        # Then delete the actual thread
+                        await thread.delete()
+                        removed_count += 1
+                except Exception as e:
+                    config.logger.error(f"Error removing duplicate thread {thread_id2}: {e}")
+                    failed_count += 1
+            
+            # Update the button
+            self.children[0].disabled = True
+            self.children[0].label = f"Duplicates Removed ({removed_count})"
+            results.append(f"🔄 Removed {removed_count} duplicate world threads")
         
-        # Fix empty threads
-        if not self.children[1].disabled:
-            await self.remove_empty_callback(interaction)
-            results.append("🔍 Removed threads without VRChat worlds")
+        # Process empty threads
+        missing_threads = self.scan_data.get('missing_threads', [])
+        if missing_threads and not self.children[1].disabled:
+            server_id = self.scan_data.get('server_id')
+            forum_channel_id = self.scan_data.get('forum_channel_id')
+            forum_channel = interaction.guild.get_channel(forum_channel_id)
+            
+            removed_count = 0
+            failed_count = 0
+            
+            for thread_id, thread_name in missing_threads:
+                try:
+                    # Get the thread for this ID
+                    thread = forum_channel.get_thread(thread_id)
+                    if thread:
+                        # First remove from database if it exists
+                        from database.models import WorldPosts
+                        WorldPosts.remove_post_by_thread(server_id, thread_id)
+                        
+                        # Then delete the thread
+                        await thread.delete()
+                        removed_count += 1
+                except Exception as e:
+                    config.logger.error(f"Error removing thread {thread_id}: {e}")
+                    failed_count += 1
+            
+            # Update the button
+            self.children[1].disabled = True
+            self.children[1].label = f"Empty Threads Removed ({removed_count})"
+            results.append(f"🔍 Removed {removed_count} threads without VRChat worlds")
         
-        # Fix tags
-        if not self.children[2].disabled:
-            await self.fix_tags_callback(interaction)
-            results.append("🏷️ Fixed missing tags on threads")
+        # Process tag fixes
+        tag_data = self.scan_data.get('tag_fix_data', [])
+        tags_to_fix = self.scan_data.get('tags_to_fix', 0)
+        if tags_to_fix > 0 and not self.children[2].disabled:
+            fixed_count = 0
+            fixed_thread_names = []
+            detailed_log = []
+            
+            for thread_id, missing_tag_ids in tag_data:
+                try:
+                    # Get the channel for the thread
+                    forum_channel_id = self.scan_data.get('forum_channel_id')
+                    forum_channel = interaction.guild.get_channel(forum_channel_id)
+                    
+                    if forum_channel:
+                        # Find the thread
+                        thread = None
+                        try:
+                            thread = forum_channel.get_thread(thread_id)
+                        except:
+                            pass
+                        
+                        if not thread:
+                            # Try alternative methods to find thread
+                            for active_thread in forum_channel.threads:
+                                if active_thread.id == thread_id:
+                                    thread = active_thread
+                                    break
+                        
+                        if not thread:
+                            try:
+                                thread = await interaction.guild.fetch_channel(thread_id)
+                            except:
+                                pass
+                        
+                        if thread:
+                            # Get current tags
+                            current_tags = []
+                            try:
+                                current_tags = thread.applied_tags
+                            except AttributeError:
+                                current_tags = getattr(thread, "tags", []) or getattr(thread, "applied_tags", [])
+                            
+                            # Get tag names for logs
+                            from database.models import ServerTags
+                            missing_tag_names = ServerTags.get_tag_names(
+                                self.scan_data.get('server_id'),
+                                missing_tag_ids
+                            )
+                            
+                            # Create tag objects
+                            from collections import namedtuple
+                            Tag = namedtuple('Tag', ['id'])
+                            
+                            # Create full set of tags
+                            all_tag_ids = set(current_tags) | set(missing_tag_ids)
+                            all_tags = [Tag(id=tag_id) for tag_id in all_tag_ids]
+                            
+                            # Check max tag limit
+                            if len(all_tags) > 5:
+                                all_tags = all_tags[:5]
+                            
+                            try:
+                                # Edit thread tags
+                                await thread.edit(applied_tags=all_tags)
+                                fixed_count += 1
+                                fixed_thread_names.append(thread.name)
+                                
+                                # Update user database
+                                try:
+                                    from database.models import ThreadWorldLinks, UserWorldLinks
+                                    world_id = ThreadWorldLinks.get_world_for_thread(
+                                        self.scan_data.get('server_id'),
+                                        thread_id
+                                    )
+                                    
+                                    if world_id:
+                                        users = UserWorldLinks.find_by_world_id(world_id)
+                                        for user in users:
+                                            user_id = user['user_id']
+                                            current_choices = user.get('user_choices', '')
+                                            
+                                            # Update user tags
+                                            user_tags = current_choices.split(',') if current_choices else []
+                                            for tag_name in missing_tag_names:
+                                                if tag_name not in user_tags:
+                                                    user_tags.append(tag_name)
+                                            
+                                            UserWorldLinks.set_user_choices(user_id, user_tags)
+                                except Exception as e:
+                                    config.logger.error(f"Error updating user choices: {e}")
+                            except Exception as e:
+                                # Fallback to add_tags
+                                try:
+                                    tag_ids_to_add = [Tag(id=tag_id) for tag_id in missing_tag_ids]
+                                    await thread.add_tags(*tag_ids_to_add, reason="Auto-fixed by scan command")
+                                    fixed_count += 1
+                                    fixed_thread_names.append(thread.name)
+                                except Exception as add_error:
+                                    config.logger.error(f"Failed to fix tags: {add_error}")
+                except Exception as e:
+                    config.logger.error(f"Error processing thread {thread_id}: {e}")
+            
+            # Update the button
+            self.children[2].disabled = True
+            self.children[2].label = f"Tags Fixed ({fixed_count})"
+            results.append(f"🏷️ Fixed tags on {fixed_count} threads")
         
         # Update the fix all button
         self.children[3].disabled = True
         self.children[3].label = "All Issues Fixed"
         
+        # Update the view
         await interaction.message.edit(view=self)
         
+        # Send summary to user
         if results:
             await interaction.followup.send("✅ Successfully fixed all issues:\n" + "\n".join(results))
         else:

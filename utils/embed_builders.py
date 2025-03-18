@@ -53,7 +53,7 @@ def build_world_embed(
     # Create embed
     embed = discord.Embed(
         title=world_name,
-        color=0x00ff00,
+        color=discord.Color.dark_red(),
         url=world_link
     )
     

@@ -10,10 +10,20 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
+# Discord Application Settings
+DISCORD_CLIENT_ID = os.getenv("DISCORD_CLIENT_ID")
+DISCORD_CLIENT_SECRET = os.getenv("DISCORD_CLIENT_SECRET")
+DISCORD_REDIRECT_URI = os.getenv("DISCORD_REDIRECT_URI", "http://localhost:8080/callback")
+
 # Bot token
 TOKEN = os.getenv("DISCORD_TOKEN")
 if not TOKEN:
     raise ValueError("DISCORD_TOKEN not found in environment variables")
+
+# Bot invite/OAuth URLs
+BOT_PERMISSIONS = os.getenv("BOT_PERMISSIONS", "8")  # 8 is Administrator permission
+BOT_INVITE_URL = f"https://discord.com/api/oauth2/authorize?client_id={DISCORD_CLIENT_ID}&permissions={BOT_PERMISSIONS}&scope=bot%20applications.commands"
+OAUTH_LOGIN_URL = f"https://discord.com/oauth2/authorize?client_id={DISCORD_CLIENT_ID}&redirect_uri={DISCORD_REDIRECT_URI}&response_type=code&scope=identify%20guilds"
 
 # VRChat API credentials
 AUTH = os.getenv("VRCHAT_AUTH")
@@ -99,3 +109,7 @@ API_RETRY_DELAY = 2
 
 # Welcome image URL
 WELCOME_IMAGE_URL = "https://cdn.discordapp.com/avatars/1156538533876613121/8acb3d0ce2c328987ad86355e0d0b528.png?size=4096"
+
+# Web Dashboard Settings
+DASHBOARD_TITLE = "VRChat Helper"
+FLASK_SECRET_KEY = os.getenv("FLASK_SECRET_KEY", os.urandom(24).hex())

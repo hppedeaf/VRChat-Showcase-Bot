@@ -27,6 +27,9 @@ header {
     padding: 1.5rem 0;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     position: relative;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 nav {
@@ -45,6 +48,7 @@ nav {
     color: var(--primary);
     font-size: 1.5rem;
     font-weight: bold;
+    text-decoration: none;
 }
 
 .logo span {
@@ -61,10 +65,26 @@ nav {
     text-decoration: none;
     font-weight: 500;
     transition: color 0.2s ease;
+    position: relative;
 }
 
 .nav-links a:hover {
     color: var(--primary);
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background-color: var(--primary);
+    transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+    width: 100%;
 }
 
 .btn {
@@ -75,17 +95,18 @@ nav {
     border-radius: 4px;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease, transform 0.2s ease;
     text-decoration: none;
     display: inline-block;
 }
 
 .btn:hover {
     background-color: var(--primary-hover);
+    transform: translateY(-2px);
 }
 
 .hero {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/api/placeholder/1200/600');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://cdn.discordapp.com/attachments/946391869238099988/1073381157808037968/VRChat_2023-01-22_22-31-56.075_1920x1080.png');
     background-size: cover;
     background-position: center;
     height: 500px;
@@ -94,16 +115,31 @@ nav {
     justify-content: center;
     text-align: center;
     padding: 0 2rem;
+    position: relative;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(0deg, rgba(18, 18, 18, 0.8) 0%, rgba(18, 18, 18, 0) 50%);
+    pointer-events: none;
 }
 
 .hero-content {
     max-width: 800px;
+    position: relative;
+    z-index: 1;
 }
 
 .hero h1 {
     font-size: 3.5rem;
     margin-bottom: 1rem;
     color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .hero p {
@@ -143,6 +179,19 @@ nav {
     font-size: 2.5rem;
     color: var(--primary);
     margin-bottom: 1rem;
+    position: relative;
+    display: inline-block;
+}
+
+.section-header h2::after {
+    content: '';
+    position: absolute;
+    width: 60px;
+    height: 3px;
+    background-color: var(--primary);
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .section-header p {
@@ -164,11 +213,13 @@ nav {
     padding: 2rem;
     text-align: center;
     transition: transform 0.3s ease, background-color 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .feature-card:hover {
     transform: translateY(-10px);
     background-color: var(--card-hover);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 
 .feature-icon {
@@ -207,6 +258,12 @@ nav {
     border-radius: 8px;
     padding: 1.5rem;
     border-left: 4px solid var(--primary);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.command-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .command-name {
@@ -231,6 +288,13 @@ nav {
     background-color: var(--card-bg);
     border-radius: 8px;
     overflow: hidden;
+    transition: transform 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.step-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 
 .step-number {
@@ -257,7 +321,7 @@ nav {
     font-size: 1.5rem;
 }
 
-/* New styles for Bot Resources section */
+/* Link cards section */
 .link-cards {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
@@ -275,11 +339,13 @@ nav {
     height: 100%;
     min-height: 220px;
     transition: transform 0.3s ease, background-color 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .link-card:hover {
     transform: translateY(-5px);
     background-color: var(--card-hover);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 
 .link-card h3 {
@@ -309,6 +375,7 @@ nav {
 .link-btn:hover {
     background-color: var(--primary);
     color: white;
+    transform: translateY(-2px);
 }
 
 footer {
@@ -324,12 +391,16 @@ footer {
 
 .footer-links {
     margin: 2rem 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
 }
 
 .footer-links a {
     color: var(--text-secondary);
-    margin: 0 1rem;
     text-decoration: none;
+    transition: color 0.2s ease;
 }
 
 .footer-links a:hover {
@@ -349,6 +420,102 @@ code {
     font-family: 'Courier New', Courier, monospace;
 }
 
+/* Privacy and Terms Pages */
+.terms-container, .privacy-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.terms-container h2, .privacy-container h2 {
+    color: var(--primary);
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0.5rem;
+}
+
+.terms-container h3, .privacy-container h3 {
+    color: var(--text-primary);
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.terms-container p, .terms-container ul,
+.privacy-container p, .privacy-container ul {
+    margin-bottom: 1rem;
+}
+
+.terms-container ul, .privacy-container ul {
+    padding-left: 2rem;
+}
+
+.terms-container li, .privacy-container li {
+    margin-bottom: 0.5rem;
+}
+
+.last-updated {
+    font-style: italic;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0 2rem 0;
+}
+
+.data-table th, .data-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #333;
+}
+
+.data-table th {
+    background-color: rgba(255, 51, 51, 0.1);
+    color: var(--primary);
+}
+
+.data-table tr:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Back to top button */
+.back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--primary);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.back-to-top:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-3px);
+}
+
+/* Responsive styles */
 @media (max-width: 768px) {
     .hero h1 {
         font-size: 2.5rem;
@@ -375,4 +542,36 @@ code {
     .btn {
         width: 100%;
     }
+    
+    .features, .command-list, .link-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .section {
+        padding: 3rem 1rem;
+    }
+    
+    .section-header h2 {
+        font-size: 2rem;
+    }
+    
+    .command-card {
+        min-width: 100%;
+    }
+}
+
+/* Animation keyframes */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Apply animations */
+.feature-card, .command-card, .step-card, .link-card {
+    animation: slideUp 0.5s ease forwards;
 }
