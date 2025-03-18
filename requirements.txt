@@ -1,1 +1,8 @@
-honcho==1.1.0
+discord.py
+python-dotenv
+requests
+aiosqlite
+asyncio
+flask
+gunicorn
+setuptools
