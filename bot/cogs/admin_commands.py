@@ -188,8 +188,7 @@ class AdminCommands(commands.Cog):
             
             # Create the welcome embed first
             thread_embed = discord.Embed(
-                title="Welcome to VRChat World Showcase",
-                description="Share your favorite VRChat worlds here!",
+                title="Share your favorite VRChat worlds here!",
                 color=discord.Color.yellow()
             )
             thread_embed.set_image(url=config.WELCOME_IMAGE_URL)
@@ -323,8 +322,7 @@ class AdminCommands(commands.Cog):
             
             # Create the welcome embed first
             embed = discord.Embed(
-                title="Welcome to VRChat World Showcase",
-                description="Share your favorite VRChat worlds here!",
+                title="Share your favorite VRChat worlds here!",
                 color=discord.Color.yellow()
             )
             embed.set_image(url=config.WELCOME_IMAGE_URL)

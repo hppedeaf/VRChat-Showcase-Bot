@@ -82,4 +82,4 @@ API_TIMEOUT = 10
 API_RETRY_DELAY = 2
 
 # Welcome image URL
-WELCOME_IMAGE_URL = "https://cdn.discordapp.com/avatars/1156538533876613121/e679e2cbdb24804661804a48c86f3e1e.png"
+WELCOME_IMAGE_URL = "https://cdn.discordapp.com/avatars/1156538533876613121/e679e2cbdb24804661804a48c86f3e1e.png?size=4096"
