@@ -23,10 +23,21 @@ class ServerChannels:
         """
         with get_connection() as conn:
             cursor = conn.cursor()
-            cursor.execute(
-                "SELECT forum_channel_id, thread_id FROM server_channels WHERE server_id=?", 
-                (server_id,)
-            )
+            
+            # Check if we're using PostgreSQL
+            is_postgres = hasattr(config, 'DATABASE_URL') and config.DATABASE_URL and config.DATABASE_URL.startswith("postgres")
+            
+            if is_postgres:
+                cursor.execute(
+                    "SELECT forum_channel_id, thread_id FROM server_channels WHERE server_id=%s", 
+                    (server_id,)
+                )
+            else:
+                cursor.execute(
+                    "SELECT forum_channel_id, thread_id FROM server_channels WHERE server_id=?", 
+                    (server_id,)
+                )
+                
             result = cursor.fetchone()
             
             if result:
