@@ -4,7 +4,7 @@ Functions to build Discord embeds for various purposes.
 import discord
 from typing import Dict, Any, List, Optional
 from datetime import datetime
-import bot.config as config
+import config as config
 from utils.formatters import truncate_text, bytes_to_mb
 
 def build_world_embed(

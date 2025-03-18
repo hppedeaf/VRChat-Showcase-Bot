@@ -11,13 +11,13 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), 'bot'))
 
 from flask import Flask, request, jsonify, send_from_directory, Response
-import bot.main as bot_main
-import bot.config as config
+import main as bot_main
+import config as config
 
 # Initialize PostgreSQL when on Railway
 if os.getenv("RAILWAY_ENVIRONMENT") or os.getenv("DATABASE_URL"):
     try:
-        from bot.database.pg_handler import setup_postgres_tables
+        from database.pg_handler import setup_postgres_tables
         print("Initializing PostgreSQL database for Railway deployment...")
         setup_postgres_tables()
         print("PostgreSQL database initialized successfully.")
@@ -73,7 +73,7 @@ def status():
     try:
         if os.getenv("DATABASE_URL"):
             # Check PostgreSQL connection
-            from bot.database.pg_handler import get_postgres_connection
+            from database.pg_handler import get_postgres_connection
             conn = get_postgres_connection()
             cursor = conn.cursor()
             cursor.execute("SELECT 1")

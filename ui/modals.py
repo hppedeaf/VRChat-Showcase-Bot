@@ -4,7 +4,7 @@ UI modals for the VRChat World Showcase Bot.
 import discord
 from typing import Optional, Dict, Any, List, Union
 from collections import namedtuple
-import bot.config as config
+import config as config
 import logging
 from database.models import UserWorldLinks, ThreadWorldLinks, ServerChannels, ServerTags, WorldPosts
 from utils.api import extract_world_id, VRChatAPI

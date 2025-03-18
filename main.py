@@ -5,7 +5,7 @@ import asyncio
 import discord
 from discord.ext import commands
 import os
-import bot.config as config
+import config as config
 from database.db import setup_database
 
 # Add these imports for Flask

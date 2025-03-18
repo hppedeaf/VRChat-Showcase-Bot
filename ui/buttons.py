@@ -3,7 +3,7 @@ UI button components for the VRChat World Showcase Bot.
 """
 import discord
 from typing import Optional, List, Dict, Any, Callable, Awaitable, Tuple
-import bot.config as config
+import config as config
 import logging
 from ui.modals import WorldLinkModal
 

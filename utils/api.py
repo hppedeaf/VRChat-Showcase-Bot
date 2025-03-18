@@ -11,7 +11,7 @@ import logging
 import requests
 from typing import Dict, Any, Optional, List, Tuple
 from datetime import datetime, timedelta
-import bot.config as config
+import config as config
 from dotenv import load_dotenv, set_key
 
 # Constants for auth management

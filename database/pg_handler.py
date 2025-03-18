@@ -8,7 +8,7 @@ import logging
 import time
 import os
 from typing import Dict, Any, List, Tuple, Optional
-import bot.config as config
+import config as config
 
 def get_postgres_connection():
     """

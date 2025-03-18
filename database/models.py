@@ -4,7 +4,7 @@ Contains functions for interacting with database tables.
 """
 import sqlite3
 from typing import Dict, List, Tuple, Optional, Any, Union
-import bot.config as config
+import config as config
 from database.db import get_connection, log_activity
 import os
 

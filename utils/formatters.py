@@ -3,7 +3,7 @@ Formatting utilities for text and data display.
 """
 from datetime import datetime
 from typing import Union, Optional
-import bot.config as config
+import config as config
 
 
 def bytes_to_mb(bytes_value: Union[str, int, float]) -> str:

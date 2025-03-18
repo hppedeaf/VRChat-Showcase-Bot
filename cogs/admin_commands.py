@@ -8,7 +8,7 @@ from discord.ext import commands
 import asyncio
 import re
 from typing import Optional, List, Dict, Tuple
-import bot.config as config
+import config as config
 from database.models import ServerChannels, ServerTags
 from database.db import log_activity
 from utils.api import extract_world_id, VRChatAPI

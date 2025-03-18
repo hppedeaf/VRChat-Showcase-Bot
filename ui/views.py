@@ -4,7 +4,7 @@ UI views for the VRChat World Showcase Bot.
 import discord
 from typing import Dict, Any, List, Callable, Awaitable, Optional, Union
 from collections import namedtuple
-import bot.config as config
+import config as config
 import logging
 
 class TagSelectionView(discord.ui.View):

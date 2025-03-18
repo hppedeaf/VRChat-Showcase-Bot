@@ -9,7 +9,7 @@ import re
 import time
 from typing import List, Dict, Any, Optional, Tuple
 from datetime import datetime
-import bot.config as config
+import config as config
 from database.models import ServerChannels, WorldPosts, ServerTags
 from utils.formatters import chunk_text
 from utils.embed_builders import build_scan_results_embed
