@@ -18,6 +18,7 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 import main as bot_main
 import config as config
 from datetime import datetime
+from database.pg_handler import add_missing_columns
 
 # Initialize Flask application with correct static folder and template folder paths
 current_dir = os.path.dirname(os.path.abspath(__file__))

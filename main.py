@@ -12,6 +12,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), 'bot'))
 
 import config as config
 from database.db import setup_database
+from database.pg_handler import add_missing_columns
 
 # Create bot with proper intents
 intents = discord.Intents.default()
@@ -51,6 +52,7 @@ class VRChatBot(commands.Bot):
         # Set up the database
         setup_database()
         
+        add_missing_columns()
         # Check threads based on thread ID and add world button if needed
         from database.models import ServerChannels
         
