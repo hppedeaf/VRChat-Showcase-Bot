@@ -164,6 +164,13 @@ class DatabaseSynchronizer:
         pg_user = os.environ.get('PGUSER') or os.environ.get('POSTGRES_USER')
         pg_password = os.environ.get('PGPASSWORD') or os.environ.get('POSTGRES_PASSWORD')
         
+        # Check if we're running locally
+        is_local = not os.environ.get('RAILWAY_ENVIRONMENT')
+        
+        # If running locally but with Railway environment variables, still disable PG
+        if is_local and "railway" in (pg_host or ""):
+            return False
+        
         # If essential connection parameters are available, PostgreSQL is considered available
         return bool(pg_host and pg_user and pg_password)
 

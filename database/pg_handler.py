@@ -17,12 +17,19 @@ def get_postgres_connection():
     Returns:
         Database connection
     """
+    # Check if we're running locally
+    is_local = not os.environ.get('RAILWAY_ENVIRONMENT')
+    
     # Get connection parameters from environment variables with fallbacks
     pg_host = os.environ.get('PGHOST') or os.environ.get('POSTGRES_HOST')
     pg_port = os.environ.get('PGPORT') or os.environ.get('POSTGRES_PORT', '5432')
     pg_user = os.environ.get('PGUSER') or os.environ.get('POSTGRES_USER')
     pg_password = os.environ.get('PGPASSWORD') or os.environ.get('POSTGRES_PASSWORD')
     pg_database = os.environ.get('PGDATABASE') or os.environ.get('POSTGRES_DB', 'postgres')
+    
+    # If we're running locally and detecting Railway's hostname, prevent connection attempts
+    if is_local and "railway" in (pg_host or ""):
+        raise ValueError("Detected Railway PostgreSQL environment variables while running locally. To avoid connection errors, PostgreSQL access is disabled in local development mode.")
     
     if not (pg_host and pg_user and pg_password):
         raise ValueError("PostgreSQL connection parameters not set in environment variables")

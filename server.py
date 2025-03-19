@@ -157,12 +157,13 @@ def index():
         return render_template('error.html', message=f"Template error: {str(e)}")
 
 #########################################
-#database
+# Database
 #########################################
 
-@app.before_first_request
-def start_db_sync():
-    """Start the database synchronization before handling the first request."""
+# Initialize database on first request
+# Using a function that we'll register with app.before_first_request alternative
+def initialize_db():
+    """Start the database synchronization"""
     app.logger.info("Starting database synchronization scheduler")
     start_sync_scheduler()
 
@@ -287,6 +288,11 @@ if __name__ == '__main__':
     # Set up the web dashboard routes
     # Pass app to setup_routes - bot will be grabbed from bot_main
     setup_routes(app)
+    
+    # Register the initialize_db function to be called on first request
+    # This replaces the deprecated @app.before_first_request decorator
+    with app.app_context():
+        initialize_db()
     
     # Get the port from environment variable
     port = int(os.environ.get("PORT", 8080))

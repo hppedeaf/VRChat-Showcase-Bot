@@ -39,7 +39,11 @@ PG_DATABASE = os.environ.get('PGDATABASE') or os.environ.get('POSTGRES_DB', 'pos
 
 # Construct PostgreSQL URL for compatibility with existing code
 if PG_HOST and PG_USER and PG_PASSWORD:
-    DATABASE_URL = f"postgresql://{PG_USER}:{PG_PASSWORD}@{PG_HOST}:{PG_PORT}/{PG_DATABASE}"
+    # Check if we're running locally with Railway settings
+    if not os.environ.get('RAILWAY_ENVIRONMENT') and "railway" in (PG_HOST or ""):
+        DATABASE_URL = None  # Disable PostgreSQL when running locally with Railway settings
+    else:
+        DATABASE_URL = f"postgresql://{PG_USER}:{PG_PASSWORD}@{PG_HOST}:{PG_PORT}/{PG_DATABASE}"
 else:
     DATABASE_URL = None
 

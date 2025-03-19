@@ -16,31 +16,41 @@ def get_connection():
         Database connection
     """
     if hasattr(config, 'DATABASE_URL') and config.DATABASE_URL and config.DATABASE_URL.startswith("postgres"):
-        # Use our enhanced PostgreSQL handler for Railway
-        from database.pg_handler import get_postgres_connection
-        return get_postgres_connection()
-    else:
-        # SQLite fallback for local development with better settings
-        tries = 0
-        max_tries = 3
-        while tries < max_tries:
-            try:
-                conn = sqlite3.connect(config.DATABASE_FILE, timeout=20)
-                conn.row_factory = sqlite3.Row  # Enable dictionary-like access to rows
-                
-                # Enable foreign key constraints
-                cursor = conn.cursor()
-                cursor.execute("PRAGMA foreign_keys = ON")
-                cursor.execute("PRAGMA journal_mode = WAL")  # Write-Ahead Logging for better concurrency
-                cursor.execute("PRAGMA busy_timeout = 5000")  # 5 second timeout for busy connections
-                
-                return conn
-            except sqlite3.OperationalError as e:
-                tries += 1
-                if tries >= max_tries:
-                    config.logger.error(f"Failed to connect to SQLite database after {max_tries} attempts: {e}")
-                    raise
-                time.sleep(1)  # Wait a second before retrying
+        # Try PostgreSQL first, fall back to SQLite if unavailable
+        try:
+            # Use our enhanced PostgreSQL handler for Railway
+            from database.pg_handler import get_postgres_connection
+            return get_postgres_connection()
+        except ValueError as e:
+            # If PostgreSQL is unavailable in local environment, log and use SQLite
+            config.logger.info(f"Using SQLite instead of PostgreSQL: {e}")
+            # Continue to SQLite code below
+        except Exception as e:
+            # For other connection errors, log and use SQLite
+            config.logger.warning(f"PostgreSQL connection failed, falling back to SQLite: {e}")
+            # Continue to SQLite code below
+    
+    # SQLite fallback for local development with better settings
+    tries = 0
+    max_tries = 3
+    while tries < max_tries:
+        try:
+            conn = sqlite3.connect(config.DATABASE_FILE, timeout=20)
+            conn.row_factory = sqlite3.Row  # Enable dictionary-like access to rows
+            
+            # Enable foreign key constraints
+            cursor = conn.cursor()
+            cursor.execute("PRAGMA foreign_keys = ON")
+            cursor.execute("PRAGMA journal_mode = WAL")  # Write-Ahead Logging for better concurrency
+            cursor.execute("PRAGMA busy_timeout = 5000")  # 5 second timeout for busy connections
+            
+            return conn
+        except sqlite3.OperationalError as e:
+            tries += 1
+            if tries >= max_tries:
+                config.logger.error(f"Failed to connect to SQLite database after {max_tries} attempts: {e}")
+                raise
+            time.sleep(1)  # Wait a second before retrying
 
 def check_database_connection():
     """
