@@ -660,7 +660,6 @@ class ServerTags:
         
         return (added, updated, removed)
 
-
 class VRChatWorlds:
     """VRChat worlds operations."""
     

@@ -227,8 +227,7 @@ class AdminCommands(commands.Cog):
             
             # Create the welcome embed first
             thread_embed = discord.Embed(
-                title="Welcome to VRChat World Showcase",
-                description="Share your favorite VRChat worlds here!",
+                title="Share your favorite VRChat worlds here!",
                 color=discord.Color.dark_red()
             )
             thread_embed.set_image(url=config.WELCOME_IMAGE_URL)
@@ -558,28 +557,60 @@ class AdminCommands(commands.Cog):
             except Exception as final_status_error:
                 config.logger.error(f"Error updating final status: {final_status_error}")
             
-            # Create welcome thread
-            embed = discord.Embed(
-                title="Welcome to VRChat World Showcase",
-                description="Share your favorite VRChat worlds here!",
-                color=discord.Color.dark_red()
-            )
-            embed.set_image(url=config.WELCOME_IMAGE_URL)
-
-            thread_info = await forum_channel.create_thread(
-                name="Share Your VRChat World Here!", 
-                reason="New World Thread", 
-                embed=embed
-            )
-            thread = thread_info.thread
+            # Check if a "Share Your VRChat World Here!" thread already exists
+            existing_welcome_thread = None
+            for thread in threads:
+                if thread.name == "Share Your VRChat World Here!":
+                    existing_welcome_thread = thread
+                    break
             
-            # Add world button
-            view = WorldButton()
-            button_embed = discord.Embed(
-                description="Hiya! \n\nWelcome! Do you want to share amazing VRChat worlds with everyone?\n\nIt's super easy! Just click the button below and paste the VRChat world's URL! You can copy the URL from the VRChat website. \n\nYou'll get to pick tags in the next step, so people who love things like horror or games or chatting can easily find worlds they'll enjoy! We'll make it look super pretty with all the details!\n\nPlease don't share every VRChat world you see. Let's focus on the special ones, the ones you think are really cool or maybe even a little hidden and deserve some love! ❤️",
-                color=discord.Color.dark_red()
-            )
-            await thread.send(embed=button_embed, view=view)
+            if existing_welcome_thread:
+                # Use the existing welcome thread
+                config.logger.info(f"Using existing welcome thread: {existing_welcome_thread.id}")
+                thread = existing_welcome_thread
+                
+                # Check if it already has the button message
+                has_button = False
+                async for message in thread.history(limit=10):
+                    if message.author.id == self.bot.user.id and message.embeds:
+                        for embed in message.embeds:
+                            if embed.description and "Hiya! \n\nWelcome! Do you want to share amazing VRChat worlds with everyone?" in embed.description:
+                                has_button = True
+                                break
+                        if has_button:
+                            break
+                
+                # If no button exists, add one
+                if not has_button:
+                    view = WorldButton()
+                    button_embed = discord.Embed(
+                        description="Hiya! \n\nWelcome! Do you want to share amazing VRChat worlds with everyone?\n\nIt's super easy! Just click the button below and paste the VRChat world's URL! You can copy the URL from the VRChat website. \n\nYou'll get to pick tags in the next step, so people who love things like horror or games or chatting can easily find worlds they'll enjoy! We'll make it look super pretty with all the details!\n\nPlease don't share every VRChat world you see. Let's focus on the special ones, the ones you think are really cool or maybe even a little hidden and deserve some love! ❤️",
+                        color=discord.Color.dark_red()
+                    )
+                    await thread.send(embed=button_embed, view=view)
+                    config.logger.info(f"Added world button to existing welcome thread {thread.id}")
+            else:
+                # Create a new welcome thread
+                embed = discord.Embed(
+                    title="Share your favorite VRChat worlds here!",
+                    color=discord.Color.dark_red()
+                )
+                embed.set_image(url=config.WELCOME_IMAGE_URL)
+
+                thread_info = await forum_channel.create_thread(
+                    name="Share Your VRChat World Here!", 
+                    reason="New World Thread", 
+                    embed=embed
+                )
+                thread = thread_info.thread
+                
+                # Add world button
+                view = WorldButton()
+                button_embed = discord.Embed(
+                    description="Hiya! \n\nWelcome! Do you want to share amazing VRChat worlds with everyone?\n\nIt's super easy! Just click the button below and paste the VRChat world's URL! You can copy the URL from the VRChat website. \n\nYou'll get to pick tags in the next step, so people who love things like horror or games or chatting can easily find worlds they'll enjoy! We'll make it look super pretty with all the details!\n\nPlease don't share every VRChat world you see. Let's focus on the special ones, the ones you think are really cool or maybe even a little hidden and deserve some love! ❤️",
+                    color=discord.Color.dark_red()
+                )
+                await thread.send(embed=button_embed, view=view)
 
             # Add tags
             added_tags = await self._sync_forum_tags(server_id, forum_channel)
@@ -599,7 +630,7 @@ class AdminCommands(commands.Cog):
             try:
                 await interaction.followup.send(
                     f"✅ Forum channel set to {forum_channel.mention}\n" +
-                    f"Created world submission thread: {thread.mention}{tag_msg}\n" +
+                    f"Using world submission thread: {thread.mention}{tag_msg}\n" +
                     f"Total worlds indexed: **{worlds_found}**"
                 )
             except Exception as final_error:
@@ -794,12 +825,31 @@ class AdminCommands(commands.Cog):
         
         # Convert forum tags to a format compatible with ServerTags.sync_tags
         forum_tags = []
+        moderated_tags = []
+        
         for tag in forum_channel.available_tags:
-            forum_tags.append({
-                'id': tag.id,
-                'name': tag.name,
-                'emoji': str(tag.emoji) if tag.emoji else None
-            })
+            # Check if this tag has the moderator-only setting
+            is_moderated = False
+            try:
+                # Try accessing the moderated attribute directly
+                is_moderated = getattr(tag, "moderated", False)
+            except AttributeError:
+                # If that fails, try the __dict__ approach
+                if hasattr(tag, "__dict__"):
+                    is_moderated = tag.__dict__.get("moderated", False)
+            
+            if is_moderated:
+                moderated_tags.append((tag.id, tag.name))
+                config.logger.info(f"Skipping moderated tag '{tag.name}' (ID: {tag.id}) from database sync")
+            else:
+                forum_tags.append({
+                    'id': tag.id,
+                    'name': tag.name,
+                    'emoji': str(tag.emoji) if tag.emoji else None
+                })
+        
+        if moderated_tags:
+            config.logger.info(f"Skipped {len(moderated_tags)} moderated tags during sync: {', '.join(name for _, name in moderated_tags)}")
         
         # Sync tags with database
         added, updated, removed = ServerTags.sync_tags(server_id, forum_tags)

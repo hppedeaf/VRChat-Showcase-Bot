@@ -118,8 +118,39 @@ class WorldLinkModal(discord.ui.Modal, title='Post World Link Here'):
             forum_channel = interaction.guild.get_channel(forum_channel_id)
             
             if forum_channel and forum_channel.available_tags:
+                # Check if user has moderator permissions
+                is_moderator = (interaction.user.guild_permissions.manage_messages or 
+                               interaction.user.guild_permissions.moderate_members or
+                               interaction.user.guild_permissions.administrator)
+                
                 # Get tags from the forum channel
                 for tag in forum_channel.available_tags:
+                    # Try to safely get the moderated attribute
+                    is_moderated = False
+                    
+                    # Try different ways to check if tag is moderated
+                    try:
+                        # Method 1: Direct attribute access
+                        if hasattr(tag, "moderated"):
+                            is_moderated = tag.moderated
+                        # Method 2: Through __dict__
+                        elif hasattr(tag, "__dict__") and "moderated" in tag.__dict__:
+                            is_moderated = tag.__dict__["moderated"]
+                        # Method 3: Try to get raw attribute data through _raw_data
+                        elif hasattr(tag, "_raw_data") and "moderated" in tag._raw_data:
+                            is_moderated = tag._raw_data["moderated"]
+                        # Method 4: Check for private attribute
+                        elif hasattr(tag, "_moderated"):
+                            is_moderated = tag._moderated
+                    except Exception as e:
+                        # Log error but continue - treat as not moderated if we can't check
+                        config.logger.warning(f"Error checking if tag {tag.name} is moderated: {e}")
+                    
+                    # Skip moderated tags for non-moderators
+                    if is_moderated and not is_moderator:
+                        config.logger.info(f"Skipping moderated tag '{tag.name}' for non-moderator user {interaction.user.id}")
+                        continue
+                        
                     # Get the emoji for this tag
                     emoji = str(tag.emoji) if tag.emoji else "🏷️"
                     choice_map[emoji] = tag.name
@@ -192,7 +223,6 @@ class WorldLinkModal(discord.ui.Modal, title='Post World Link Here'):
             return
 
         # Check if this world already exists in this server
-        from database.models import WorldPosts
         existing_thread_id = WorldPosts.get_thread_for_world(server_id, world_id)
         if existing_thread_id:
             await interaction.followup.send(
@@ -202,161 +232,9 @@ class WorldLinkModal(discord.ui.Modal, title='Post World Link Here'):
             )
             return
 
-        # Initialize VRChat API with auth token from config
+        # Initialize VRChat API
         vrchat_api = VRChatAPI(config.AUTH)
         
-        def debug_file_id_extraction(world_details):
-            """Debug function to log details about file ID extraction"""
-            config.logger.info("===== FILE ID EXTRACTION DEBUG =====")
-            
-            if not world_details:
-                config.logger.warning("World details is None")
-                return
-            
-            # Log all top-level keys
-            config.logger.info(f"World info keys: {list(world_details.keys())}")
-            
-            # Check for direct assetUrl
-            if "assetUrl" in world_details:
-                config.logger.info(f"Direct assetUrl: {world_details['assetUrl']}")
-            
-            # Check for unityPackages
-            if "unityPackages" in world_details:
-                packages = world_details["unityPackages"]
-                config.logger.info(f"Found {len(packages)} unity packages")
-                
-                for i, package in enumerate(packages):
-                    config.logger.info(f"Package {i+1} keys: {list(package.keys())}")
-                    
-                    if "assetUrl" in package:
-                        config.logger.info(f"Package {i+1} assetUrl: {package['assetUrl']}")
-                    
-                    if "platform" in package:
-                        config.logger.info(f"Package {i+1} platform: {package['platform']}")
-                        
-            # Check for version information
-            if "version" in world_details:
-                version = world_details["version"]
-                if isinstance(version, dict):
-                    config.logger.info(f"Version keys: {list(version.keys())}")
-            
-            # Check for any keys that might contain "file" in their name
-            file_related_keys = [k for k in world_details.keys() if "file" in k.lower()]
-            if file_related_keys:
-                config.logger.info(f"File-related keys: {file_related_keys}")
-                for key in file_related_keys:
-                    config.logger.info(f"{key}: {world_details[key]}")
-            
-            # Check for any keys that might contain "asset" in their name
-            asset_related_keys = [k for k in world_details.keys() if "asset" in k.lower()]
-            if asset_related_keys:
-                config.logger.info(f"Asset-related keys: {asset_related_keys}")
-                for key in asset_related_keys:
-                    config.logger.info(f"{key}: {world_details[key]}")
-            
-            # Check for imageUrl - sometimes contains similar patterns
-            if "imageUrl" in world_details:
-                config.logger.info(f"Image URL: {world_details['imageUrl']}")
-            
-            # Manual pattern search for file IDs
-            import re
-            for key, value in world_details.items():
-                if isinstance(value, str):
-                    match = re.search(r'file_[a-f0-9-]+', value)
-                    if match:
-                        config.logger.info(f"Found potential file ID pattern in {key}: {match.group(0)}")
-            
-            config.logger.info("===== END FILE ID DEBUG =====")
-    
-        # Add this to your modals.py file where you're experiencing the issue
-
-        def debug_vrchat_world(world_details, file_id=None):
-            """Debug function to log details about VRChat world information and file size"""
-            config.logger.info("===== VRCHAT WORLD DEBUG =====")
-            
-            # PART 1: Debug file ID extraction
-            if not world_details:
-                config.logger.warning("World details is None")
-                return
-            
-            # Log all top-level keys
-            config.logger.info(f"World info keys: {list(world_details.keys())}")
-            
-            # Check for direct assetUrl
-            if "assetUrl" in world_details:
-                config.logger.info(f"Direct assetUrl: {world_details['assetUrl']}")
-            
-            # Check for unityPackages
-            if "unityPackages" in world_details:
-                packages = world_details["unityPackages"]
-                config.logger.info(f"Found {len(packages)} unity packages")
-                
-                for i, package in enumerate(packages):
-                    config.logger.info(f"Package {i+1} keys: {list(package.keys())}")
-                    
-                    if "assetUrl" in package:
-                        config.logger.info(f"Package {i+1} assetUrl: {package['assetUrl']}")
-                    
-                    if "platform" in package:
-                        config.logger.info(f"Package {i+1} platform: {package['platform']}")
-            
-            # Check for any keys that might contain "file" in their name
-            file_related_keys = [k for k in world_details.keys() if "file" in k.lower()]
-            if file_related_keys:
-                config.logger.info(f"File-related keys: {file_related_keys}")
-                for key in file_related_keys:
-                    config.logger.info(f"{key}: {world_details[key]}")
-            
-            # Manual pattern search for file IDs
-            import re
-            for key, value in world_details.items():
-                if isinstance(value, str):
-                    match = re.search(r'file_[a-f0-9-]+', value)
-                    if match:
-                        config.logger.info(f"Found potential file ID pattern in {key}: {match.group(0)}")
-            
-            # PART 2: Debug world size if file_id is provided
-            if file_id:
-                config.logger.info(f"File ID for world: {file_id}")
-                
-                # Try to directly get file info
-                try:
-                    from utils.api import VRChatAPI
-                    api = VRChatAPI(config.AUTH)
-                    file_info = api.get_file_info(file_id)
-                    
-                    if file_info:
-                        config.logger.info(f"File info retrieved successfully")
-                        config.logger.info(f"File info keys: {list(file_info.keys())}")
-                        
-                        if "versions" in file_info:
-                            versions = file_info["versions"]
-                            config.logger.info(f"Found {len(versions)} versions")
-                            
-                            # Check last version
-                            if versions and len(versions) > 0:
-                                last_version = versions[-1]
-                                config.logger.info(f"Last version keys: {list(last_version.keys())}")
-                                
-                                if "file" in last_version:
-                                    file_data = last_version["file"]
-                                    config.logger.info(f"File data keys: {list(file_data.keys())}")
-                                    
-                                    if "sizeInBytes" in file_data:
-                                        size = file_data["sizeInBytes"]
-                                        config.logger.info(f"Size in bytes: {size}")
-                                        
-                                        # Test bytes_to_mb function
-                                        from utils.formatters import bytes_to_mb
-                                        formatted = bytes_to_mb(size)
-                                        config.logger.info(f"Formatted size: {formatted}")
-                    else:
-                        config.logger.warning("Failed to retrieve file info")
-                except Exception as e:
-                    config.logger.error(f"Error getting file info: {e}")
-            
-            config.logger.info("===== END VRCHAT WORLD DEBUG =====")
-
         world_details = vrchat_api.get_world_info(world_id)
         if not world_details:
             await interaction.followup.send(
@@ -372,28 +250,12 @@ class WorldLinkModal(discord.ui.Modal, title='Post World Link Here'):
             
             # Get file ID and world size
             file_rest_id = vrchat_api.get_file_rest_id(world_details)
-            config.logger.info(f"File ID for world {world_id}: {file_rest_id}")
-            
-            # Debug the world details and file ID extraction
-            debug_vrchat_world(world_details, file_rest_id)
             
             # Get world size in bytes
             world_size_bytes = vrchat_api.get_world_size(file_rest_id)
-            config.logger.info(f"World size raw value: {world_size_bytes}")
             
             # Convert to human-readable format
             world_size_mb = bytes_to_mb(world_size_bytes)
-            config.logger.info(f"Formatted world size: {world_size_mb}")
-            
-            platform_info = vrchat_api.get_platform_info(world_details)
-            
-            # Get world size in bytes
-            world_size_bytes = vrchat_api.get_world_size(file_rest_id)
-            config.logger.info(f"World size raw value: {world_size_bytes}")
-            
-            # Convert to human-readable format
-            world_size_mb = bytes_to_mb(world_size_bytes)
-            config.logger.info(f"Formatted world size: {world_size_mb}")
             
             platform_info = vrchat_api.get_platform_info(world_details)
             
@@ -427,7 +289,6 @@ class WorldLinkModal(discord.ui.Modal, title='Post World Link Here'):
             thread = created.thread
             
             # Apply tags to the thread based on user's choices
-            # Use self.selected_tags directly instead of retrieving from database
             if self.selected_tags:
                 # Get tag IDs from the database
                 tag_ids = ServerTags.get_tag_ids(server_id, self.selected_tags)
@@ -450,7 +311,6 @@ class WorldLinkModal(discord.ui.Modal, title='Post World Link Here'):
                         config.logger.error(f"Error adding tags: {e}")
                         # Try alternative method for adding tags
                         try:
-                            config.logger.info(f"Trying alternative method for adding tags to thread {thread.id}")
                             # Try to edit the thread to apply tags
                             await thread.edit(applied_tags=tag_objects)
                             config.logger.info(f"Successfully added tags using edit method")
@@ -467,7 +327,7 @@ class WorldLinkModal(discord.ui.Modal, title='Post World Link Here'):
                 thread_id=thread_id,
                 world_id=world_id,
                 world_link=world_link,
-                user_choices=self.selected_tags  # Use self.selected_tags directly
+                user_choices=self.selected_tags
             )
 
             await interaction.followup.send(

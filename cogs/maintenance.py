@@ -141,12 +141,20 @@ class MaintenanceCommands(commands.Cog):
         # Convert forum tags to a format compatible with ServerTags.sync_tags
         forum_tag_data = []
         for tag in forum_tags:
-            forum_tag_data.append({
-                'id': tag.id,
-                'name': tag.name,
-                'emoji': str(tag.emoji) if tag.emoji else None
-            })
-        
+            # Add a check for moderated tags
+            is_moderated = getattr(tag, "moderated", False)
+            
+            # Only include in forum_tag_data if not moderated
+            if not is_moderated:
+                forum_tag_data.append({
+                    'id': tag.id,
+                    'name': tag.name,
+                    'emoji': str(tag.emoji) if tag.emoji else None
+                })
+            else:
+                # Log that we're skipping a moderated tag
+                config.logger.info(f"Skipping moderated tag '{tag.name}' (ID: {tag.id}) from database sync")
+
         # Sync tags with database
         added, updated, removed = ServerTags.sync_tags(server_id, forum_tag_data)
         
@@ -293,39 +301,50 @@ class MaintenanceCommands(commands.Cog):
             'tags_to_fix': tags_to_fix
         }
         
-        # Create scan result messages
+        progress_completion = (
+            "# ✅ **Scan Complete!**\n\n"
+            f"**📊 Summary:**\n"
+            f"• 🔄 **Duplicates:** {len(duplicate_worlds)} worlds\n"
+            f"• ⚠️ **Threads without worlds:** {len(threads_without_worlds)} threads\n"
+            f"• 🏷️ **Missing tags:** {tags_to_fix} tags\n\n"
+            "📝 Preparing detailed results..."
+        )
+        await progress_message.edit(content=progress_completion)
+
+        # Then, further down the method, modify the scan result messages:
+        # Create scan result messages with more visual appeal
         results = []
-        results.append(f"🔍 **VRCHAT WORLD SHOWCASE SCAN RESULTS**")
-        
-        # Add tag results
-        results.append(f"\n**TAG SCAN:**")
-        results.append(f"• Added {added} new tags")
-        results.append(f"• Updated {updated} existing tags")
-        results.append(f"• Removed {removed} unused tags")
-        
-        # Add thread results
-        results.append(f"\n**THREAD SCAN:**")
-        results.append(f"• Valid VRChat world threads: {worlds_found}")
-        results.append(f"• Threads with missing tags: {tags_to_fix}")
-        
+        results.append(f"# 🔍 **VRCHAT WORLD SHOWCASE SCAN RESULTS**")
+
+        # Add tag results with emojis
+        results.append(f"\n## 🏷️ **TAG SCAN:**")
+        results.append(f"• ✅ Added {added} new tags")
+        results.append(f"• 🔄 Updated {updated} existing tags")
+        results.append(f"• 🗑️ Removed {removed} unused tags")
+
+        # Add thread results with emojis
+        results.append(f"\n## 🌐 **THREAD SCAN:**")
+        results.append(f"• ✅ Valid VRChat world threads: {worlds_found}")
+        results.append(f"• 🏷️ Threads with missing tags: {tags_to_fix}")
+
         # Report on threads without VRChat worlds
         if scan_data['missing_threads']:
-            results.append(f"\n⚠️ **Found {len(scan_data['missing_threads'])} threads needing review:**")
+            results.append(f"\n## ⚠️ **Found {len(scan_data['missing_threads'])} threads needing review:**")
             results.append("These threads don't have detectable VRChat world links. They may need manual inspection or cleanup.")
             # Only show up to 10 to avoid making the message too long
             for i, (thread_id, thread_name) in enumerate(scan_data['missing_threads'][:10]):
-                results.append(f"- {thread_name} (ID: {thread_id})")
+                results.append(f"• 📎 {thread_name} (ID: {thread_id})")
             if len(scan_data['missing_threads']) > 10:
                 results.append(f"...and {len(scan_data['missing_threads']) - 10} more threads")
-                
+                    
         # Report on duplicate worlds
         if duplicate_worlds:
-            results.append(f"\n⚠️ **Found {len(duplicate_worlds)} duplicate VRChat worlds:**")
+            results.append(f"\n## ⚠️ **Found {len(duplicate_worlds)} duplicate VRChat worlds:**")
             results.append("These threads contain worlds that already exist in other threads:")
             for world_id, thread_id1, thread_id2 in duplicate_worlds[:10]:
-                results.append(f"- World: {world_id}")
-                results.append(f"  Original thread: <#{thread_id1}>")
-                results.append(f"  Duplicate thread: <#{thread_id2}>")
+                results.append(f"• 🔄 World: {world_id}")
+                results.append(f"  └─ Original thread: <#{thread_id1}>")
+                results.append(f"  └─ Duplicate thread: <#{thread_id2}>")
             if len(duplicate_worlds) > 10:
                 results.append(f"...and {len(duplicate_worlds) - 10} more duplicates")
         
@@ -354,11 +373,32 @@ class MaintenanceCommands(commands.Cog):
         # If there were no results (unlikely), send a fallback message
         if not chunked_results:
             embed = discord.Embed(
-                title="VRChat World Showcase Scan",
-                description="✅ Scan complete. No issues found.",
+                title="🔍 VRChat World Showcase Scan",
+                description="# ✅ Perfect Showcase!\n\nYour VRChat World Showcase is in excellent condition.\n\n**No issues were found during the scan.**",
                 color=discord.Color.dark_red()
             )
-            embed.set_footer(text=f"Scan completed on {datetime.now().strftime('%Y-%m-%d at %H:%M:%S')}")
+            
+            # Add a celebratory image
+            embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/1049421057178079262.webp?size=96&quality=lossless")
+            
+            # Add some stats fields
+            embed.add_field(
+                name="💯 Perfect Score",
+                value="All worlds have proper tags and links",
+                inline=True
+            )
+            
+            embed.add_field(
+                name="🏆 Showcase Status",
+                value="Perfectly maintained",
+                inline=True
+            )
+            
+            embed.set_footer(
+                text=f"Scan completed on {datetime.now().strftime('%Y-%m-%d at %H:%M:%S')}",
+                icon_url="https://cdn.discordapp.com/avatars/1156538533876613121/8acb3d0ce2c328987ad86355e0d0b528.png"
+            )
+            
             await interaction.followup.send(embed=embed)
 
     async def _scan_forum_threads(self, server_id, forum_channel, progress_message=None):

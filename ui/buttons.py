@@ -42,11 +42,11 @@ class WorldButton(discord.ui.View):
         await interaction.response.send_modal(modal)
 
 class ScanActionButtons(discord.ui.View):
-    """Buttons for taking action on scan results."""
+    """Buttons for taking action on scan results with enhanced visual design."""
     
     def __init__(self, scan_data: Dict[str, Any]):
         """
-        Initialize scan action buttons.
+        Initialize scan action buttons with improved visual design.
         
         Args:
             scan_data: Dictionary with scan results
@@ -64,7 +64,8 @@ class ScanActionButtons(discord.ui.View):
         missing_count = len(scan_data.get('missing_threads', []))
         tags_count = scan_data.get('tags_to_fix', 0)
         
-        # Add the buttons with improved labels
+        # Add the buttons with improved labels and emojis
+        # Row 1: Primary action buttons
         self.add_item(
             discord.ui.Button(
                 style=discord.ButtonStyle.danger,
@@ -75,34 +76,49 @@ class ScanActionButtons(discord.ui.View):
                 row=0
             )
         )
+        
         self.add_item(
             discord.ui.Button(
                 style=discord.ButtonStyle.secondary,
-                label=f"Remove Empty Threads ({missing_count})",
-                emoji="🔍",
+                label=f"Clean Empty Threads ({missing_count})",
+                emoji="🧹",
                 custom_id="remove_empty",
                 disabled=missing_disabled,
                 row=0
             )
         )
+        
+        # Row 2: Tag fixes and all-in-one button
         self.add_item(
             discord.ui.Button(
                 style=discord.ButtonStyle.primary,
-                label=f"Fix Tags ({tags_count})",
+                label=f"Fix Missing Tags ({tags_count})",
                 emoji="🏷️",
                 custom_id="fix_tags",
                 disabled=tags_disabled,
                 row=1
             )
         )
+        
         self.add_item(
             discord.ui.Button(
                 style=discord.ButtonStyle.success,
                 label="Fix All Issues",
-                emoji="✅",
+                emoji="✨",
                 custom_id="fix_all",
                 disabled=(duplicate_disabled and missing_disabled and tags_disabled),
                 row=1
+            )
+        )
+        
+        # Row 3: Additional helper buttons
+        self.add_item(
+            discord.ui.Button(
+                style=discord.ButtonStyle.primary,
+                label="Review Details",
+                emoji="📋",
+                custom_id="review_details",
+                row=2
             )
         )
         
@@ -111,6 +127,82 @@ class ScanActionButtons(discord.ui.View):
         self.children[1].callback = self.remove_empty_callback
         self.children[2].callback = self.fix_tags_callback
         self.children[3].callback = self.fix_all_callback
+        self.children[4].callback = self.review_details_callback
+    
+    # Add a new callback for the Review Details button
+    async def review_details_callback(self, interaction: discord.Interaction):
+        """
+        Show detailed review information in a nicely formatted embed.
+        
+        Args:
+            interaction: Discord interaction
+        """
+        await interaction.response.defer(thinking=True)
+        
+        # Create a detailed embed with information about the scan
+        embed = discord.Embed(
+            title="🔍 VRChat World Showcase Scan Details",
+            description="Detailed information about issues found during the scan",
+            color=discord.Color.dark_red()
+        )
+        
+        # Set thumbnail
+        embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/1156538533876613121/8acb3d0ce2c328987ad86355e0d0b528.png")
+        
+        # Add summary field
+        embed.add_field(
+            name="📊 Summary",
+            value=(
+                f"• **Server ID:** {self.scan_data['server_id']}\n"
+                f"• **Forum Channel:** <#{self.scan_data['forum_channel_id']}>\n"
+                f"• **Duplicate Worlds:** {len(self.scan_data.get('duplicate_worlds', []))}\n"
+                f"• **Empty Threads:** {len(self.scan_data.get('missing_threads', []))}\n"
+                f"• **Missing Tags:** {self.scan_data.get('tags_to_fix', 0)}\n"
+            ),
+            inline=False
+        )
+        
+        # Show detailed information about duplicate worlds
+        duplicate_worlds = self.scan_data.get('duplicate_worlds', [])
+        if duplicate_worlds:
+            duplicates_value = ""
+            for i, (world_id, thread_id1, thread_id2) in enumerate(duplicate_worlds[:5]):
+                duplicates_value += f"{i+1}. World `{world_id}`\n"
+                duplicates_value += f"   └─ Original: <#{thread_id1}>\n"
+                duplicates_value += f"   └─ Duplicate: <#{thread_id2}>\n"
+                
+            if len(duplicate_worlds) > 5:
+                duplicates_value += f"\n...and {len(duplicate_worlds) - 5} more duplicates"
+                
+            embed.add_field(
+                name=f"🔄 Duplicate Worlds ({len(duplicate_worlds)})",
+                value=duplicates_value or "No duplicates found",
+                inline=False
+            )
+        
+        # Add detailed missing threads information
+        missing_threads = self.scan_data.get('missing_threads', [])
+        if missing_threads:
+            missing_value = ""
+            for i, (thread_id, thread_name) in enumerate(missing_threads[:5]):
+                missing_value += f"{i+1}. **{thread_name}** (<#{thread_id}>)\n"
+                
+            if len(missing_threads) > 5:
+                missing_value += f"\n...and {len(missing_threads) - 5} more threads"
+                
+            embed.add_field(
+                name=f"⚠️ Threads Without World Links ({len(missing_threads)})",
+                value=missing_value or "No threads without world links",
+                inline=False
+            )
+        
+        # Add footer
+        embed.set_footer(
+            text="Use the action buttons to fix these issues",
+            icon_url="https://cdn.discordapp.com/emojis/1049421057178079262.webp?size=96&quality=lossless"
+        )
+        
+        await interaction.followup.send(embed=embed, ephemeral=True)
     
     async def remove_duplicates_callback(self, interaction: discord.Interaction):
         """

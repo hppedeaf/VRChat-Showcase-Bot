@@ -1,6 +1,7 @@
 """
 Functions to build Discord embeds for various purposes.
 """
+import re
 import discord
 from typing import Dict, Any, List, Optional
 from datetime import datetime
@@ -237,9 +238,11 @@ def build_help_embed() -> discord.Embed:
     
     return embed
 
+# In utils/embed_builders.py, replace or update the build_scan_results_embed function:
+
 def build_scan_results_embed(title: str, results: List[str], part: int = 1, total_parts: int = 1) -> discord.Embed:
     """
-    Build a Discord embed for scan results with improved clarity.
+    Build a visually enhanced Discord embed for scan results.
     
     Args:
         title: Embed title
@@ -250,24 +253,133 @@ def build_scan_results_embed(title: str, results: List[str], part: int = 1, tota
     Returns:
         Discord embed with scan results
     """
-    description = "\n".join(results)
+    # Parse results to organize them into categories
+    current_category = None
+    categories = {
+        "TAG SCAN": [],
+        "THREAD SCAN": [],
+        "WARNING": [],
+        "HEADER": []
+    }
     
+    for line in results:
+        if not line.strip():
+            continue
+            
+        if "**VRCHAT WORLD SCAN RESULTS**" in line:
+            categories["HEADER"].append(line)
+        elif "**TAG SCAN:**" in line:
+            current_category = "TAG SCAN"
+        elif "**THREAD SCAN:**" in line:
+            current_category = "THREAD SCAN"
+        elif "⚠️ **Found" in line:
+            current_category = "WARNING"
+            categories[current_category].append(line)
+        elif current_category:
+            categories[current_category].append(line)
+    
+    # Create a beautiful embed with proper formatting and organization
     embed = discord.Embed(
-        title=f"{title} (Part {part}/{total_parts})",
-        description=description,
-        color=discord.Color.dark_red()
+        title=f"🔍 {title} (Part {part}/{total_parts})",
+        color=discord.Color.dark_red(),
+        timestamp=datetime.now()
     )
     
-    # Add a footer with timestamp
-    timestamp = datetime.now().strftime('%Y-%m-%d at %H:%M:%S')
+    # Set a thumbnail image 
+    embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/1156538533876613121/8acb3d0ce2c328987ad86355e0d0b528.png")
     
+    # Add the header as the top section
+    if categories["HEADER"]:
+        embed.description = "# 🔍 VRChat World Scan Complete!\n"
+        embed.description += "A comprehensive analysis of your showcase forum has been completed."
+    
+    # Add Tag Scan section with fancy formatting
+    if categories["TAG SCAN"]:
+        tag_content = "\n".join(categories["TAG SCAN"])
+        # Extract numbers for visual representation
+        added_match = re.search(r'Added (\d+)', tag_content)
+        updated_match = re.search(r'Updated (\d+)', tag_content)
+        removed_match = re.search(r'Removed (\d+)', tag_content)
+        
+        added = int(added_match.group(1)) if added_match else 0
+        updated = int(updated_match.group(1)) if updated_match else 0
+        removed = int(removed_match.group(1)) if removed_match else 0
+        
+        tag_field = (
+            "### 🏷️ Tag Information\n"
+            f"✅ **Added:** {added} new tags\n"
+            f"🔄 **Updated:** {updated} existing tags\n"
+            f"🗑️ **Removed:** {removed} unused tags\n"
+        )
+        embed.add_field(name="", value=tag_field, inline=False)
+    
+    # Add Thread Scan section with fancy formatting
+    if categories["THREAD SCAN"]:
+        thread_content = "\n".join(categories["THREAD SCAN"])
+        worlds_match = re.search(r'Valid VRChat world threads: (\d+)', thread_content)
+        tags_match = re.search(r'Threads with missing tags: (\d+)', thread_content)
+        
+        worlds = int(worlds_match.group(1)) if worlds_match else 0
+        missing_tags = int(tags_match.group(1)) if tags_match else 0
+        
+        thread_field = (
+            "### 🌐 Thread Analysis\n"
+            f"✅ **Valid World Posts:** {worlds} threads\n"
+            f"🏷️ **Missing Tags:** {missing_tags} tags need fixing\n"
+        )
+        embed.add_field(name="", value=thread_field, inline=False)
+    
+    # Add Warning section with fancy formatting
+    if categories["WARNING"]:
+        warning_content = "\n".join(categories["WARNING"])
+        
+        # Process duplicate warnings
+        duplicate_match = re.search(r'Found (\d+) duplicate VRChat worlds', warning_content)
+        if duplicate_match:
+            duplicate_count = int(duplicate_match.group(1))
+            
+            duplicates_field = (
+                "### ⚠️ Duplicate Worlds Detected\n"
+                f"Found **{duplicate_count}** duplicate world posts\n"
+                "These are worlds that appear in multiple threads."
+            )
+            embed.add_field(name="", value=duplicates_field, inline=False)
+        
+        # Process threads without worlds warnings
+        missing_match = re.search(r'Found (\d+) threads needing review', warning_content)
+        if missing_match:
+            missing_count = int(missing_match.group(1))
+            
+            missing_field = (
+                "### ⚠️ Threads Without Worlds\n"
+                f"Found **{missing_count}** threads without valid world links\n"
+                "These may need manual review or cleanup."
+            )
+            embed.add_field(name="", value=missing_field, inline=False)
+        
+        # If we have thread examples, add them in a collapsible format
+        thread_examples = re.findall(r'- (.+) \(ID: (\d+)\)', warning_content)
+        if thread_examples:
+            examples_field = "### 📋 Example Threads Needing Review\n"
+            for name, thread_id in thread_examples[:5]:
+                examples_field += f"• **{name}** (<#{thread_id}>)\n"
+            
+            if len(thread_examples) > 5:
+                examples_field += f"...and {len(thread_examples) - 5} more threads"
+                
+            embed.add_field(name="", value=examples_field, inline=False)
+    
+    # Add a footer with timestamp
     if part == total_parts:
         embed.set_footer(
-            text="Use the buttons below to manage issues. Threads that need review may have valid content. " +
-                 f"Scan completed on {timestamp}"
+            text="Use the buttons below to manage issues • Scan completed",
+            icon_url="https://cdn.discordapp.com/emojis/1049421057178079262.webp?size=96&quality=lossless"
         )
     else:
-        embed.set_footer(text=f"Scan completed on {timestamp}")
+        embed.set_footer(
+            text=f"Scan results part {part} of {total_parts}",
+            icon_url="https://cdn.discordapp.com/emojis/1049421057178079262.webp?size=96&quality=lossless"
+        )
     
     return embed
 

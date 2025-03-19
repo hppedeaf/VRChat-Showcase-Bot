@@ -6,6 +6,7 @@ from typing import Dict, Any, List, Callable, Awaitable, Optional, Union
 from collections import namedtuple
 import config as config
 import logging
+from database.models import ServerChannels
 
 class TagSelectionView(discord.ui.View):
     """View for selecting tags for a world post."""
@@ -42,7 +43,10 @@ class TagSelectionView(discord.ui.View):
             items = items[:max_tags]
             config.logger.warning(f"Too many tags ({len(tag_mapping)}), limiting to {max_tags}")
         
-        # Add tag buttons organized in rows
+        # Get guild ID from interaction context - will be properly set when the view is used
+        self.guild_id = None
+        
+        # Add tag buttons organized in rows - ALWAYS CREATE ALL BUTTONS regardless of permissions
         for i in range(0, len(items), items_per_row):
             row_items = items[i:i+items_per_row]
             for emoji_identifier, tag in row_items:
@@ -123,7 +127,7 @@ class TagSelectionView(discord.ui.View):
     
     async def tag_button_callback(self, interaction: discord.Interaction):
         """
-        Handle tag button clicks.
+        Handle tag button clicks with proper permission checking.
         
         Args:
             interaction: Discord interaction
@@ -131,7 +135,39 @@ class TagSelectionView(discord.ui.View):
         # Extract tag name from custom_id
         tag = interaction.data["custom_id"].replace("tag_", "")
         
-        # Toggle tag selection
+        # Get forum channel to verify permissions at runtime
+        server_id = interaction.guild_id
+        forum_config = ServerChannels.get_forum_channel(server_id)
+        
+        if forum_config:
+            forum_channel_id = forum_config[0]
+            forum_channel = interaction.guild.get_channel(forum_channel_id)
+            
+            if forum_channel and forum_channel.available_tags:
+                # Find the tag in the forum channel
+                tag_obj = None
+                for available_tag in forum_channel.available_tags:
+                    if available_tag.name == tag:
+                        tag_obj = available_tag
+                        break
+                
+                # Check if this is a moderated tag
+                if tag_obj and getattr(tag_obj, "moderated", False):
+                    # Verify user has appropriate permissions
+                    has_permission = (
+                        interaction.user.guild_permissions.manage_messages or
+                        interaction.user.guild_permissions.moderate_members or
+                        interaction.user.guild_permissions.administrator
+                    )
+                    
+                    if not has_permission:
+                        await interaction.response.send_message(
+                            "Only moderators can apply this tag.", 
+                            ephemeral=True
+                        )
+                        return
+        
+        # Toggle tag selection (existing code)
         if tag in self.selected_tags:
             self.selected_tags.remove(tag)
             # Update button to show deselected state
@@ -161,6 +197,31 @@ class TagSelectionView(discord.ui.View):
         )
         
         await interaction.response.edit_message(embed=embed, view=self)
+
+    # Add this helper method to check if a tag is mod-only
+    def check_if_tag_is_mod_only(self) -> bool:
+        """
+        Check if the tag selection is set to moderator-only in this server.
+        
+        Returns:
+            True if only moderators can apply tags, False otherwise
+        """
+        # Implement this based on your configuration system
+        # For example, fetch from database or config
+        from database.models import ServerChannels
+        
+        # Get server ID from the interaction context
+        server_id = self.message.guild.id if self.message else None
+        if not server_id:
+            return False
+        
+        # Check server settings for "Only allow moderators to apply tag"
+        # This is just a placeholder - implement based on your actual settings storage
+        forum_config = ServerChannels.get_forum_channel(server_id)
+        if forum_config and len(forum_config) > 2:
+            return forum_config[2].get('only_mods_can_apply_tag', False)
+        
+        return False
     
     async def submit_callback(self, interaction: discord.Interaction):
         """
