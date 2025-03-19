@@ -53,7 +53,7 @@ class WorldLinkModal(discord.ui.Modal, title='Post World Link Here'):
             return
     
         # Check if the world_id already exists in the database
-        existing_thread = ThreadWorldLinks.get_thread_for_world(interaction.guild_id, world_id)
+        existing_thread = WorldPosts.get_thread_for_world(interaction.guild_id, world_id)
         
         if existing_thread:
             # If the world already exists, notify the user and reference the thread
@@ -120,28 +120,37 @@ class WorldLinkModal(discord.ui.Modal, title='Post World Link Here'):
             if forum_channel and forum_channel.available_tags:
                 # Check if user has moderator permissions
                 is_moderator = (interaction.user.guild_permissions.manage_messages or 
-                            interaction.user.guild_permissions.moderate_members or
-                            interaction.user.guild_permissions.administrator)
+                               interaction.user.guild_permissions.moderate_members or
+                               interaction.user.guild_permissions.administrator)
                 
                 config.logger.info(f"User {interaction.user.id} has moderator permissions: {is_moderator}")
                 
                 # Get tags from the forum channel
                 for tag in forum_channel.available_tags:
-                    # Check if this tag has the moderator-only setting
+                    # Try to safely get the moderated attribute
                     is_moderated = False
-                    try:
-                        # Access the moderated attribute directly
-                        is_moderated = getattr(tag, "moderated", False)
-                    except AttributeError:
-                        # If attribute doesn't exist, check if it's in the dictionary
-                        if hasattr(tag, "__dict__"):
-                            is_moderated = tag.__dict__.get("moderated", False)
                     
-                    config.logger.debug(f"Tag {tag.name} (ID: {tag.id}) is moderated: {is_moderated}")
+                    # Try different ways to check if tag is moderated
+                    try:
+                        # Method 1: Direct attribute access
+                        if hasattr(tag, "moderated"):
+                            is_moderated = tag.moderated
+                        # Method 2: Through __dict__
+                        elif hasattr(tag, "__dict__") and "moderated" in tag.__dict__:
+                            is_moderated = tag.__dict__["moderated"]
+                        # Method 3: Try to get raw attribute data through _raw_data
+                        elif hasattr(tag, "_raw_data") and "moderated" in tag._raw_data:
+                            is_moderated = tag._raw_data["moderated"]
+                        # Method 4: Check for private attribute
+                        elif hasattr(tag, "_moderated"):
+                            is_moderated = tag._moderated
+                    except Exception as e:
+                        # Log error but continue - treat as not moderated if we can't check
+                        config.logger.warning(f"Error checking if tag {tag.name} is moderated: {e}")
                     
                     # Skip moderated tags for non-moderators
                     if is_moderated and not is_moderator:
-                        config.logger.info(f"Skipping moderated tag '{tag.name}' (ID: {tag.id}) for non-moderator user {interaction.user.id}")
+                        config.logger.info(f"Skipping moderated tag '{tag.name}' for non-moderator user {interaction.user.id}")
                         continue
                         
                     # Get the emoji for this tag
@@ -167,210 +176,125 @@ class WorldLinkModal(discord.ui.Modal, title='Post World Link Here'):
         view.message = message
 
     async def handle_tag_submission(self, interaction: discord.Interaction, world_link: str, selected_tags: List[str]):
-        """
-        Handle the submission of tags and create the world post with improved validation.
-        
-        Args:
-            interaction: Discord interaction
-            world_link: VRChat world link
-            selected_tags: List of selected tag names
-        """
+        """Handle the submission of tags and create the world post."""
         # Extract world ID
         world_id = extract_world_id(world_link)
         
-        if not world_id:
-            await interaction.followup.send(
-                "Failed to extract a valid world ID from the provided link. Please try again with a correct VRChat world link.",
-                ephemeral=True
-            )
-            return
-            
         # Update user data with selected tags
         self.selected_tags = selected_tags
-        
-        # Log the submission with more details
-        config.logger.info(f"User {interaction.user.id} selected tags: {selected_tags} for world {world_id}")
-        
-        # Validate tags against forum channel permissions
-        server_id = interaction.guild_id
-        forum_config = ServerChannels.get_forum_channel(server_id)
-        
-        if forum_config:
-            forum_channel_id = forum_config[0]
-            forum_channel = interaction.guild.get_channel(forum_channel_id)
-            
-            if forum_channel and forum_channel.available_tags:
-                # Check if any selected tags are moderated
-                moderated_tags = []
-                for tag_name in selected_tags:
-                    for available_tag in forum_channel.available_tags:
-                        if available_tag.name == tag_name:
-                            is_moderated = getattr(available_tag, "moderated", False)
-                            if is_moderated:
-                                moderated_tags.append(tag_name)
-                            break
-                
-                # If moderated tags were selected, check if user has permission
-                if moderated_tags:
-                    has_permission = (
-                        interaction.user.guild_permissions.manage_messages or
-                        interaction.user.guild_permissions.moderate_members or
-                        interaction.user.guild_permissions.administrator
-                    )
-                    
-                    if not has_permission:
-                        config.logger.warning(
-                            f"User {interaction.user.id} selected moderated tags {moderated_tags} without permission"
-                        )
-                        # We'll continue but log the warning - tags will be filtered during application
         
         # Save tags to database for this user
         UserWorldLinks.set_user_choices(interaction.user.id, selected_tags)
         
+        # Log the submission
+        config.logger.info(f"User {interaction.user.id} selected tags: {selected_tags} for world {world_id}")
+        
         # Proceed with world post creation
         await self.create_world_post(interaction, world_id, interaction.user, world_link)
 
-# In ui/modals.py, update the create_world_post method to better handle tag application
-
-async def create_world_post(
-    self, 
-    interaction: discord.Interaction, 
-    world_id: str, 
-    author: discord.User, 
-    world_link: str
-):
-    """
-    Create a new thread for a VRChat world post with improved tag handling.
-    """
-    server_id = self.guild_id
-    user_id = author.id
-    
-    # Get the forum channel for this server
-    forum_config = ServerChannels.get_forum_channel(server_id)
-    if not forum_config:
-        await interaction.followup.send(
-            "Forum channel is not set for this server. Use `/world-create` to create a new forum channel.",
-            ephemeral=True
-        )
-        return
-
-    forum_channel_id = forum_config[0]
-    forum_channel = interaction.client.get_channel(forum_channel_id)
-
-    if not forum_channel:
-        await interaction.followup.send(
-            "Forum channel is not set correctly. Please use `/world-create` to create a new forum channel.",
-            ephemeral=True
-        )
-        return
-
-    # Check if this world already exists in this server
-    from database.models import WorldPosts
-    existing_thread_id = WorldPosts.get_thread_for_world(server_id, world_id)
-    if existing_thread_id:
-        await interaction.followup.send(
-            f"A thread for this VRChat world already exists: <#{existing_thread_id}>. " +
-            f"If **Unknown**, please send to the server admin with the ID number: {existing_thread_id}",
-            ephemeral=True
-        )
-        return
-
-    # Initialize VRChat API with auth token from config
-    vrchat_api = VRChatAPI(config.AUTH)
-    
-    # [Debug logging and world details fetching code omitted for brevity]
-
-    world_details = vrchat_api.get_world_info(world_id)
-    if not world_details:
-        await interaction.followup.send(
-            "Failed to retrieve world information. Please check your VRChat link and try again.",
-            ephemeral=True
-        )
-        return
-
-    try:
-        # Extract world details
-        world_name = world_details['name']
-        author_name = world_details['authorName']
+    async def create_world_post(
+        self, 
+        interaction: discord.Interaction, 
+        world_id: str, 
+        author: discord.User, 
+        world_link: str
+    ):
+        """
+        Create a new thread for a VRChat world post.
+        """
+        server_id = self.guild_id
+        user_id = author.id
         
-        # [World details processing code omitted for brevity]
-        file_rest_id = vrchat_api.get_file_rest_id(world_details)
-        world_size_bytes = vrchat_api.get_world_size(file_rest_id)
-        world_size_mb = bytes_to_mb(world_size_bytes)
-        platform_info = vrchat_api.get_platform_info(world_details)
-        
-        # Create visit button for the world
-        visit_button = discord.ui.Button(
-            style=discord.ButtonStyle.link,
-            label="Visit World",
-            url=f"https://vrchat.com/home/world/{world_id}"
-        )
-        
-        # Create view with the visit button
-        view = discord.ui.View()
-        view.add_item(visit_button)
-        
-        # Build the world embed
-        embed = build_world_embed(
-            world_details, 
-            world_id, 
-            world_size_mb, 
-            platform_info,
-            interaction.user.name
-        )
+        # Get the forum channel for this server
+        forum_config = ServerChannels.get_forum_channel(server_id)
+        if not forum_config:
+            await interaction.followup.send(
+                "Forum channel is not set for this server. Use `/world-create` to create a new forum channel.",
+                ephemeral=True
+            )
+            return
 
-        # Create a thread in the forum channel
-        created = await forum_channel.create_thread(
-            name=world_name,
-            embed=embed,
-            view=view
-        )
+        forum_channel_id = forum_config[0]
+        forum_channel = interaction.client.get_channel(forum_channel_id)
 
-        thread = created.thread
+        if not forum_channel:
+            await interaction.followup.send(
+                "Forum channel is not set correctly. Please use `/world-create` to create a new forum channel.",
+                ephemeral=True
+            )
+            return
+
+        # Check if this world already exists in this server
+        existing_thread_id = WorldPosts.get_thread_for_world(server_id, world_id)
+        if existing_thread_id:
+            await interaction.followup.send(
+                f"A thread for this VRChat world already exists: <#{existing_thread_id}>. " +
+                f"If **Unknown**, please send to the server admin with the ID number: {existing_thread_id}",
+                ephemeral=True
+            )
+            return
+
+        # Initialize VRChat API
+        vrchat_api = VRChatAPI(config.AUTH)
         
-        # Apply tags to the thread based on user's choices
-        if self.selected_tags:
-            config.logger.info(f"Attempting to apply tags: {self.selected_tags} to thread {thread.id}")
+        world_details = vrchat_api.get_world_info(world_id)
+        if not world_details:
+            await interaction.followup.send(
+                "Failed to retrieve world information. Please check your VRChat link and try again.",
+                ephemeral=True
+            )
+            return
+
+        try:
+            # Extract world details
+            world_name = world_details['name']
+            author_name = world_details['authorName']
             
-            # Verify which tags the user can apply
-            valid_tags = []
-            for tag_name in self.selected_tags:
-                # Find the tag in the forum's available tags
-                tag_id = None
-                is_moderated = False
-                
-                for available_tag in forum_channel.available_tags:
-                    if available_tag.name == tag_name:
-                        tag_id = available_tag.id
-                        try:
-                            is_moderated = getattr(available_tag, "moderated", False)
-                        except:
-                            is_moderated = False
-                        break
-                
-                if tag_id is None:
-                    config.logger.warning(f"Tag '{tag_name}' not found in forum channel tags")
-                    continue
-                
-                # Check if user can apply this tag
-                can_apply = True
-                if is_moderated:
-                    has_permission = (
-                        interaction.user.guild_permissions.manage_messages or
-                        interaction.user.guild_permissions.moderate_members or
-                        interaction.user.guild_permissions.administrator
-                    )
-                    if not has_permission:
-                        config.logger.warning(f"User {interaction.user.id} cannot apply moderated tag '{tag_name}'")
-                        can_apply = False
-                
-                if can_apply:
-                    valid_tags.append((tag_id, tag_name))
+            # Get file ID and world size
+            file_rest_id = vrchat_api.get_file_rest_id(world_details)
             
-            # Get tag IDs from the database
-            tag_ids = [tag_id for tag_id, _ in valid_tags]
+            # Get world size in bytes
+            world_size_bytes = vrchat_api.get_world_size(file_rest_id)
             
-            if tag_ids:
+            # Convert to human-readable format
+            world_size_mb = bytes_to_mb(world_size_bytes)
+            
+            platform_info = vrchat_api.get_platform_info(world_details)
+            
+            # Create visit button for the world
+            visit_button = discord.ui.Button(
+                style=discord.ButtonStyle.link,
+                label="Visit World",
+                url=f"https://vrchat.com/home/world/{world_id}"
+            )
+            
+            # Create view with the visit button
+            view = discord.ui.View()
+            view.add_item(visit_button)
+            
+            # Build the world embed
+            embed = build_world_embed(
+                world_details, 
+                world_id, 
+                world_size_mb, 
+                platform_info,
+                interaction.user.name
+            )
+
+            # Create a thread in the forum channel
+            created = await forum_channel.create_thread(
+                name=world_name,
+                embed=embed,
+                view=view
+            )
+
+            thread = created.thread
+            
+            # Apply tags to the thread based on user's choices
+            if self.selected_tags:
+                # Get tag IDs from the database
+                tag_ids = ServerTags.get_tag_ids(server_id, self.selected_tags)
+                
                 # Create a namedtuple to represent tags with IDs
                 Tag = namedtuple('Tag', ['id'])
                 
@@ -384,38 +308,35 @@ async def create_world_post(
                     try:
                         # Add tags to the thread
                         await thread.add_tags(*tag_objects, reason="Added by bot based on user's choices")
-                        config.logger.info(f"Added tags {[name for _, name in valid_tags]} to thread {thread.id}")
+                        config.logger.info(f"Added tags {self.selected_tags} to thread {thread.id}")
                     except Exception as e:
                         config.logger.error(f"Error adding tags: {e}")
                         # Try alternative method for adding tags
                         try:
-                            config.logger.info(f"Trying alternative method for adding tags to thread {thread.id}")
                             # Try to edit the thread to apply tags
                             await thread.edit(applied_tags=tag_objects)
                             config.logger.info(f"Successfully added tags using edit method")
                         except Exception as edit_error:
                             config.logger.error(f"Error adding tags with edit method: {edit_error}")
-            else:
-                config.logger.warning(f"No valid tags to apply to thread {thread.id}")
 
-        # Save thread information to the database
-        thread_id = thread.id
-        
-        # Use the WorldPosts class to save all relevant information
-        WorldPosts.add_world_post(
-            server_id=server_id,
-            user_id=user_id,
-            thread_id=thread_id,
-            world_id=world_id,
-            world_link=world_link,
-            user_choices=self.selected_tags  # Save all selected tags, even if some couldn't be applied
-        )
+            # Save thread information to the database
+            thread_id = thread.id
+            
+            # Use the WorldPosts class to save all relevant information
+            WorldPosts.add_world_post(
+                server_id=server_id,
+                user_id=user_id,
+                thread_id=thread_id,
+                world_id=world_id,
+                world_link=world_link,
+                user_choices=self.selected_tags
+            )
 
-        await interaction.followup.send(
-            f"Thank you! Your world has been posted successfully! View it here: <#{thread_id}>", 
-            ephemeral=True
-        )
-        
-    except Exception as e:
-        config.logger.error(f"Error creating world post: {e}")
-        await interaction.followup.send(f"An error occurred while creating the post: {e}", ephemeral=True)
+            await interaction.followup.send(
+                f"Thank you! Your world has been posted successfully! View it here: <#{thread_id}>", 
+                ephemeral=True
+            )
+            
+        except Exception as e:
+            config.logger.error(f"Error creating world post: {e}")
+            await interaction.followup.send(f"An error occurred while creating the post: {e}", ephemeral=True)
