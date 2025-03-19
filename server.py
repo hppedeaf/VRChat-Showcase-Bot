@@ -263,7 +263,17 @@ def catch_all(path):
 def run_bot():
     """Run the Discord bot in a separate thread."""
     try:
-        # Run the bot's main function
+        # Set up the database before starting the bot
+        from database.db import setup_database
+        try:
+            config.logger.info("Setting up database before starting bot...")
+            setup_database()
+            config.logger.info("Database setup completed successfully")
+        except Exception as db_error:
+            config.logger.error(f"Database setup error: {db_error}")
+            # Continue anyway - the bot can still function with SQLite
+        
+        # Now run the bot
         asyncio.run(bot_main.main())
     except Exception as e:
         config.logger.error(f"Bot error: {e}")

@@ -95,12 +95,19 @@ def setup_postgres_tables(conn=None):
     """
     connection_created = False
     if conn is None:
-        conn = get_postgres_connection()
-        connection_created = True
+        try:
+            conn = get_postgres_connection()
+            connection_created = True
+        except Exception as e:
+            config.logger.error(f"Could not connect to PostgreSQL: {e}")
+            return
     
     try:
+        # Set statement timeout to prevent hanging on index creation (30 seconds)
         with conn.cursor() as cursor:
-            # Server channels table
+            cursor.execute("SET statement_timeout = 30000")  # 30 seconds in milliseconds
+            
+            # Proceed with table creation as before...
             cursor.execute("""
                 CREATE TABLE IF NOT EXISTS server_channels (
                     server_id BIGINT PRIMARY KEY,
@@ -232,37 +239,33 @@ def setup_postgres_tables(conn=None):
                 )
             """)
             
-            # Create improved indices for better performance
+           # Create improved indices with better error handling
+            index_queries = [
+                "CREATE INDEX IF NOT EXISTS idx_world_posts_server_id ON world_posts(server_id)",
+                "CREATE INDEX IF NOT EXISTS idx_world_posts_user_id ON world_posts(user_id)",
+                "CREATE INDEX IF NOT EXISTS idx_world_posts_thread_id ON world_posts(thread_id)",
+                "CREATE INDEX IF NOT EXISTS idx_world_posts_world_id ON world_posts(world_id)",
+                "CREATE INDEX IF NOT EXISTS idx_user_world_links_world_id ON user_world_links(world_id)",
+                "CREATE INDEX IF NOT EXISTS idx_thread_world_links_thread_id ON thread_world_links(thread_id)",
+                "CREATE INDEX IF NOT EXISTS idx_thread_world_links_server_id ON thread_world_links(server_id)",
+                "CREATE INDEX IF NOT EXISTS idx_server_tags_tag_name ON server_tags(server_id, tag_name)",
+                "CREATE INDEX IF NOT EXISTS idx_server_tags_server_id ON server_tags(server_id)",
+                "CREATE INDEX IF NOT EXISTS idx_tag_usage_server_id ON tag_usage(server_id)",
+                "CREATE INDEX IF NOT EXISTS idx_tag_usage_tag_id ON tag_usage(tag_id)",
+                "CREATE INDEX IF NOT EXISTS idx_activity_stats_date ON activity_stats(date)",
+                "CREATE INDEX IF NOT EXISTS idx_activity_stats_server_id ON activity_stats(server_id)",
+                "CREATE INDEX IF NOT EXISTS idx_bot_activity_timestamp ON bot_activity_log(timestamp)",
+                "CREATE INDEX IF NOT EXISTS idx_bot_activity_server_id ON bot_activity_log(server_id)",
+                "CREATE INDEX IF NOT EXISTS idx_bot_activity_action_type ON bot_activity_log(action_type)"
+            ]
             
-            # Indices for world_posts
-            cursor.execute("CREATE INDEX IF NOT EXISTS idx_world_posts_server_id ON world_posts(server_id)")
-            cursor.execute("CREATE INDEX IF NOT EXISTS idx_world_posts_user_id ON world_posts(user_id)")
-            cursor.execute("CREATE INDEX IF NOT EXISTS idx_world_posts_thread_id ON world_posts(thread_id)")
-            cursor.execute("CREATE INDEX IF NOT EXISTS idx_world_posts_world_id ON world_posts(world_id)")
-            
-            # Indices for user_world_links
-            cursor.execute("CREATE INDEX IF NOT EXISTS idx_user_world_links_world_id ON user_world_links(world_id)")
-            
-            # Indices for thread_world_links
-            cursor.execute("CREATE INDEX IF NOT EXISTS idx_thread_world_links_thread_id ON thread_world_links(thread_id)")
-            cursor.execute("CREATE INDEX IF NOT EXISTS idx_thread_world_links_server_id ON thread_world_links(server_id)")
-            
-            # Indices for server_tags
-            cursor.execute("CREATE INDEX IF NOT EXISTS idx_server_tags_tag_name ON server_tags(server_id, tag_name)")
-            cursor.execute("CREATE INDEX IF NOT EXISTS idx_server_tags_server_id ON server_tags(server_id)")
-            
-            # Indices for tag_usage
-            cursor.execute("CREATE INDEX IF NOT EXISTS idx_tag_usage_server_id ON tag_usage(server_id)")
-            cursor.execute("CREATE INDEX IF NOT EXISTS idx_tag_usage_tag_id ON tag_usage(tag_id)")
-            
-            # Indices for activity_stats
-            cursor.execute("CREATE INDEX IF NOT EXISTS idx_activity_stats_date ON activity_stats(date)")
-            cursor.execute("CREATE INDEX IF NOT EXISTS idx_activity_stats_server_id ON activity_stats(server_id)")
-            
-            # Indices for bot_activity_log
-            cursor.execute("CREATE INDEX IF NOT EXISTS idx_bot_activity_timestamp ON bot_activity_log(timestamp)")
-            cursor.execute("CREATE INDEX IF NOT EXISTS idx_bot_activity_server_id ON bot_activity_log(server_id)")
-            cursor.execute("CREATE INDEX IF NOT EXISTS idx_bot_activity_action_type ON bot_activity_log(action_type)")
+            # Create indices with individual error handling
+            for query in index_queries:
+                try:
+                    cursor.execute(query)
+                except Exception as index_error:
+                    # Log the error but continue with other indices
+                    config.logger.warning(f"Index creation error (continuing anyway): {index_error}")
             
             conn.commit()
             config.logger.info("PostgreSQL tables and indices created successfully")
@@ -270,9 +273,9 @@ def setup_postgres_tables(conn=None):
     except Exception as e:
         conn.rollback()
         config.logger.error(f"Error creating PostgreSQL tables: {e}")
-        raise
+        # Don't raise the exception - let the bot continue
     finally:
-        if connection_created:
+        if connection_created and conn:
             conn.close()
 
 def add_missing_columns():

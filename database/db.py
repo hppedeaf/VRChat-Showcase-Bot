@@ -136,22 +136,35 @@ def setup_database(force_rebuild=False) -> bool:
     
     try:
         if is_postgres:
-            # Use our enhanced PostgreSQL setup
-            from database.pg_handler import setup_postgres_tables, add_missing_columns, clean_database
-            
-            # First setup tables
-            setup_postgres_tables()
-            
-            # Then add any missing columns from schema updates
-            add_missing_columns()
-            
-            # Clean database if needed
-            if force_rebuild:
-                clean_database()
+            # Use our enhanced PostgreSQL setup with timeout handling
+            try:
+                from database.pg_handler import setup_postgres_tables, add_missing_columns, clean_database
                 
-            # Migrate data from SQLite if needed
-            _check_and_migrate_from_sqlite()
+                # First setup tables
+                setup_postgres_tables()
                 
+                # Then add any missing columns from schema updates
+                try:
+                    add_missing_columns()
+                except Exception as column_error:
+                    config.logger.warning(f"Error adding missing columns (continuing anyway): {column_error}")
+                
+                # Clean database if needed
+                if force_rebuild:
+                    try:
+                        clean_database()
+                    except Exception as clean_error:
+                        config.logger.warning(f"Database cleaning error (continuing anyway): {clean_error}")
+                
+                # Migrate data from SQLite if needed
+                try:
+                    _check_and_migrate_from_sqlite()
+                except Exception as migrate_error:
+                    config.logger.warning(f"Migration error (continuing anyway): {migrate_error}")
+            except Exception as pg_error:
+                config.logger.error(f"PostgreSQL setup failed, falling back to SQLite: {pg_error}")
+                # Fall through to SQLite setup
+                setup_sqlite_tables()
         else:
             # SQLite setup
             if force_rebuild:

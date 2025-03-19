@@ -60,10 +60,7 @@ class VRChatBot(commands.Bot):
             config.logger.info(f"Synced {len(synced)} command(s)")
         except Exception as e:
             config.logger.error(f"Failed to sync commands: {e}")
-            
-        # Set up the database
-        setup_database()
-        
+                        
         add_missing_columns()
         # Check threads based on thread ID and add world button if needed
         from database.models import ServerChannels
