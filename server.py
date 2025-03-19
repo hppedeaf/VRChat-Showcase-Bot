@@ -164,15 +164,29 @@ def index():
 # Using a function that we'll register with app.before_first_request alternative
 def initialize_db():
     """Start the database synchronization"""
-    app.logger.info("Starting database synchronization scheduler")
-    start_sync_scheduler()
+    from database.db import setup_database
+    
+    # Set up the database
+    try:
+        setup_database()
+        
+        # Only start the synchronization scheduler if PostgreSQL is available
+        if config.PG_AVAILABLE:
+            app.logger.info("Starting database synchronization scheduler")
+            start_sync_scheduler()
+        else:
+            app.logger.info("PostgreSQL is not available, database synchronization disabled")
+    except Exception as e:
+        app.logger.error(f"Database initialization error: {e}")
 
 # Add a shutdown handler to stop sync when the server stops
-@app.teardown_appcontext
 def stop_db_sync(exception=None):
     """Stop database synchronization when the app context tears down."""
-    app.logger.info("Stopping database synchronization scheduler")
-    stop_sync_scheduler()
+    if config.PG_AVAILABLE:
+        app.logger.info("Stopping database synchronization scheduler")
+        stop_sync_scheduler()
+    else:
+        app.logger.info("Database synchronization was not running (PostgreSQL unavailable)")
 
 # Add API route to force sync
 @app.route('/api/sync-db', methods=['POST'])

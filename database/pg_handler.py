@@ -58,8 +58,6 @@ def get_postgres_connection():
             conn = psycopg2.connect(**conn_params)
             conn.autocommit = False  # We'll manage transactions explicitly
             conn.cursor_factory = psycopg2.extras.DictCursor  # Enable dictionary-like access to rows
-            
-            config.logger.info("Successfully connected to PostgreSQL database")
             return conn
         except psycopg2.OperationalError as e:
             if attempt < max_retries - 1:

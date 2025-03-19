@@ -158,21 +158,9 @@ class DatabaseSynchronizer:
             raise
     
     def _is_pg_available(self) -> bool:
-        """Check if PostgreSQL is available and configured using individual environment variables."""
-        # Check if the essential PostgreSQL connection parameters are set
-        pg_host = os.environ.get('PGHOST') or os.environ.get('POSTGRES_HOST')
-        pg_user = os.environ.get('PGUSER') or os.environ.get('POSTGRES_USER')
-        pg_password = os.environ.get('PGPASSWORD') or os.environ.get('POSTGRES_PASSWORD')
-        
-        # Check if we're running locally
-        is_local = not os.environ.get('RAILWAY_ENVIRONMENT')
-        
-        # If running locally but with Railway environment variables, still disable PG
-        if is_local and "railway" in (pg_host or ""):
-            return False
-        
-        # If essential connection parameters are available, PostgreSQL is considered available
-        return bool(pg_host and pg_user and pg_password)
+        """Check if PostgreSQL is available based on the runtime flag."""
+        # Use the global flag from config instead of checking each time
+        return config.PG_AVAILABLE
 
     def _get_sqlite_connection(self):
         """
@@ -702,6 +690,11 @@ class DatabaseSynchronizer:
         Returns:
             Dictionary with sync results for each table
         """
+        # Check if PostgreSQL is available before attempting any sync
+        if not config.PG_AVAILABLE:
+            config.logger.info("PostgreSQL is not available, skipping synchronization")
+            return {table: {'sqlite_to_pg': 0, 'pg_to_sqlite': 0} for table in self.tables_to_sync}
+        
         results = {}
         
         for table_name in self.tables_to_sync:
@@ -715,7 +708,7 @@ class DatabaseSynchronizer:
         
         self.last_sync_time = time.time()
         return results
-    
+        
     def _sync_job(self):
         """Job function for scheduled sync."""
         try:

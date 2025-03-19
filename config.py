@@ -47,6 +47,8 @@ if PG_HOST and PG_USER and PG_PASSWORD:
 else:
     DATABASE_URL = None
 
+PG_AVAILABLE = DATABASE_URL is not None
+
 # Setup SQLite database as fallback
 DATABASE_PATH = Path("database") / "vrchat_worlds.db"
 DATABASE_FILE = str(DATABASE_PATH)

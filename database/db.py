@@ -15,20 +15,16 @@ def get_connection():
     Returns:
         Database connection
     """
-    if hasattr(config, 'DATABASE_URL') and config.DATABASE_URL and config.DATABASE_URL.startswith("postgres"):
+    if config.PG_AVAILABLE:
         # Try PostgreSQL first, fall back to SQLite if unavailable
         try:
             # Use our enhanced PostgreSQL handler for Railway
             from database.pg_handler import get_postgres_connection
             return get_postgres_connection()
-        except ValueError as e:
-            # If PostgreSQL is unavailable in local environment, log and use SQLite
-            config.logger.info(f"Using SQLite instead of PostgreSQL: {e}")
-            # Continue to SQLite code below
         except Exception as e:
-            # For other connection errors, log and use SQLite
-            config.logger.warning(f"PostgreSQL connection failed, falling back to SQLite: {e}")
-            # Continue to SQLite code below
+            # If PostgreSQL is unavailable, log and disable it for the rest of the session
+            config.logger.warning(f"PostgreSQL connection failed, disabling for this session: {e}")
+            config.PG_AVAILABLE = False
     
     # SQLite fallback for local development with better settings
     tries = 0
