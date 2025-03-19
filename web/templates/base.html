@@ -1,36 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}VRChat World Showcase Manager{% endblock %}</title>
+    <!-- Fix the CSS path with version parameter to prevent caching -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}?v={{ current_time|default('1') }}">
     <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}" type="image/x-icon">
     <meta name="csrf-token" content="{{ csrf_token if csrf_token else '' }}">
-    <style>
-        /* Custom styles */
-        .bg-discord {
-            background-color: #5865F2;
-        }
-        .text-discord {
-            color: #5865F2;
-        }
-        .border-discord {
-            border-color: #5865F2;
-        }
-        .bg-discord-dark {
-            background-color: #36393f;
-        }
-        .bg-discord-darker {
-            background-color: #2f3136;
-        }
-        .bg-discord-light {
-            background-color: #40444b;
-        }
-    </style>
     {% block head %}{% endblock %}
 </head>
+
 <body class="bg-gray-100 min-h-screen flex flex-col">
     <!-- Navigation Bar -->
     <nav class="bg-discord-dark text-white shadow-md">
@@ -43,32 +26,35 @@
             </div>
             <div class="flex items-center space-x-4">
                 {% if user %}
-                    <div class="dropdown relative inline-block">
-                        <button class="flex items-center space-x-2 hover:bg-discord-light rounded px-2 py-1">
-                            {% if user.avatar %}
-                                <img src="https://cdn.discordapp.com/avatars/{{ user.user_id }}/{{ user.avatar }}.png" alt="{{ user.username }}" class="w-8 h-8 rounded-full">
-                            {% else %}
-                                <div class="w-8 h-8 rounded-full bg-gray-500 flex items-center justify-center">
-                                    <span>{{ user.username[:1] }}</span>
-                                </div>
-                            {% endif %}
-                            <span class="hidden md:inline">{{ user.username }}</span>
-                            <i class="fas fa-chevron-down"></i>
-                        </button>
-                        <div class="dropdown-content hidden absolute right-0 mt-2 w-48 bg-discord-darker rounded shadow-lg z-10">
-                            <a href="{{ url_for('dashboard') }}" class="block px-4 py-2 text-white hover:bg-discord-light">
-                                <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
-                            </a>
-                            <a href="{{ url_for('logout') }}" class="block px-4 py-2 text-white hover:bg-discord-light">
-                                <i class="fas fa-sign-out-alt mr-2"></i>Logout
-                            </a>
+                <div class="dropdown relative inline-block">
+                    <button class="flex items-center space-x-2 hover:bg-discord-light rounded px-2 py-1">
+                        {% if user.avatar %}
+                        <img src="https://cdn.discordapp.com/avatars/{{ user.user_id }}/{{ user.avatar }}.png"
+                            alt="{{ user.username }}" class="w-8 h-8 rounded-full">
+                        {% else %}
+                        <div class="w-8 h-8 rounded-full bg-gray-500 flex items-center justify-center">
+                            <span>{{ user.username[:1] }}</span>
                         </div>
+                        {% endif %}
+                        <span class="hidden md:inline">{{ user.username }}</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div
+                        class="dropdown-content hidden absolute right-0 mt-2 w-48 bg-discord-darker rounded shadow-lg z-10">
+                        <a href="{{ url_for('dashboard') }}" class="block px-4 py-2 text-white hover:bg-discord-light">
+                            <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
+                        </a>
+                        <a href="{{ url_for('logout') }}" class="block px-4 py-2 text-white hover:bg-discord-light">
+                            <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                        </a>
                     </div>
+                </div>
                 {% else %}
-                    <a href="{{ url_for('login') }}" class="bg-discord hover:bg-blue-600 text-white font-bold py-2 px-4 rounded inline-flex items-center">
-                        <i class="fab fa-discord mr-2"></i>
-                        <span>Login with Discord</span>
-                    </a>
+                <a href="{{ url_for('login') }}"
+                    class="bg-discord hover:bg-blue-600 text-white font-bold py-2 px-4 rounded inline-flex items-center">
+                    <i class="fab fa-discord mr-2"></i>
+                    <span>Login with Discord</span>
+                </a>
                 {% endif %}
             </div>
         </div>
@@ -76,18 +62,20 @@
 
     <!-- Flash Messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <div class="container mx-auto mt-4 px-4">
-                {% for category, message in messages %}
-                    <div class="{% if category == 'error' %}bg-red-100 border-red-400 text-red-700{% else %}bg-green-100 border-green-400 text-green-700{% endif %} px-4 py-3 rounded relative mb-4 border alert" role="alert">
-                        <span class="block sm:inline">{{ message }}</span>
-                        <button type="button" class="absolute top-0 bottom-0 right-0 px-4 py-3 close-btn" onclick="this.parentElement.style.display='none'">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                {% endfor %}
-            </div>
-        {% endif %}
+    {% if messages %}
+    <div class="container mx-auto mt-4 px-4">
+        {% for category, message in messages %}
+        <div class="{% if category == 'error' %}bg-red-100 border-red-400 text-red-700{% else %}bg-green-100 border-green-400 text-green-700{% endif %} px-4 py-3 rounded relative mb-4 border alert"
+            role="alert">
+            <span class="block sm:inline">{{ message }}</span>
+            <button type="button" class="absolute top-0 bottom-0 right-0 px-4 py-3 close-btn"
+                onclick="this.parentElement.style.display='none'">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
     {% endwith %}
 
     <!-- Main Content -->
@@ -103,7 +91,8 @@
                     <p>&copy; {{ current_year|default('2025') }} VRChat World Showcase Manager</p>
                 </div>
                 <div class="flex space-x-4">
-                    <a href="https://discord.gg/vrchat-world-showcase" class="text-white hover:text-gray-300" target="_blank">
+                    <a href="https://discord.gg/vrchat-world-showcase" class="text-white hover:text-gray-300"
+                        target="_blank">
                         <i class="fab fa-discord"></i>
                     </a>
                     <a href="/" class="text-white hover:text-gray-300">
@@ -118,7 +107,8 @@
     </footer>
 
     <!-- JavaScript -->
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}?v={{ current_time|default('1') }}"></script>
     {% block scripts %}{% endblock %}
 </body>
+
 </html>

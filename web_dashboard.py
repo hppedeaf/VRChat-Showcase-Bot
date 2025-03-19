@@ -49,12 +49,26 @@ def setup_routes(app):
             'bot_invite_url': BOT_INVITE_URL
         }
     
+    @app.context_processor
+    def inject_globals():
+        """Add global variables to all templates."""
+        import time
+        return {
+            'discord_client_id': DISCORD_CLIENT_ID,
+            'bot_name': getattr(config, 'DASHBOARD_TITLE', 'VRChat World Showcase'),
+            'current_year': datetime.now().year,
+            'current_time': int(time.time()),  # Add timestamp for cache busting
+            'bot_invite_url': BOT_INVITE_URL,
+            'is_production': os.environ.get('ENVIRONMENT') == 'production'
+        }
+
+    # Fix redirect URLs to use url_for
     @app.route('/login')
     def login():
         """Redirect to Discord OAuth2 login."""
         if not DISCORD_CLIENT_ID or not DISCORD_CLIENT_SECRET:
             return render_template('error.html', 
-                                 message="Discord OAuth2 credentials are not configured. Please set DISCORD_CLIENT_ID and DISCORD_CLIENT_SECRET environment variables.")
+                                message="Discord OAuth2 credentials are not configured. Please set DISCORD_CLIENT_ID and DISCORD_CLIENT_SECRET environment variables.")
         
         params = {
             'client_id': DISCORD_CLIENT_ID,
@@ -65,7 +79,25 @@ def setup_routes(app):
         
         auth_url = f"{DISCORD_API_ENDPOINT}/oauth2/authorize?{encode_params(params)}"
         return redirect(auth_url)
-    
+
+    # Add this method to help with debugging paths
+    def debug_paths():
+        """Print debug information about paths."""
+        print(f"Static URL path: {app.static_url_path}")
+        print(f"Static folder: {app.static_folder}")
+        print(f"Template folder: {app.template_folder}")
+        
+        # Check if key directories exist
+        if os.path.exists(app.static_folder):
+            print(f"Static folder exists: {os.listdir(app.static_folder)}")
+        else:
+            print(f"Static folder does not exist!")
+            
+        if os.path.exists(app.template_folder):
+            print(f"Template folder exists: {os.listdir(app.template_folder)}")
+        else:
+            print(f"Template folder does not exist!")
+            
     @app.route('/callback')
     def callback():
         """Handle Discord OAuth2 callback."""

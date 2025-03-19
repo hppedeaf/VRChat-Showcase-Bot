@@ -30,15 +30,28 @@ AUTH = os.getenv("VRCHAT_AUTH")
 API_KEY = os.getenv("VRCHAT_API_KEY")
 
 # Database
-DATABASE_URL = os.getenv("DATABASE_URL")
-if DATABASE_URL:
-    # Using PostgreSQL on Railway
-    DATABASE_FILE = DATABASE_URL
+# PostgreSQL connection parameters
+PG_HOST = os.environ.get('PGHOST') or os.environ.get('POSTGRES_HOST')
+PG_PORT = os.environ.get('PGPORT') or os.environ.get('POSTGRES_PORT', '5432')
+PG_USER = os.environ.get('PGUSER') or os.environ.get('POSTGRES_USER')
+PG_PASSWORD = os.environ.get('PGPASSWORD') or os.environ.get('POSTGRES_PASSWORD')
+PG_DATABASE = os.environ.get('PGDATABASE') or os.environ.get('POSTGRES_DB', 'postgres')
+
+# Construct PostgreSQL URL for compatibility with existing code
+if PG_HOST and PG_USER and PG_PASSWORD:
+    DATABASE_URL = f"postgresql://{PG_USER}:{PG_PASSWORD}@{PG_HOST}:{PG_PORT}/{PG_DATABASE}"
 else:
-    # Local SQLite fallback
-    DATABASE_PATH = Path("database") / "vrchat_worlds.db"
-    DATABASE_FILE = str(DATABASE_PATH)
-    DATABASE_PATH.parent.mkdir(exist_ok=True)
+    DATABASE_URL = None
+
+# Setup SQLite database as fallback
+DATABASE_PATH = Path("database") / "vrchat_worlds.db"
+DATABASE_FILE = str(DATABASE_PATH)
+DATABASE_PATH.parent.mkdir(exist_ok=True)
+
+# Function to check if PostgreSQL is available
+def is_postgres_available():
+    """Check if PostgreSQL connection variables are available."""
+    return bool(PG_HOST and PG_USER and PG_PASSWORD)
 
 # Logging
 LOG_PATH = Path("logs")

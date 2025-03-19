@@ -67,6 +67,75 @@ class AdminCommands(commands.Cog):
         
         return app_commands.check(predicate)
 
+    # Create a specific creator-only check
+    def creator_only():
+        """
+        A decorator that only allows the bot creator to use the command.
+        """
+        async def predicate(interaction: discord.Interaction) -> bool:
+            # Check if user is the creator
+            return interaction.user.id == CREATOR_USER_ID
+        
+        return app_commands.check(predicate)
+
+    @app_commands.command(name="sync-db", description="Synchronize SQLite and PostgreSQL databases")
+    @creator_only()  # Use creator_only instead of creator_or_admin
+    async def sync_db_slash(self, interaction):
+        """
+        Force synchronization between SQLite and PostgreSQL databases.
+        Only available to the bot creator.
+        """
+        await interaction.response.defer(thinking=True)
+        
+        try:
+            from database.sync import sync_now
+            
+            # Execute sync and time it
+            import time
+            start_time = time.time()
+            results = sync_now()
+            end_time = time.time()
+            
+            # Prepare response embed
+            embed = discord.Embed(
+                title="Database Synchronization Results",
+                description="Synchronized data between SQLite and PostgreSQL",
+                color=discord.Color.dark_red()
+            )
+            
+            # Add summary field
+            total_sqlite_to_pg = sum([r['sqlite_to_pg'] for r in results.values()])
+            total_pg_to_sqlite = sum([r['pg_to_sqlite'] for r in results.values()])
+            
+            embed.add_field(
+                name="Summary",
+                value=(
+                    f"**SQLite → PostgreSQL:** {total_sqlite_to_pg} rows\n"
+                    f"**PostgreSQL → SQLite:** {total_pg_to_sqlite} rows\n"
+                    f"**Time taken:** {end_time - start_time:.2f} seconds"
+                ),
+                inline=False
+            )
+            
+            # Add detailed results
+            details = []
+            for table, counts in results.items():
+                if counts['sqlite_to_pg'] > 0 or counts['pg_to_sqlite'] > 0:
+                    details.append(f"**{table}**: {counts['sqlite_to_pg']} to PG, {counts['pg_to_sqlite']} to SQLite")
+            
+            if details:
+                embed.add_field(
+                    name="Details",
+                    value="\n".join(details),
+                    inline=False
+                )
+            
+            await interaction.followup.send(embed=embed)
+            
+        except Exception as e:
+            config.logger.error(f"Error in sync_db_slash: {e}")
+            await interaction.followup.send(f"❌ An error occurred: {e}")
+            
     # Add a command to view bot stats
     @app_commands.command(name="stats", description="View bot statistics")
     @creator_or_admin()

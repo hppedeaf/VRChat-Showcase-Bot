@@ -19,19 +19,21 @@ import main as bot_main
 import config as config
 from datetime import datetime
 from database.pg_handler import add_missing_columns
+from database.sync import start_sync_scheduler, stop_sync_scheduler
 
 # Initialize Flask application with correct static folder and template folder paths
 current_dir = os.path.dirname(os.path.abspath(__file__))
 static_folder = os.path.join(current_dir, 'web', 'static')
 template_folder = os.path.join(current_dir, 'web', 'templates')
 
-# Print paths for debugging
-print(f"Static folder path: {static_folder}")
-print(f"Template folder path: {template_folder}")
-
 # Make sure static folder exists
 os.makedirs(static_folder, exist_ok=True)
 
+print(f"Current working directory: {os.getcwd()}")
+print(f"Static folder path: {static_folder}")
+print(f"Template folder path: {template_folder}")
+
+# Make sure your app is properly configured
 app = Flask(__name__, 
            static_folder=static_folder, 
            static_url_path='/static',
@@ -60,6 +62,26 @@ def filter_now(format_string):
     """Return the current time in the specified format."""
     return datetime.now().strftime(format_string)
 
+@app.before_request
+def before_request():
+    print(f"Request path: {request.path}")
+    
+@app.errorhandler(500)
+def internal_server_error(e):
+    app.logger.error(f"500 error: {str(e)}")
+    return render_template('error.html', message=f"Internal server error: {str(e)}"), 500
+
+@app.errorhandler(404)
+def page_not_found(e):
+    app.logger.error(f"404 error: {request.path}")
+    return render_template('error.html', message=f"Page not found: {request.path}"), 404
+
+# Add more detailed logging
+if __name__ == '__main__':
+    import logging
+    logging.basicConfig(level=logging.DEBUG)
+    app.logger.setLevel(logging.DEBUG)
+    
 #########################################
 # API Routes
 #########################################
@@ -133,6 +155,50 @@ def index():
     except Exception as e:
         app.logger.error(f"Error rendering index: {e}")
         return render_template('error.html', message=f"Template error: {str(e)}")
+
+#########################################
+#database
+#########################################
+
+@app.before_first_request
+def start_db_sync():
+    """Start the database synchronization before handling the first request."""
+    app.logger.info("Starting database synchronization scheduler")
+    start_sync_scheduler()
+
+# Add a shutdown handler to stop sync when the server stops
+@app.teardown_appcontext
+def stop_db_sync(exception=None):
+    """Stop database synchronization when the app context tears down."""
+    app.logger.info("Stopping database synchronization scheduler")
+    stop_sync_scheduler()
+
+# Add API route to force sync
+@app.route('/api/sync-db', methods=['POST'])
+def force_db_sync():
+    """Force an immediate database sync."""
+    if request.method == 'POST':
+        from database.sync import sync_now
+        try:
+            results = sync_now()
+            
+            # Summarize results
+            total_sqlite_to_pg = sum([r['sqlite_to_pg'] for r in results.values()])
+            total_pg_to_sqlite = sum([r['pg_to_sqlite'] for r in results.values()])
+            
+            return jsonify({
+                "success": True,
+                "message": f"Synced SQLite → PG: {total_sqlite_to_pg} rows, PG → SQLite: {total_pg_to_sqlite} rows",
+                "details": results
+            })
+        except Exception as e:
+            app.logger.error(f"Error in force sync: {e}")
+            return jsonify({
+                "success": False,
+                "message": f"Sync failed: {str(e)}"
+            }), 500
+    
+    return Response(status=400)
 
 #########################################
 # Static Files and Direct Template Routes

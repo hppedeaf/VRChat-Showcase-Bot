@@ -12,28 +12,43 @@ import config as config
 
 def get_postgres_connection():
     """
-    Get a connection to the PostgreSQL database on Railway with improved error handling.
+    Get a connection to the PostgreSQL database with improved error handling.
     
     Returns:
         Database connection
     """
-    # Get DATABASE_URL from Railway environment
-    db_url = os.getenv("DATABASE_URL") or config.DATABASE_URL
+    # Get connection parameters from environment variables with fallbacks
+    pg_host = os.environ.get('PGHOST') or os.environ.get('POSTGRES_HOST')
+    pg_port = os.environ.get('PGPORT') or os.environ.get('POSTGRES_PORT', '5432')
+    pg_user = os.environ.get('PGUSER') or os.environ.get('POSTGRES_USER')
+    pg_password = os.environ.get('PGPASSWORD') or os.environ.get('POSTGRES_PASSWORD')
+    pg_database = os.environ.get('PGDATABASE') or os.environ.get('POSTGRES_DB', 'postgres')
     
-    if not db_url:
-        raise ValueError("DATABASE_URL environment variable is not set")
-        
+    if not (pg_host and pg_user and pg_password):
+        raise ValueError("PostgreSQL connection parameters not set in environment variables")
+    
     # Add retry mechanism for connection with exponential backoff
     max_retries = 5
     retry_delay = 3  # initial seconds
     
     for attempt in range(max_retries):
         try:
-            conn = psycopg2.connect(
-                db_url,
-                connect_timeout=10,  # Set connection timeout
-                application_name="VRChat World Showcase Bot"  # Identify app in pg_stat_activity
-            )
+            # Build connection parameters
+            conn_params = {
+                'host': pg_host,
+                'port': pg_port,
+                'user': pg_user,
+                'password': pg_password,
+                'dbname': pg_database,
+                'connect_timeout': 10,
+                'application_name': "VRChat World Showcase Bot"
+            }
+            
+            # Optional SSL parameters
+            if os.environ.get('PGSSLMODE'):
+                conn_params['sslmode'] = os.environ.get('PGSSLMODE')
+            
+            conn = psycopg2.connect(**conn_params)
             conn.autocommit = False  # We'll manage transactions explicitly
             conn.cursor_factory = psycopg2.extras.DictCursor  # Enable dictionary-like access to rows
             

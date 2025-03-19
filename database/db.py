@@ -94,6 +94,21 @@ def check_database_connection():
     except Exception as e:
         return False, f"Database connection error: {e}"
 
+if __name__ == '__main__':
+    # Check database connection
+    from database.db import check_database_connection
+    db_success, db_message = check_database_connection()
+    
+    if not db_success:
+        print(f"WARNING: Database issue: {db_message}")
+        print("Attempting to set up database...")
+        from database.db import setup_database
+        setup_success = setup_database()
+        if setup_success:
+            print("Database setup successful!")
+        else:
+            print("Database setup failed. Check configuration.")
+            
 def setup_database(force_rebuild=False) -> bool:
     """
     Set up the database tables safely, handling existing schemas.

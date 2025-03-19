@@ -37,6 +37,18 @@ class VRChatBot(commands.Bot):
         await self.load_extension("cogs.admin_commands")
         await self.load_extension("cogs.maintenance")
         config.logger.info("Cogs loaded")
+        
+        try:
+            from database.sync import start_sync_scheduler
+            # Start in a separate thread
+            import threading
+            threading.Thread(
+                target=start_sync_scheduler,
+                daemon=True
+            ).start()
+            config.logger.info("Database synchronization initialized")
+        except Exception as e:
+            config.logger.error(f"Failed to initialize database sync: {e}")
     
     async def on_ready(self):
         """Handle bot ready event."""
