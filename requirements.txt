@@ -8,4 +8,4 @@ gunicorn
 psycopg2-binary
 pyotp
 setuptools
-scheduler
+schedule
