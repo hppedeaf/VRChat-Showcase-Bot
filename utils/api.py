@@ -1,7 +1,3 @@
-"""
-VRChat API utilities module with improved authentication handling.
-Handles interactions with the VRChat API without excessive login attempts.
-"""
 import re
 import os
 import time
@@ -169,6 +165,29 @@ class VRChatAPI:
                 
         return world_info
     
+    def log_file_info(self, file_id: str) -> None:
+        """
+        Log the full JSON data for a file ID to the console for debugging.
+        
+        Args:
+            file_id: VRChat file ID
+        """
+        if not file_id or file_id == "Not specified":
+            config.logger.warning(f"Cannot log file info: Invalid file ID ({file_id})")
+            return
+            
+        try:
+            file_info = self.get_file_info(file_id)
+            if file_info:
+                # Pretty print the JSON data to the console
+                formatted_json = json.dumps(file_info, indent=2)
+                print(f"\n===== FULL FILE INFO FOR {file_id} =====\n{formatted_json}\n==================================\n")
+                config.logger.info(f"Printed full file info for file_id {file_id} to console")
+            else:
+                config.logger.warning(f"No file info available for file_id: {file_id}")
+        except Exception as e:
+            config.logger.error(f"Error logging file info: {e}")
+    
     def get_file_info(self, file_id: str) -> Optional[Dict[str, Any]]:
         """
         Get information about a file in VRChat.
@@ -322,8 +341,7 @@ class VRChatAPI:
                 if match:
                     return match.group(0)
         
-        # NEW METHOD 4: Try to extract from imageUrl or thumbnailImageUrl
-        # This addresses the issue seen in the logs where file IDs are only in image URLs
+        # Method 4: Try to extract from imageUrl or thumbnailImageUrl
         for image_key in ['imageUrl', 'thumbnailImageUrl']:
             if image_key in world_info and world_info[image_key]:
                 image_url = world_info[image_key]
