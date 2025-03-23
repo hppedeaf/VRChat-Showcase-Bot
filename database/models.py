@@ -1206,78 +1206,78 @@ class GuildTracking:
                 
             conn.commit()
     
-@staticmethod
-def update_guild_status(guild_id: int, has_forum: bool) -> None:
-    """
-    Update a guild's forum status with improved connection handling.
-    
-    Args:
-        guild_id: Discord guild ID
-        has_forum: Whether the guild has an active forum
-    """
-    try:
-        with get_connection() as conn:
-            cursor = conn.cursor()
-            
-            # Set a statement timeout to prevent hanging
-            if IS_POSTGRES:
-                cursor.execute("SET statement_timeout = 3000")  # 3-second timeout
-                cursor.execute(
-                    """
-                    UPDATE guild_tracking 
-                    SET has_forum = %s, last_active = NOW() 
-                    WHERE guild_id = %s
-                    """,
-                    (has_forum, guild_id)
-                )
+    @staticmethod
+    def update_guild_status(guild_id: int, has_forum: bool) -> None:
+        """
+        Update a guild's forum status with improved connection handling.
+        
+        Args:
+            guild_id: Discord guild ID
+            has_forum: Whether the guild has an active forum
+        """
+        try:
+            with get_connection() as conn:
+                cursor = conn.cursor()
                 
-                # Avoid complex stat updates during regular operation
-                # We'll do this in a separate batch process instead
-            else:
-                cursor.execute(
-                    "UPDATE guild_tracking SET has_forum = ?, last_active = datetime('now') WHERE guild_id = ?",
-                    (1 if has_forum else 0, guild_id)
-                )
-                
-            conn.commit()
-    except Exception as e:
-        config.logger.error(f"Error updating guild status for {guild_id}: {e}")
-        # Continue execution despite errors to keep the bot running
+                # Set a statement timeout to prevent hanging
+                if IS_POSTGRES:
+                    cursor.execute("SET statement_timeout = 3000")  # 3-second timeout
+                    cursor.execute(
+                        """
+                        UPDATE guild_tracking 
+                        SET has_forum = %s, last_active = NOW() 
+                        WHERE guild_id = %s
+                        """,
+                        (has_forum, guild_id)
+                    )
+                    
+                    # Avoid complex stat updates during regular operation
+                    # We'll do this in a separate batch process instead
+                else:
+                    cursor.execute(
+                        "UPDATE guild_tracking SET has_forum = ?, last_active = datetime('now') WHERE guild_id = ?",
+                        (1 if has_forum else 0, guild_id)
+                    )
+                    
+                conn.commit()
+        except Exception as e:
+            config.logger.error(f"Error updating guild status for {guild_id}: {e}")
+            # Continue execution despite errors to keep the bot running
 
-@staticmethod
-def update_member_count(guild_id: int, member_count: int) -> None:
-    """
-    Update a guild's member count with improved error handling.
-    
-    Args:
-        guild_id: Discord guild ID
-        member_count: Current member count
-    """
-    try:
-        with get_connection() as conn:
-            cursor = conn.cursor()
-            
-            # Set a statement timeout to prevent hanging
-            if IS_POSTGRES:
-                cursor.execute("SET statement_timeout = 3000")  # 3-second timeout
-                cursor.execute(
-                    """
-                    UPDATE guild_tracking 
-                    SET member_count = %s, last_active = NOW() 
-                    WHERE guild_id = %s
-                    """,
-                    (member_count, guild_id)
-                )
-            else:
-                cursor.execute(
-                    "UPDATE guild_tracking SET member_count = ?, last_active = datetime('now') WHERE guild_id = ?",
-                    (member_count, guild_id)
-                )
+    @staticmethod
+    def update_member_count(guild_id: int, member_count: int) -> None:
+        """
+        Update a guild's member count with improved error handling.
+        
+        Args:
+            guild_id: Discord guild ID
+            member_count: Current member count
+        """
+        try:
+            with get_connection() as conn:
+                cursor = conn.cursor()
                 
-            conn.commit()
-    except Exception as e:
-        config.logger.error(f"Error updating member count for guild {guild_id}: {e}")
-        # Continue execution despite errors to keep the bot running
+                # Set a statement timeout to prevent hanging
+                if IS_POSTGRES:
+                    cursor.execute("SET statement_timeout = 3000")  # 3-second timeout
+                    cursor.execute(
+                        """
+                        UPDATE guild_tracking 
+                        SET member_count = %s, last_active = NOW() 
+                        WHERE guild_id = %s
+                        """,
+                        (member_count, guild_id)
+                    )
+                else:
+                    cursor.execute(
+                        "UPDATE guild_tracking SET member_count = ?, last_active = datetime('now') WHERE guild_id = ?",
+                        (member_count, guild_id)
+                    )
+                    
+                conn.commit()
+        except Exception as e:
+            config.logger.error(f"Error updating member count for guild {guild_id}: {e}")
+            # Continue execution despite errors to keep the bot running
     
     @staticmethod
     def get_guild_count() -> int:

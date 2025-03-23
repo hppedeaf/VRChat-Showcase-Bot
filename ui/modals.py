@@ -428,16 +428,11 @@ class WorldLinkModal(discord.ui.Modal, title='Post World Link Here'):
             world_name = world_details['name']
             author_name = world_details['authorName']
             
-            # Get file ID and world size
-            file_rest_id = vrchat_api.get_file_rest_id(world_details)
-            
-            # Get world size in bytes
-            world_size_bytes = vrchat_api.get_world_size(file_rest_id)
-            
-            # Convert to human-readable format
-            world_size_mb = bytes_to_mb(world_size_bytes)
-            
+            # Get platform info and world size directly from world info
             platform_info = vrchat_api.get_platform_info(world_details)
+            
+            # Use the direct world size method instead of file ID lookup
+            world_size = vrchat_api.get_direct_world_size(world_details)
             
             # Create visit button for the world
             visit_button = discord.ui.Button(
@@ -454,7 +449,7 @@ class WorldLinkModal(discord.ui.Modal, title='Post World Link Here'):
             embed = build_world_embed(
                 world_details, 
                 world_id, 
-                world_size_mb, 
+                world_size, 
                 platform_info,
                 interaction.user.name
             )
