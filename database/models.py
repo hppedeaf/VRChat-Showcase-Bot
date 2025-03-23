@@ -1138,48 +1138,39 @@ class GuildTracking:
     @staticmethod
     def add_guild(guild_id: int, guild_name: str, member_count: int) -> None:
         """
-        Add a new guild to tracking.
+        Add a new guild to tracking with improved error handling.
         
         Args:
             guild_id: Discord guild ID
             guild_name: Guild name
             member_count: Current member count
         """
-        with get_connection() as conn:
-            cursor = conn.cursor()
-            
-            if IS_POSTGRES:
-                cursor.execute(
-                    """
-                    INSERT INTO guild_tracking (guild_id, guild_name, member_count)
-                    VALUES (%s, %s, %s)
-                    ON CONFLICT (guild_id) DO NOTHING
-                    """,
-                    (guild_id, guild_name, member_count)
-                )
+        try:
+            with get_connection() as conn:
+                cursor = conn.cursor()
                 
-                # Update stats
-                cursor.execute(
-                    """
-                    INSERT INTO bot_stats (stat_name, stat_value, updated_at)
-                    VALUES ('total_guilds', (SELECT COUNT(*) FROM guild_tracking), NOW())
-                    ON CONFLICT (stat_name) DO UPDATE
-                    SET stat_value = (SELECT COUNT(*) FROM guild_tracking), updated_at = NOW()
-                    """
-                )
-            else:
-                cursor.execute(
-                    "INSERT OR IGNORE INTO guild_tracking (guild_id, guild_name, member_count) VALUES (?, ?, ?)",
-                    (guild_id, guild_name, member_count)
-                )
-                
-                # Update stats
-                cursor.execute(
-                    "INSERT OR REPLACE INTO bot_stats (stat_name, stat_value, updated_at) " +
-                    "VALUES ('total_guilds', (SELECT COUNT(*) FROM guild_tracking), datetime('now'))"
-                )
-                
-            conn.commit()
+                # Set a statement timeout to prevent hanging
+                if IS_POSTGRES:
+                    cursor.execute("SET statement_timeout = 3000")  # 3-second timeout
+                    cursor.execute(
+                        """
+                        INSERT INTO guild_tracking (guild_id, guild_name, member_count)
+                        VALUES (%s, %s, %s)
+                        ON CONFLICT (guild_id) DO NOTHING
+                        """,
+                        (guild_id, guild_name, member_count)
+                    )
+                    
+                    # Move stats updates to a separate function that can be called less frequently
+                else:
+                    cursor.execute(
+                        "INSERT OR IGNORE INTO guild_tracking (guild_id, guild_name, member_count) VALUES (?, ?, ?)",
+                        (guild_id, guild_name, member_count)
+                    )
+                    
+                conn.commit()
+        except Exception as e:
+            config.logger.error(f"Error adding guild {guild_id}: {e}")
     
     @staticmethod
     def remove_guild(guild_id: int) -> None:
@@ -1215,19 +1206,22 @@ class GuildTracking:
                 
             conn.commit()
     
-    @staticmethod
-    def update_guild_status(guild_id: int, has_forum: bool) -> None:
-        """
-        Update a guild's forum status.
-        
-        Args:
-            guild_id: Discord guild ID
-            has_forum: Whether the guild has an active forum
-        """
+@staticmethod
+def update_guild_status(guild_id: int, has_forum: bool) -> None:
+    """
+    Update a guild's forum status with improved connection handling.
+    
+    Args:
+        guild_id: Discord guild ID
+        has_forum: Whether the guild has an active forum
+    """
+    try:
         with get_connection() as conn:
             cursor = conn.cursor()
             
+            # Set a statement timeout to prevent hanging
             if IS_POSTGRES:
+                cursor.execute("SET statement_timeout = 3000")  # 3-second timeout
                 cursor.execute(
                     """
                     UPDATE guild_tracking 
@@ -1237,42 +1231,35 @@ class GuildTracking:
                     (has_forum, guild_id)
                 )
                 
-                # Update stats
-                cursor.execute(
-                    """
-                    INSERT INTO bot_stats (stat_name, stat_value, updated_at)
-                    VALUES ('guilds_with_forums', (SELECT COUNT(*) FROM guild_tracking WHERE has_forum = true), NOW())
-                    ON CONFLICT (stat_name) DO UPDATE
-                    SET stat_value = (SELECT COUNT(*) FROM guild_tracking WHERE has_forum = true), updated_at = NOW()
-                    """
-                )
+                # Avoid complex stat updates during regular operation
+                # We'll do this in a separate batch process instead
             else:
                 cursor.execute(
                     "UPDATE guild_tracking SET has_forum = ?, last_active = datetime('now') WHERE guild_id = ?",
                     (1 if has_forum else 0, guild_id)
                 )
                 
-                # Update stats
-                cursor.execute(
-                    "INSERT OR REPLACE INTO bot_stats (stat_name, stat_value, updated_at) " +
-                    "VALUES ('guilds_with_forums', (SELECT COUNT(*) FROM guild_tracking WHERE has_forum = 1), datetime('now'))"
-                )
-                
             conn.commit()
+    except Exception as e:
+        config.logger.error(f"Error updating guild status for {guild_id}: {e}")
+        # Continue execution despite errors to keep the bot running
+
+@staticmethod
+def update_member_count(guild_id: int, member_count: int) -> None:
+    """
+    Update a guild's member count with improved error handling.
     
-    @staticmethod
-    def update_member_count(guild_id: int, member_count: int) -> None:
-        """
-        Update a guild's member count.
-        
-        Args:
-            guild_id: Discord guild ID
-            member_count: Current member count
-        """
+    Args:
+        guild_id: Discord guild ID
+        member_count: Current member count
+    """
+    try:
         with get_connection() as conn:
             cursor = conn.cursor()
             
+            # Set a statement timeout to prevent hanging
             if IS_POSTGRES:
+                cursor.execute("SET statement_timeout = 3000")  # 3-second timeout
                 cursor.execute(
                     """
                     UPDATE guild_tracking 
@@ -1288,6 +1275,9 @@ class GuildTracking:
                 )
                 
             conn.commit()
+    except Exception as e:
+        config.logger.error(f"Error updating member count for guild {guild_id}: {e}")
+        # Continue execution despite errors to keep the bot running
     
     @staticmethod
     def get_guild_count() -> int:

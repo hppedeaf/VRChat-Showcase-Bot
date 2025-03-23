@@ -217,58 +217,124 @@ class VRChatBot(commands.Bot):
         self.bg_task = self.loop.create_task(self._periodic_guild_update())
     
     async def _periodic_guild_update(self):
-        """Periodically update guild statistics with improved error handling."""
+        """Periodically update guild statistics with improved error handling and non-blocking design."""
         await self.wait_until_ready()
         while not self.is_closed():
             try:
-                # Update guild stats
-                from database.models import GuildTracking, ServerChannels
-                from database.db import get_connection, IS_POSTGRES
+                # Process each guild with individual error handling and proper async handling
+                update_tasks = []
+                for guild in self.guilds:
+                    # Use a separate task for each guild update to avoid blocking
+                    task = asyncio.create_task(self._update_single_guild(guild))
+                    update_tasks.append(task)
                 
-                # Update global stats - count worlds directly from the database
-                global worlds_count
+                # Wait for all update tasks with a timeout
+                if update_tasks:
+                    done, pending = await asyncio.wait(update_tasks, timeout=30)
+                    
+                    # Cancel any pending tasks that didn't complete within timeout
+                    for task in pending:
+                        task.cancel()
+                        config.logger.warning(f"Guild update task timed out and was cancelled")
                 
+                # Update global stats using a non-blocking approach
+                await self._update_global_stats()
+                
+                config.logger.info(f"Updated guild stats: {len(self.guilds)} guilds, {worlds_count} worlds")
+                
+                # Check PostgreSQL availability using a separate task
+                asyncio.create_task(self._check_database_availability())
+                
+            except Exception as e:
+                config.logger.error(f"Error in periodic guild update: {e}")
+                
+            # Sleep for 1 hour
+            await asyncio.sleep(3600)
+
+    async def _update_single_guild(self, guild):
+        """Update stats for a single guild in a non-blocking way."""
+        try:
+            # Use a thread pool executor for database operations
+            from concurrent.futures import ThreadPoolExecutor
+            from database.models import GuildTracking, ServerChannels
+            
+            # Run database operations in a thread pool to avoid blocking the event loop
+            with ThreadPoolExecutor(max_workers=1) as executor:
+                # Update member count
+                await self.loop.run_in_executor(
+                    executor, 
+                    GuildTracking.update_member_count, 
+                    guild.id, 
+                    guild.member_count
+                )
+                
+                # Check if this guild has a forum channel set up (also in thread pool)
+                forum_config = await self.loop.run_in_executor(
+                    executor,
+                    ServerChannels.get_forum_channel,
+                    guild.id
+                )
+                has_forum = forum_config is not None
+                
+                # Update forum status
+                await self.loop.run_in_executor(
+                    executor,
+                    GuildTracking.update_guild_status,
+                    guild.id,
+                    has_forum
+                )
+        except Exception as e:
+            config.logger.error(f"Error updating guild {guild.id}: {e}")
+
+    async def _update_global_stats(self):
+        """Update global statistics in a non-blocking way."""
+        try:
+            # Use a thread pool executor for database operations
+            from concurrent.futures import ThreadPoolExecutor
+            from database.db import get_connection, IS_POSTGRES
+            
+            # Update worlds count
+            global worlds_count
+            
+            def count_worlds():
                 try:
                     with get_connection() as conn:
                         cursor = conn.cursor()
                         
+                        # Set a short timeout
                         if IS_POSTGRES:
-                            cursor.execute("SET statement_timeout = 5000")  # 5 second timeout
+                            cursor.execute("SET statement_timeout = 3000")  # 3 second timeout
                             cursor.execute("SELECT COUNT(*) FROM thread_world_links")
                         else:
                             cursor.execute("SELECT COUNT(*) FROM thread_world_links")
                             
                         result = cursor.fetchone()
                         if result:
-                            worlds_count = result[0]
+                            return result[0]
+                        return 0
                 except Exception as e:
                     config.logger.error(f"Error counting worlds: {e}")
+                    return worlds_count  # Return existing count on error
+            
+            # Run in thread pool
+            with ThreadPoolExecutor(max_workers=1) as executor:
+                new_count = await self.loop.run_in_executor(executor, count_worlds)
+                worlds_count = new_count
                 
-                # Process each guild with individual error handling
-                for guild in self.guilds:
-                    try:
-                        # Update member count
-                        GuildTracking.update_member_count(guild.id, guild.member_count)
-                        
-                        # Check if this guild has a forum channel set up
-                        forum_config = ServerChannels.get_forum_channel(guild.id)
-                        has_forum = forum_config is not None
-                        
-                        # Update forum status
-                        GuildTracking.update_guild_status(guild.id, has_forum)
-                    except Exception as guild_error:
-                        config.logger.error(f"Error updating guild {guild.id}: {guild_error}")
-                
-                config.logger.info(f"Updated guild stats: {len(self.guilds)} guilds, {worlds_count} worlds")
-                
-                # Check PostgreSQL availability and update flag
-                check_postgres_availability()
-                
-            except Exception as e:
-                config.logger.error(f"Error updating guild stats: {e}")
-                
-            # Sleep for 1 hour
-            await asyncio.sleep(3600)
+        except Exception as e:
+            config.logger.error(f"Error updating global stats: {e}")
+
+    async def _check_database_availability(self):
+        """Check database availability in a non-blocking way."""
+        try:
+            from concurrent.futures import ThreadPoolExecutor
+            from database.db import check_postgres_availability
+            
+            # Run database check in thread pool
+            with ThreadPoolExecutor(max_workers=1) as executor:
+                await self.loop.run_in_executor(executor, check_postgres_availability)
+        except Exception as e:
+            config.logger.error(f"Error checking database availability: {e}")
 
 async def main():
     """Main function to start the bot."""

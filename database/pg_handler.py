@@ -12,7 +12,7 @@ import config as config
 
 def get_postgres_connection():
     """
-    Get a connection to the PostgreSQL database with improved error handling.
+    Get a connection to the PostgreSQL database with improved error handling and shorter timeouts.
     
     Returns:
         Database connection
@@ -35,19 +35,19 @@ def get_postgres_connection():
         raise ValueError("PostgreSQL connection parameters not set in environment variables")
     
     # Add retry mechanism for connection with exponential backoff
-    max_retries = 5
-    retry_delay = 3  # initial seconds
+    max_retries = 3  # Reduced from 5 to 3
+    retry_delay = 1  # Reduced from 3 to 1 second
     
     for attempt in range(max_retries):
         try:
-            # Build connection parameters
+            # Build connection parameters with shorter timeouts
             conn_params = {
                 'host': pg_host,
                 'port': pg_port,
                 'user': pg_user,
                 'password': pg_password,
                 'dbname': pg_database,
-                'connect_timeout': 10,
+                'connect_timeout': 5,  # Reduced from 10 to 5 seconds
                 'application_name': "VRChat World Showcase Bot"
             }
             
@@ -58,6 +58,11 @@ def get_postgres_connection():
             conn = psycopg2.connect(**conn_params)
             conn.autocommit = False  # We'll manage transactions explicitly
             conn.cursor_factory = psycopg2.extras.DictCursor  # Enable dictionary-like access to rows
+            
+            # Set statement timeout globally for this connection to 5 seconds
+            with conn.cursor() as cursor:
+                cursor.execute("SET statement_timeout = 5000")  # 5 seconds in milliseconds
+            
             return conn
         except psycopg2.OperationalError as e:
             if attempt < max_retries - 1:
