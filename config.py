@@ -47,6 +47,8 @@ if PG_HOST and PG_USER and PG_PASSWORD:
 else:
     DATABASE_URL = None
 
+# Set PG_AVAILABLE flag based on initial environment check
+# This flag will be updated at runtime based on actual connection attempts
 PG_AVAILABLE = DATABASE_URL is not None
 
 # Setup SQLite database as fallback
@@ -54,7 +56,7 @@ DATABASE_PATH = Path("database") / "vrchat_worlds.db"
 DATABASE_FILE = str(DATABASE_PATH)
 DATABASE_PATH.parent.mkdir(exist_ok=True)
 
-# Function to check if PostgreSQL is available
+# Function to check if PostgreSQL connection parameters are available
 def is_postgres_available():
     """Check if PostgreSQL connection variables are available."""
     return bool(PG_HOST and PG_USER and PG_PASSWORD)
@@ -132,3 +134,26 @@ WELCOME_IMAGE_URL = "https://cdn.discordapp.com/avatars/1156538533876613121/8acb
 # Web Dashboard Settings
 DASHBOARD_TITLE = "VRChat Helper"
 FLASK_SECRET_KEY = os.getenv("FLASK_SECRET_KEY", os.urandom(24).hex())
+
+"""
+VRChat API configuration settings.
+These settings control how the bot interacts with the VRChat API.
+"""
+
+# VRChat API credentials
+# The AUTH token will be loaded from vrchat_auth.json instead of requiring login
+AUTH_FILE = "vrchat_auth.json"
+AUTH_EXPIRY_DAYS = 14  # VRChat auth tokens typically last for 14-30 days
+
+# VRChat API settings
+VRC_API_BASE_URL = "https://api.vrchat.cloud/api/1"
+VRC_API_MAX_RETRIES = 3
+VRC_API_TIMEOUT = 10  # seconds
+VRC_API_RETRY_DELAY = 2  # seconds
+
+# Token check interval (to avoid excessive API calls)
+VRC_TOKEN_CHECK_INTERVAL = 3600  # 1 hour in seconds
+
+# Whether to automatically attempt login when token is invalid
+# We'll set this to False to prevent unwanted login attempts
+VRC_AUTO_LOGIN = True

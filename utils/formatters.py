@@ -1,25 +1,41 @@
 """
-Formatting utilities for text and data display.
+Formatting utilities for text and data display with improved size handling.
 """
 from datetime import datetime
 from typing import Union, Optional
 import config as config
-
+import re
 
 def bytes_to_mb(bytes_value: Union[str, int, float]) -> str:
     """
-    Convert bytes to megabytes with formatting.
+    Convert bytes to human-readable size with improved error handling and format detection.
     
     Args:
         bytes_value: Bytes value as string, int, or float
         
     Returns:
-        Formatted string in MB
+        Formatted string with appropriate size unit (KB, MB, GB)
     """
     if not bytes_value or bytes_value in ("Unknown", "Not specified", "Unavailable"):
         return "Unknown"
     
     try:
+        # If it's already a formatted string with unit, just return it
+        if isinstance(bytes_value, str) and not bytes_value.isdigit():
+            # Check if it already has a size unit
+            if any(unit in bytes_value for unit in ["KB", "MB", "GB", "TB", "B"]):
+                return bytes_value
+            
+            # Check if it might be a formatted string like "1,234,567"
+            if "," in bytes_value:
+                # Try to clean it up and convert
+                cleaned = bytes_value.replace(",", "")
+                if cleaned.isdigit():
+                    bytes_value = int(cleaned)
+                else:
+                    # If not a valid number, just return as is
+                    return bytes_value
+        
         # Convert string to integer if needed
         if isinstance(bytes_value, str) and bytes_value.isdigit():
             bytes_value = int(bytes_value)
@@ -27,19 +43,25 @@ def bytes_to_mb(bytes_value: Union[str, int, float]) -> str:
         # Make sure it's a number
         if not isinstance(bytes_value, (int, float)):
             return "Unknown"
-            
-        # Convert to MB with 2 decimal places
-        mb = float(bytes_value) / (1024 * 1024)
         
-        # Format to appropriate size unit
-        if mb < 1:
-            kb = bytes_value / 1024
+        # Zero bytes should be shown as "0 B"
+        if bytes_value == 0:
+            return "0 B"
+            
+        # Convert to appropriate size unit
+        bytes_float = float(bytes_value)
+        
+        if bytes_float < 1024:
+            return f"{bytes_float:.0f} B"
+        elif bytes_float < 1024 * 1024:
+            kb = bytes_float / 1024
             return f"{kb:.1f} KB"
-        elif mb > 1000:
-            gb = mb / 1024
-            return f"{gb:.2f} GB"
-        else:
+        elif bytes_float < 1024 * 1024 * 1024:
+            mb = bytes_float / (1024 * 1024)
             return f"{mb:.2f} MB"
+        else:
+            gb = bytes_float / (1024 * 1024 * 1024)
+            return f"{gb:.2f} GB"
     except (ValueError, TypeError) as e:
         # Log the error for debugging
         config.logger.error(f"Error converting bytes to MB: {e} (value: {bytes_value}, type: {type(bytes_value)})")
@@ -81,6 +103,9 @@ def truncate_text(text: str, max_length: int = 1024, add_ellipsis: bool = True) 
     Returns:
         Truncated text
     """
+    if not text:
+        return ""
+        
     if len(text) <= max_length:
         return text
     

@@ -10,12 +10,15 @@ from typing import Optional, List, Dict, Tuple
 import os
 from dotenv import load_dotenv
 
+from utils.embed_builders import build_world_embed
+from utils.formatters import bytes_to_mb
+
 # Define the creator user ID
 CREATOR_USER_ID = os.getenv("CREATOR_USER_ID")
 import config as config
 from database.models import ServerChannels, ServerTags
 from database.db import log_activity
-from utils.api import extract_world_id
+from utils.api import VRChatAPI, extract_world_id
 from ui.buttons import WorldButton
 from database.models import WorldPosts, ThreadWorldLinks
 
@@ -1068,6 +1071,120 @@ class AdminCommands(commands.Cog):
         except Exception as e:
             config.logger.error(f"Error in repair_threads_slash: {e}")
             await interaction.followup.send(f"❌ An error occurred: {e}")
+        
+    @app_commands.command(name="add-update-button", description="Add an update button to a world post")
+    @app_commands.describe(thread="The thread where you want to add an update button")
+    @app_commands.default_permissions(administrator=True)
+    async def add_update_button_slash(self, interaction: discord.Interaction, thread: discord.Thread):
+        """
+        Add an update button to a world post thread.
+        
+        Args:
+            interaction: Discord interaction
+            thread: Discord thread to add the update button to
+        """
+        await interaction.response.defer(thinking=True)
+        
+        try:
+            # Check if the thread is a world post
+            server_id = interaction.guild_id
+            thread_id = thread.id
+            
+            # Get the world ID for this thread
+            from database.models import WorldPosts
+            world_id = WorldPosts.get_world_for_thread(server_id, thread_id)
+            
+            if not world_id:
+                await interaction.followup.send(
+                    "This thread does not appear to be a VRChat world post.", 
+                    ephemeral=True
+                )
+                return
+            
+            # Create the view with a direct update button
+            from ui.buttons import DirectUpdateView
+            view = DirectUpdateView()
+            
+            # Add a message with the update button
+            embed = discord.Embed(
+                title="Update World Information",
+                description=(
+                    "Click the button below to update information for this VRChat world.\n\n"
+                    "This will fetch fresh data from the VRChat API to ensure the information is current."
+                ),
+                color=discord.Color.dark_red()
+            )
+            
+            await thread.send(embed=embed, view=view)
+            
+            await interaction.followup.send(
+                "✅ Update button added to the thread!", 
+                ephemeral=True
+            )
+            
+        except Exception as e:
+            config.logger.error(f"Error adding update button: {e}")
+            await interaction.followup.send(
+                f"An error occurred: {e}", 
+                ephemeral=True
+            )
+    
+    @app_commands.command(name="add-update-button", description="Add an update button to a world post")
+    @app_commands.describe(thread="The thread where you want to add an update button")
+    @app_commands.default_permissions(administrator=True)
+    async def add_update_button_slash(self, interaction: discord.Interaction, thread: discord.Thread):
+        """
+        Add an update button to a world post thread.
+        
+        Args:
+            interaction: Discord interaction
+            thread: Discord thread to add the update button to
+        """
+        await interaction.response.defer(thinking=True)
+        
+        try:
+            # Check if the thread is a world post
+            server_id = interaction.guild_id
+            thread_id = thread.id
+            
+            # Get the world ID for this thread
+            from database.models import WorldPosts
+            world_id = WorldPosts.get_world_for_thread(server_id, thread_id)
+            
+            if not world_id:
+                await interaction.followup.send(
+                    "This thread does not appear to be a VRChat world post.", 
+                    ephemeral=True
+                )
+                return
+            
+            # Create the view with a direct update button
+            from ui.buttons import DirectUpdateView
+            view = DirectUpdateView()
+            
+            # Add a message with the update button
+            embed = discord.Embed(
+                title="Update World Information",
+                description=(
+                    "Click the button below to update information for this VRChat world.\n\n"
+                    "This will fetch fresh data from the VRChat API to ensure the information is current."
+                ),
+                color=discord.Color.dark_red()
+            )
+            
+            await thread.send(embed=embed, view=view)
+            
+            await interaction.followup.send(
+                "✅ Update button added to the thread!", 
+                ephemeral=True
+            )
+            
+        except Exception as e:
+            config.logger.error(f"Error adding update button: {e}")
+            await interaction.followup.send(
+                f"An error occurred: {e}", 
+                ephemeral=True
+            )
         
 async def setup(bot: commands.Bot):
     """

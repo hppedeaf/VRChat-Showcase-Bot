@@ -10,6 +10,7 @@ from database.models import UserWorldLinks, ThreadWorldLinks, ServerChannels, Se
 from utils.api import extract_world_id, VRChatAPI
 from utils.formatters import bytes_to_mb, format_vrchat_date
 from utils.embed_builders import build_world_embed, build_tag_selection_embed
+# Import the required view here to avoid circular imports
 from ui.views import TagSelectionView
 
 class WorldLinkModal(discord.ui.Modal, title='Post World Link Here'):
@@ -21,6 +22,7 @@ class WorldLinkModal(discord.ui.Modal, title='Post World Link Here'):
         self.guild_id: Optional[int] = None
         self.message_id: Optional[int] = None
         self.selected_tags: List[str] = []  # Initialize selected_tags list
+        self.is_update: bool = False  # Flag to indicate if this is an update operation
 
     # Define the text input field
     answer = discord.ui.TextInput(
@@ -53,15 +55,78 @@ class WorldLinkModal(discord.ui.Modal, title='Post World Link Here'):
             return
     
         # Check if the world_id already exists in the database
-        existing_thread = WorldPosts.get_thread_for_world(interaction.guild_id, world_id)
-        
-        if existing_thread:
-            # If the world already exists, notify the user and reference the thread
-            await interaction.followup.send(
-                f"This world has already been posted in the thread: <#{existing_thread}>.",
-                ephemeral=True
-            )
-            return  # Stop further execution since the world already exists
+        # Skip this check if we're updating an existing world
+        if not self.is_update:
+            existing_thread = WorldPosts.get_thread_for_world(interaction.guild_id, world_id)
+            
+            if existing_thread:
+                # If the world already exists, offer to update it instead of just showing an error
+                # Create a view with Update and Cancel buttons
+                view = discord.ui.View(timeout=180.0)  # 3 minute timeout
+                
+                # Define callbacks for the buttons with proper scoping
+                # We need to store the world_details, world_id, and link in the button's extras
+                
+                # Update button
+                update_button = discord.ui.Button(
+                    style=discord.ButtonStyle.primary,
+                    label="Update World Info",
+                    emoji="🔄",
+                    custom_id="update_world_info"
+                )
+                
+                # Cancel button
+                cancel_button = discord.ui.Button(
+                    style=discord.ButtonStyle.secondary,
+                    label="Cancel",
+                    emoji="❌",
+                    custom_id="cancel_update"
+                )
+                
+                # Define callbacks for the buttons
+                async def update_callback(button_interaction):
+                    # Set is_update flag to true
+                    self.is_update = True
+                    
+                    # Fetch the latest world information and update the existing post
+                    await button_interaction.response.defer(ephemeral=True)
+                    
+                    # Re-fetch world details to ensure we have the latest
+                    vrchat_api = VRChatAPI()
+                    current_world_details = vrchat_api.get_world_info(world_id)
+                    
+                    if not current_world_details:
+                        await button_interaction.followup.send(
+                            "Failed to fetch updated world details. Please try again later.",
+                            ephemeral=True
+                        )
+                        return
+                    
+                    # Handle as an update with fresh data
+                    await self.handle_world_update(button_interaction, current_world_details, world_id)
+                
+                async def cancel_callback(button_interaction):
+                    await button_interaction.response.send_message(
+                        "Update canceled.", 
+                        ephemeral=True
+                    )
+                
+                # Set the callbacks
+                update_button.callback = update_callback
+                cancel_button.callback = cancel_callback
+                
+                # Add buttons to the view
+                view.add_item(update_button)
+                view.add_item(cancel_button)
+                
+                # Send message with buttons
+                await interaction.followup.send(
+                    f"This world has already been posted in the thread: <#{existing_thread}>.\n"
+                    f"Would you like to update the world information with the latest details?",
+                    ephemeral=True,
+                    view=view
+                )
+                return  # Stop further execution since we're waiting for user input
     
         # Initialize VRChat API with auth token from config
         vrchat_api = VRChatAPI()
@@ -85,8 +150,121 @@ class WorldLinkModal(discord.ui.Modal, title='Post World Link Here'):
             await interaction.followup.send(f"Database error: {e}", ephemeral=True)
             return
     
-        # Proceed to allow the user to choose tags
+        # If this is an update operation, handle differently
+        if self.is_update:
+            await self.handle_world_update(interaction, world_details, world_id, link)
+            return
+            
+        # For new worlds, proceed to allow the user to choose tags
         await self.choose_tags(interaction, world_details, link)
+
+    async def handle_world_update(self, interaction: discord.Interaction, world_details: Dict[str, Any], world_id: str):
+        """
+        Handle updating an existing world post.
+        
+        Args:
+            interaction: Discord interaction
+            world_details: World details from VRChat API
+            world_id: VRChat world ID
+            world_link: VRChat world link
+        """
+        
+        # Find the existing thread for this world
+        server_id = interaction.guild.id
+        thread_id = WorldPosts.get_thread_for_world(server_id, world_id)
+        
+        if not thread_id:
+            await interaction.followup.send(
+                f"Could not find an existing thread for world ID: {world_id}. Please post it as a new world instead.",
+                ephemeral=True
+            )
+            return
+            
+        # Get the thread
+        try:
+            thread = interaction.guild.get_thread(thread_id)
+            if not thread:
+                await interaction.followup.send(
+                    f"Could not find thread {thread_id} for this world. It may have been deleted.",
+                    ephemeral=True
+                )
+                return
+                
+            # Initialize VRChat API to get updated world info
+            vrchat_api = VRChatAPI(config.AUTH)
+            
+            # Get the previous world info to show what changed
+            old_world_info = {}
+            old_embed = None
+            
+            # Try to get the previous info from the existing embed
+            async for message in thread.history(limit=5, oldest_first=True):
+                if message.author == interaction.client.user and message.embeds:
+                    old_embed = message.embeds[0]
+                    # Extract info from the embed fields
+                    for field in old_embed.fields:
+                        old_world_info[field.name] = field.value
+                    break
+            
+            # Extract world details for the updated information
+            file_rest_id = vrchat_api.get_file_rest_id(world_details)
+            world_size_bytes = vrchat_api.get_world_size(file_rest_id)
+            world_size_mb = bytes_to_mb(world_size_bytes)
+            platform_info = vrchat_api.get_platform_info(world_details)
+            
+            # Build updated embed
+            embed = build_world_embed(
+                world_details, 
+                world_id, 
+                world_size_mb, 
+                platform_info,
+                interaction.user.name
+            )
+            
+            # Create visit button
+            visit_button = discord.ui.Button(
+                style=discord.ButtonStyle.link,
+                label="Visit World",
+                url=f"https://vrchat.com/home/world/{world_id}"
+            )
+            
+            # Create view with visit button
+            view = discord.ui.View()
+            view.add_item(visit_button)
+            
+            # Track what changed
+            changes = []
+            new_world_info = {
+                "World Size": world_size_mb,
+                "Platform": platform_info,
+                "Capacity": world_details.get('capacity', 'Unknown'),
+                "Visits": f"{world_details.get('visits', 'Unknown'):,}" if isinstance(world_details.get('visits'), int) else world_details.get('visits', 'Unknown'),
+                "Favorites": f"{world_details.get('favorites', 'Unknown'):,}" if isinstance(world_details.get('favorites'), int) else world_details.get('favorites', 'Unknown'),
+                "Updated": format_vrchat_date(world_details.get('updated_at', 'Unknown')),
+            }
+            
+            # Compare old vs new values
+            for key, new_value in new_world_info.items():
+                if key in old_world_info and old_world_info[key] != new_value:
+                    changes.append(f"{key}: {old_world_info[key]} → {new_value}")
+            
+            # Update the thread's first message
+            async for message in thread.history(limit=5, oldest_first=True):
+                if message.author == interaction.client.user and message.embeds:
+                    try:
+                        await message.edit(embed=embed, view=view)
+                        break
+                    except Exception as e:
+                        config.logger.error(f"Error updating message: {e}")
+                        await interaction.followup.send(
+                            f"Error updating message: {e}",
+                            ephemeral=True
+                        )
+                        return
+            
+        except Exception as e:
+            config.logger.error(f"Error updating world: {e}")
+            await interaction.followup.send(f"Error updating world: {e}", ephemeral=True)
 
     async def choose_tags(self, interaction: discord.Interaction, world_details: Dict[str, Any], world_link: str):
         """

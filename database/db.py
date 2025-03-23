@@ -8,25 +8,74 @@ import time
 from typing import Dict, Any, List, Tuple, Optional, Union
 import config as config
 
+# Track whether we've already migrated data from SQLite to PostgreSQL
+_already_migrated = False
+# Track if PostgreSQL was previously unavailable
+_pg_was_unavailable = False
+
 def get_connection():
     """
-    Get a connection to the database (PostgreSQL on Railway, SQLite locally) with improved reliability.
+    Get the best available database connection with seamless fallback.
+    Tries PostgreSQL first, falls back to SQLite if needed.
     
     Returns:
         Database connection
     """
+    global _already_migrated, _pg_was_unavailable
+    
     if config.PG_AVAILABLE:
-        # Try PostgreSQL first, fall back to SQLite if unavailable
+        # Try PostgreSQL first
         try:
-            # Use our enhanced PostgreSQL handler for Railway
+            # Use our enhanced PostgreSQL handler
             from database.pg_handler import get_postgres_connection
-            return get_postgres_connection()
+            connection = get_postgres_connection()
+            
+            # If PostgreSQL was previously unavailable but is now available,
+            # and we haven't migrated data yet, do a one-time migration
+            if _pg_was_unavailable and not _already_migrated:
+                _pg_was_unavailable = False
+                
+                # Check if SQLite database exists and has data
+                if os.path.exists(config.DATABASE_FILE):
+                    config.logger.info("PostgreSQL is now available after being offline. Checking for data to migrate...")
+                    
+                    sqlite_conn = _get_sqlite_connection()
+                    if sqlite_conn:
+                        # Check if SQLite has newer data than PostgreSQL
+                        cursor = sqlite_conn.cursor()
+                        cursor.execute("SELECT COUNT(*) FROM world_posts")
+                        count = cursor.fetchone()[0]
+                        sqlite_conn.close()
+                        
+                        if count > 0:
+                            config.logger.info(f"Found {count} records in SQLite. Migrating to PostgreSQL...")
+                            # Perform one-time migration
+                            from database.pg_handler import migrate_data_from_sqlite
+                            try:
+                                migrate_data_from_sqlite()
+                                _already_migrated = True
+                                config.logger.info("Successfully migrated data from SQLite to PostgreSQL")
+                            except Exception as e:
+                                config.logger.error(f"Failed to migrate data from SQLite to PostgreSQL: {e}")
+            
+            return connection
+            
         except Exception as e:
-            # If PostgreSQL is unavailable, log and disable it for the rest of the session
-            config.logger.warning(f"PostgreSQL connection failed, disabling for this session: {e}")
+            # If PostgreSQL is unavailable, log and mark it
+            config.logger.warning(f"PostgreSQL connection failed, falling back to SQLite: {e}")
+            _pg_was_unavailable = True
             config.PG_AVAILABLE = False
     
-    # SQLite fallback for local development with better settings
+    # SQLite fallback with better settings
+    return _get_sqlite_connection()
+
+def _get_sqlite_connection():
+    """
+    Get a connection to the SQLite database with robust error handling.
+    
+    Returns:
+        SQLite database connection
+    """
     tries = 0
     max_tries = 3
     while tries < max_tries:
@@ -47,6 +96,32 @@ def get_connection():
                 config.logger.error(f"Failed to connect to SQLite database after {max_tries} attempts: {e}")
                 raise
             time.sleep(1)  # Wait a second before retrying
+
+def check_postgres_availability():
+    """
+    Check if PostgreSQL is available and update the global setting.
+    
+    Returns:
+        bool: True if PostgreSQL is available, False otherwise
+    """
+    # Only check if we're configured to use PostgreSQL in the first place
+    if hasattr(config, 'DATABASE_URL') and config.DATABASE_URL:
+        try:
+            from database.pg_handler import get_postgres_connection
+            conn = get_postgres_connection()
+            conn.close()
+            
+            # If we get here, PostgreSQL is available
+            config.PG_AVAILABLE = True
+            return True
+        except Exception as e:
+            config.logger.warning(f"PostgreSQL is unavailable: {e}")
+            config.PG_AVAILABLE = False
+            return False
+    else:
+        # Not configured for PostgreSQL
+        config.PG_AVAILABLE = False
+        return False
 
 def check_database_connection():
     """

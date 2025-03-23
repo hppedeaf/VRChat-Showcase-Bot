@@ -274,4 +274,3 @@ class TagSelectionView(discord.ui.View):
                 pass  # Message was already deleted
             except Exception as e:
                 config.logger.error(f"Error handling view timeout: {e}")
-                

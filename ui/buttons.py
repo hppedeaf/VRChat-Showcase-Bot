@@ -41,6 +41,256 @@ class WorldButton(discord.ui.View):
         modal.guild_id = interaction.guild.id
         await interaction.response.send_modal(modal)
 
+# class UpdateWorldButton(discord.ui.View):
+#     """Button view for updating an existing VRChat world post."""
+    
+#     def __init__(self, world_id: str, thread_id: int, allowed_user_id: Optional[int] = None):
+#         """
+#         Initialize the update world button view.
+        
+#         Args:
+#             world_id: The VRChat world ID to update
+#             thread_id: The thread ID containing the world post
+#             allowed_user_id: If set, only this user can use the button
+#         """
+#         # Create a view with a timeout
+#         super().__init__(timeout=config.BUTTON_TIMEOUT)
+#         self.world_id = world_id
+#         self.thread_id = thread_id
+#         self.allowed_user_id = allowed_user_id  # Store the allowed user ID
+
+#     @discord.ui.button(
+#         label='Update World', 
+#         emoji="🔄", 
+#         style=discord.ButtonStyle.primary, 
+#         custom_id="update_world_button"
+#     )
+#     async def update_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+#         """
+#         Handle update button click.
+        
+#         Args:
+#             interaction: Discord interaction
+#             button: Button that was clicked
+#         """
+#         # Check if a specific user is allowed to use this button
+#         if self.allowed_user_id and interaction.user.id != self.allowed_user_id:
+#             await interaction.response.send_message(
+#                 "You are not authorized to update this world.", 
+#                 ephemeral=True
+#             )
+#             return
+            
+#         # Create and show modal for updating world
+#         modal = UpdateWorldButton(self.world_id, self.thread_id)
+#         modal.guild_id = interaction.guild.id
+#         await interaction.response.send_modal(modal)
+
+# def add_update_button_to_view(view: discord.ui.View, allowed_user_id: Optional[int] = None):
+#     """
+#     Adds an update button to an existing view.
+    
+#     Args:
+#         view: The discord view to add the button to
+#         allowed_user_id: If set, only this user can use the button
+#     """
+#     # Create a custom Button class to properly handle the callback
+#     class UpdateButton(discord.ui.Button):
+#         def __init__(self, allowed_user_id: Optional[int] = None):
+#             super().__init__(
+#                 style=discord.ButtonStyle.primary,
+#                 label="Update World",
+#                 emoji="🔄",
+#                 custom_id="update_world_button"
+#             )
+#             self.allowed_user_id = allowed_user_id
+            
+#         async def callback(self, interaction: discord.Interaction):
+#             """
+#             Handle button click.
+            
+#             Args:
+#                 interaction: Discord interaction
+#             """
+#             # Get the thread ID from the interaction context
+#             thread_id = interaction.channel_id
+            
+#             # Get the world ID from the database
+#             from database.models import WorldPosts
+#             server_id = interaction.guild_id
+#             world_id = WorldPosts.get_world_for_thread(server_id, thread_id)
+            
+#             if not world_id:
+#                 await interaction.response.send_message(
+#                     "Could not find a VRChat world associated with this thread.", 
+#                     ephemeral=True
+#                 )
+#                 return
+                
+#             # Create and show modal for updating world
+#             from ui.modals import WorldUpdateModal
+#             modal = WorldUpdateModal(world_id, thread_id)
+#             modal.guild_id = interaction.guild.id
+#             await interaction.response.send_modal(modal)
+    
+#     # Create the button with our custom class
+#     update_button = UpdateButton(allowed_user_id)
+    
+#     # Add the button to the view
+#     view.add_item(update_button)
+    
+#     return view
+
+# # In ui/buttons.py add or update the DirectUpdateButton class:
+
+# class DirectUpdateButton(discord.ui.Button):
+#     """Button for immediately updating a VRChat world post without a modal."""
+    
+#     def __init__(self):
+#         """Initialize the direct update button."""
+#         super().__init__(
+#             style=discord.ButtonStyle.primary,
+#             label="Update World",
+#             emoji="🔄",
+#             custom_id="direct_update_button"
+#         )
+        
+#     async def callback(self, interaction: discord.Interaction):
+#         """
+#         Handle button click by directly updating the world info.
+        
+#         Args:
+#             interaction: Discord interaction
+#         """
+#         # Defer response to allow for processing time
+#         await interaction.response.defer(thinking=True)
+        
+#         # Get the thread ID from the current channel
+#         thread_id = interaction.channel_id
+#         server_id = interaction.guild_id
+        
+#         # Get the world ID from the database
+#         from database.models import WorldPosts
+#         world_id = WorldPosts.get_world_for_thread(server_id, thread_id)
+        
+#         if not world_id:
+#             await interaction.followup.send(
+#                 "Could not find a VRChat world associated with this thread.", 
+#                 ephemeral=True
+#             )
+#             return
+        
+#         # Get thread to update
+#         thread = interaction.client.get_channel(thread_id)
+#         if not thread:
+#             await interaction.followup.send(
+#                 "Could not find the thread to update.",
+#                 ephemeral=True
+#             )
+#             return
+        
+#         # Initialize VRChat API
+#         from utils.api import VRChatAPI
+#         vrchat_api = VRChatAPI()
+        
+#         # Fetch updated world details
+#         world_details = vrchat_api.get_world_info(world_id)
+#         if not world_details:
+#             await interaction.followup.send(
+#                 "Failed to fetch updated world details from VRChat API.",
+#                 ephemeral=True
+#             )
+#             return
+            
+#         try:
+#             # Extract necessary world details
+#             world_name = world_details['name']
+#             author_name = world_details['authorName']
+#             world_link = f"https://vrchat.com/home/world/{world_id}"
+            
+#             # Get file ID and world size
+#             file_rest_id = vrchat_api.get_file_rest_id(world_details)
+#             from utils.formatters import bytes_to_mb
+#             world_size_bytes = vrchat_api.get_world_size(file_rest_id)
+#             world_size_mb = bytes_to_mb(world_size_bytes)
+#             platform_info = vrchat_api.get_platform_info(world_details)
+            
+#             # Create visit button for the world
+#             visit_button = discord.ui.Button(
+#                 style=discord.ButtonStyle.link,
+#                 label="Visit World",
+#                 url=world_link
+#             )
+            
+#             # Create view with the visit button
+#             view = discord.ui.View()
+#             view.add_item(visit_button)
+            
+#             # Add update button back to the view
+#             view.add_item(DirectUpdateButton())
+            
+#             # Build the updated world embed
+#             from utils.embed_builders import build_world_embed
+#             embed = build_world_embed(
+#                 world_details, 
+#                 world_id, 
+#                 world_size_mb, 
+#                 platform_info,
+#                 interaction.user.name
+#             )
+            
+#             # Find the first message in the thread (original post)
+#             async for message in thread.history(limit=1, oldest_first=True):
+#                 first_message = message
+#                 break
+#             else:
+#                 await interaction.followup.send(
+#                     "Could not find the original post in the thread.",
+#                     ephemeral=True
+#                 )
+#                 return
+            
+#             # Edit the first message with updated information
+#             await first_message.edit(embed=embed, view=view)
+            
+#             # Send a confirmation to the thread
+#             await thread.send(
+#                 f"✅ World information has been updated by {interaction.user.mention}."
+#             )
+            
+#             # Update database entry
+#             from database.models import VRChatWorlds
+#             VRChatWorlds.add_world(
+#                 world_id=world_id,
+#                 world_name=world_name,
+#                 author_name=author_name,
+#                 image_url=world_details.get('imageUrl', 'No image available')
+#             )
+            
+#             # Notify the user that the update was successful
+#             await interaction.followup.send(
+#                 f"✅ Successfully updated the world information for `{world_name}`!",
+#                 ephemeral=True
+#             )
+            
+#         except Exception as e:
+#             config.logger.error(f"Error updating world: {e}")
+#             await interaction.followup.send(
+#                 f"An error occurred while updating the world: {e}",
+#                 ephemeral=True
+#             )
+
+
+# # This View will contain the direct update button
+# class DirectUpdateView(discord.ui.View):
+#     """View containing the direct update button for a VRChat world post."""
+    
+#     def __init__(self):
+#         """Initialize the view with a direct update button."""
+#         super().__init__(timeout=config.BUTTON_TIMEOUT)
+#         # Add the direct update button to this view
+#         self.add_item(DirectUpdateButton())
+        
 class ScanActionButtons(discord.ui.View):
     """Buttons for taking action on scan results with enhanced visual design."""
     

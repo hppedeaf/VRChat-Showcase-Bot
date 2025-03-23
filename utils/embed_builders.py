@@ -1,5 +1,5 @@
 """
-Functions to build Discord embeds for various purposes.
+Functions to build Discord embeds for various purposes with improved formatting.
 """
 import re
 import discord
@@ -16,7 +16,7 @@ def build_world_embed(
     user_name: str
 ) -> discord.Embed:
     """
-    Build a Discord embed for a VRChat world.
+    Build a Discord embed for a VRChat world with improved size handling.
     
     Args:
         world_info: World information from VRChat API
@@ -58,20 +58,33 @@ def build_world_embed(
         url=world_link
     )
     
-    embed.set_footer(text=f"Posted by {user_name}")
+    embed.set_footer(text=f"Posted by {user_name} • Last updated: {datetime.now().strftime('%Y-%m-%d')}")
     embed.description = truncate_text(description, 4096)
     
-    # Format visits and favorites if they are between 100,000 and 1,000,000
-    if visits != 'Unknown':
+    # Format visits and favorites if they are numbers
+    if visits != 'Unknown' and isinstance(visits, (int, float)):
         visits = "{:,}".format(visits)
         
-    if favorites != 'Unknown':
+    if favorites != 'Unknown' and isinstance(favorites, (int, float)):
         favorites = "{:,}".format(favorites)
     
-    # Handle Unknown world size with a better fallback message
-    display_size = world_size
-    if world_size == "Unknown":
-        display_size = "Not Available"
+    # Improved world size handling
+    display_size = "Unknown"
+    if world_size != "Unknown":
+        try:
+            # Check if it's a string of bytes or already formatted
+            if world_size.isdigit():
+                # It's bytes, convert to a readable format
+                display_size = bytes_to_mb(world_size)
+            elif "MB" in world_size or "KB" in world_size or "GB" in world_size:
+                # It's already formatted
+                display_size = world_size
+            else:
+                # Try to convert it anyway
+                display_size = bytes_to_mb(world_size)
+        except Exception as e:
+            config.logger.error(f"Error formatting world size: {e}")
+            display_size = "Unknown"
 
     # Add fields with proper fallbacks
     embed.add_field(name="World Size", value=display_size, inline=True)

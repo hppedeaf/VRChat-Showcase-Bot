@@ -1,6 +1,6 @@
 """
-Enhanced VRChat authentication management system with login capabilities.
-Handles auth token validation, renewal, and direct login via credentials.
+Enhanced VRChat authentication management system.
+Prioritizes reading auth from saved file without unnecessary login attempts.
 """
 import os
 import re
@@ -10,7 +10,7 @@ import pyotp
 import requests
 import logging
 from pathlib import Path
-from typing import Dict, Any, Optional, Tuple
+from typing import Dict, List, Tuple, Optional, Any, Union
 from datetime import datetime, timedelta
 from dotenv import load_dotenv, set_key
 
@@ -21,7 +21,7 @@ NOTIFICATION_INTERVAL = 86400  # 24 hours in seconds
 API_BASE_URL = "https://api.vrchat.cloud/api/1"
 
 class VRChatAuthManager:
-    """Manages VRChat authentication with direct login capability."""
+    """Manages VRChat authentication with improved token handling."""
     
     def __init__(self, logger=None, env_file=".env"):
         """
@@ -38,6 +38,8 @@ class VRChatAuthManager:
         self.session = requests.Session()
         self.api_key = None
         self.last_notification = 0
+        self.last_token_check = 0
+        self.token_check_interval = 3600  # Check token validity once per hour
         
         # Initialize session with default headers
         self.session.headers.update({
@@ -124,7 +126,7 @@ class VRChatAuthManager:
     
     def get_auth_token(self) -> Optional[str]:
         """
-        Get the current auth token, checking validity and environment.
+        Get the current auth token, prioritizing saved token over login.
         
         Returns:
             Auth token or None if not available
@@ -143,21 +145,32 @@ class VRChatAuthManager:
         # Next check saved token
         saved_token = self.auth_data.get("token")
         if saved_token:
-            # Check if token is likely expired
-            if self._is_token_expired():
-                # Only notify once per notification interval
-                current_time = time.time()
-                if current_time - self.last_notification > NOTIFICATION_INTERVAL:
-                    self.logger.warning(
-                        "Authentication token may be expired. Please update VRCHAT_AUTH in .env file or use login()."
-                    )
-                    self.last_notification = current_time
+            # Only check token validity occasionally to avoid excessive API calls
+            current_time = time.time()
+            if current_time - self.last_token_check > self.token_check_interval:
+                self.last_token_check = current_time
+                
+                # Check if token is likely expired
+                if self._is_token_expired():
+                    # Only notify once per notification interval
+                    if current_time - self.last_notification > NOTIFICATION_INTERVAL:
+                        self.logger.warning(
+                            "Authentication token may be expired. Using it anyway, but consider updating VRCHAT_AUTH."
+                        )
+                        self.last_notification = current_time
+                
+                # Test token without trying to login if it fails
+                is_valid, _ = self.test_token(saved_token)
+                if not is_valid:
+                    self.logger.warning("Saved token is invalid, but will continue using it to avoid login attempts.")
+                    # Don't attempt login, just keep using the token
+            
             return saved_token
             
         # No token available
         if time.time() - self.last_notification > NOTIFICATION_INTERVAL:
             self.logger.error(
-                "No VRChat authentication token found. Please set VRCHAT_AUTH in .env file or use login()."
+                "No VRChat authentication token found in file or environment."
             )
             self.last_notification = time.time()
         
@@ -207,17 +220,22 @@ class VRChatAuthManager:
             self.logger.error(f"Failed to update .env file: {e}")
             return False
     
-    def _extract_auth_token_from_cookies(self) -> Optional[str]:
+    def _is_token_expired(self) -> bool:
         """
-        Extract auth token from session cookies.
+        Check if the saved token is likely expired based on timestamp.
         
         Returns:
-            Auth token or None if not found
+            True if token is likely expired, False otherwise
         """
-        for cookie in self.session.cookies:
-            if cookie.name == "auth":
-                return cookie.value
-        return None
+        if "updated_at" not in self.auth_data:
+            return True
+            
+        try:
+            updated_at = datetime.fromisoformat(self.auth_data["updated_at"])
+            expiry_date = updated_at + timedelta(days=AUTH_EXPIRY_DAYS)
+            return datetime.now() > expiry_date
+        except (ValueError, TypeError):
+            return True
     
     def login(
         self, 

@@ -1,6 +1,6 @@
 """
 Combined server for the VRChat World Showcase Bot.
-Runs both the Discord bot and web dashboard.
+Runs both the Discord bot and web dashboard with improved database handling.
 """
 import asyncio
 import threading
@@ -19,7 +19,6 @@ import main as bot_main
 import config as config
 from datetime import datetime
 from database.pg_handler import add_missing_columns
-from database.sync import start_sync_scheduler, stop_sync_scheduler
 
 # Initialize Flask application with correct static folder and template folder paths
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -116,11 +115,16 @@ def status():
         bot = getattr(bot_main, 'bot', None)
         is_online = bot is not None and bot.is_ready() if hasattr(bot, 'is_ready') else False
         
+        # Get database status
+        from database.db import check_postgres_availability
+        pg_status = "online" if check_postgres_availability() else "offline"
+        
         # Construct status response
         status_data = {
             "status": "online" if is_online else "offline",
             "guilds": guilds_count,
             "worlds": worlds_count,
+            "database": pg_status,
             "version": "1.0.0",
             "uptime": getattr(bot_main, 'uptime', 'Unknown')
         }
@@ -163,54 +167,48 @@ def index():
 # Initialize database on first request
 # Using a function that we'll register with app.before_first_request alternative
 def initialize_db():
-    """Start the database synchronization"""
-    from database.db import setup_database
+    """Set up the database and check if migration is needed"""
+    from database.db import setup_database, check_postgres_availability
     
     # Set up the database
     try:
         setup_database()
         
-        # Only start the synchronization scheduler if PostgreSQL is available
-        if config.PG_AVAILABLE:
-            app.logger.info("Starting database synchronization scheduler")
-            start_sync_scheduler()
+        # Check if migration is needed (PostgreSQL is available and SQLite has data)
+        if check_postgres_availability():
+            app.logger.info("PostgreSQL is available, checking if migration is needed")
+            from database.sync import check_migration_needed, migrate_sqlite_to_postgres
+            
+            if check_migration_needed():
+                app.logger.info("Migration from SQLite to PostgreSQL is needed, starting migration")
+                result = migrate_sqlite_to_postgres()
+                if result.get("status") == "success":
+                    app.logger.info(f"Migration completed successfully: {result.get('total')} records migrated")
+                else:
+                    app.logger.error(f"Migration failed: {result.get('message')}")
+            else:
+                app.logger.info("No migration needed, databases are in sync")
         else:
-            app.logger.info("PostgreSQL is not available, database synchronization disabled")
+            app.logger.info("PostgreSQL is not available, using SQLite database")
+            
     except Exception as e:
         app.logger.error(f"Database initialization error: {e}")
 
-# Add a shutdown handler to stop sync when the server stops
-def stop_db_sync(exception=None):
-    """Stop database synchronization when the app context tears down."""
-    if config.PG_AVAILABLE:
-        app.logger.info("Stopping database synchronization scheduler")
-        stop_sync_scheduler()
-    else:
-        app.logger.info("Database synchronization was not running (PostgreSQL unavailable)")
-
-# Add API route to force sync
-@app.route('/api/sync-db', methods=['POST'])
-def force_db_sync():
-    """Force an immediate database sync."""
+# Add API route to force migration
+@app.route('/api/migrate-db', methods=['POST'])
+def force_db_migration():
+    """Force an immediate database migration from SQLite to PostgreSQL."""
     if request.method == 'POST':
-        from database.sync import sync_now
+        from database.sync import migrate_sqlite_to_postgres
         try:
-            results = sync_now()
+            results = migrate_sqlite_to_postgres()
             
-            # Summarize results
-            total_sqlite_to_pg = sum([r['sqlite_to_pg'] for r in results.values()])
-            total_pg_to_sqlite = sum([r['pg_to_sqlite'] for r in results.values()])
-            
-            return jsonify({
-                "success": True,
-                "message": f"Synced SQLite → PG: {total_sqlite_to_pg} rows, PG → SQLite: {total_pg_to_sqlite} rows",
-                "details": results
-            })
+            return jsonify(results)
         except Exception as e:
-            app.logger.error(f"Error in force sync: {e}")
+            app.logger.error(f"Error in force migration: {e}")
             return jsonify({
-                "success": False,
-                "message": f"Sync failed: {str(e)}"
+                "status": "error",
+                "message": f"Migration failed: {str(e)}"
             }), 500
     
     return Response(status=400)

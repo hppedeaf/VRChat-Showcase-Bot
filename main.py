@@ -6,13 +6,20 @@ import discord
 from discord.ext import commands
 import os
 import sys
+import time
+from datetime import datetime
 
 # Add the bot directory to the Python path
 sys.path.append(os.path.join(os.path.dirname(__file__), 'bot'))
 
 import config as config
-from database.db import setup_database
+from database.db import setup_database, check_postgres_availability
 from database.pg_handler import add_missing_columns
+
+# Track bot uptime
+start_time = datetime.now()
+guild_count = 0
+worlds_count = 0
 
 # Create bot with proper intents
 intents = discord.Intents.default()
@@ -38,21 +45,33 @@ class VRChatBot(commands.Bot):
         await self.load_extension("cogs.maintenance")
         config.logger.info("Cogs loaded")
         
-        try:
-            from database.sync import start_sync_scheduler
-            # Start in a separate thread
-            import threading
-            threading.Thread(
-                target=start_sync_scheduler,
-                daemon=True
-            ).start()
-            config.logger.info("Database synchronization initialized")
-        except Exception as e:
-            config.logger.error(f"Failed to initialize database sync: {e}")
+        # If PostgreSQL is available, make sure the schema is up-to-date
+        if check_postgres_availability():
+            try:
+                add_missing_columns()
+                config.logger.info("PostgreSQL schema updated with any missing columns")
+            except Exception as e:
+                config.logger.error(f"Failed to update PostgreSQL schema: {e}")
     
     async def on_ready(self):
         """Handle bot ready event."""
+        global guild_count, worlds_count, start_time
+        
         config.logger.info(f'Logged in as {self.user.name}')
+        
+        # Update stats
+        guild_count = len(self.guilds)
+        
+        # Count worlds across all servers
+        try:
+            from database.models import WorldPosts
+            total_worlds = 0
+            for guild in self.guilds:
+                server_worlds = WorldPosts.get_all_posts(guild.id)
+                total_worlds += len(server_worlds)
+            worlds_count = total_worlds
+        except Exception as e:
+            config.logger.error(f"Error counting worlds: {e}")
         
         # Sync slash commands
         try:
@@ -60,8 +79,7 @@ class VRChatBot(commands.Bot):
             config.logger.info(f"Synced {len(synced)} command(s)")
         except Exception as e:
             config.logger.error(f"Failed to sync commands: {e}")
-                        
-        add_missing_columns()
+        
         # Check threads based on thread ID and add world button if needed
         from database.models import ServerChannels
         
@@ -120,33 +138,14 @@ class VRChatBot(commands.Bot):
 
         config.logger.info("All threads have been checked and world buttons added where needed.")
         
-    async def on_guild_join(self, guild):
-        """Handle bot joining a new guild."""
-        config.logger.info(f"Joined new guild: {guild.name} (ID: {guild.id})")
+        # Update guild tracking in the database
+        await self.update_guild_stats()
         
-        # Send welcome message to the first available text channel
-        for channel in guild.text_channels:
-            if channel.permissions_for(guild.me).send_messages:
-                embed = discord.Embed(
-                    title="VRChat World Showcase Bot",
-                    description=(
-                        "Thanks for adding me to your server! I help you create and manage a showcase " +
-                        "of VRChat worlds in a forum channel.\n\n" +
-                        "To get started, run `/world-create` to create a new forum channel " +
-                        "or `/world-set` to use an existing one.\n\n" +
-                        "For more information, run `/about` or `/help`."
-                    ),
-                    color=discord.Color.dark_red()
-                )
-                
-                try:
-                    await channel.send(embed=embed)
-                    break
-                except:
-                    continue
-                
     async def on_guild_join(self, guild):
         """Handle bot joining a new guild."""
+        global guild_count
+        guild_count += 1
+        
         config.logger.info(f"Joined new guild: {guild.name} (ID: {guild.id})")
         
         # Track the guild in the database
@@ -176,13 +175,15 @@ class VRChatBot(commands.Bot):
 
     async def on_guild_remove(self, guild):
         """Handle bot leaving a guild."""
+        global guild_count
+        guild_count -= 1
+        
         config.logger.info(f"Left guild: {guild.name} (ID: {guild.id})")
         
         # Update the database
         from database.models import GuildTracking
         GuildTracking.remove_guild(guild.id)
 
-    # Add this to your periodic task or create a new maintenance cog
     async def update_guild_stats(self):
         """Update guild statistics periodically."""
         from database.models import GuildTracking, ServerChannels
@@ -197,11 +198,57 @@ class VRChatBot(commands.Bot):
             
             # Update forum status
             GuildTracking.update_guild_status(guild.id, has_forum)
+        
+        # Start periodic task to update guild stats every hour
+        self.bg_task = self.loop.create_task(self._periodic_guild_update())
+    
+    async def _periodic_guild_update(self):
+        """Periodically update guild statistics."""
+        await self.wait_until_ready()
+        while not self.is_closed():
+            try:
+                # Update guild stats
+                from database.models import GuildTracking, ServerChannels, WorldPosts
+                
+                # Update global stats
+                global worlds_count
+                total_worlds = 0
+                
+                for guild in self.guilds:
+                    # Update member count
+                    GuildTracking.update_member_count(guild.id, guild.member_count)
+                    
+                    # Check if this guild has a forum channel set up
+                    forum_config = ServerChannels.get_forum_channel(guild.id)
+                    has_forum = forum_config is not None
+                    
+                    # Update forum status
+                    GuildTracking.update_guild_status(guild.id, has_forum)
+                    
+                    # Count worlds
+                    server_worlds = WorldPosts.get_all_posts(guild.id)
+                    total_worlds += len(server_worlds)
+                
+                worlds_count = total_worlds
+                config.logger.info(f"Updated guild stats: {len(self.guilds)} guilds, {worlds_count} worlds")
+                
+                # Check PostgreSQL availability and update flag
+                check_postgres_availability()
+                
+            except Exception as e:
+                config.logger.error(f"Error updating guild stats: {e}")
+                
+            # Sleep for 1 hour
+            await asyncio.sleep(3600)
 
 async def main():
     """Main function to start the bot."""
     # Initialize the bot
     bot = VRChatBot()
+    
+    # Create the bot as a global variable
+    global bot_instance
+    bot_instance = bot
     
     # Run the bot with the token from config
     try:
@@ -213,12 +260,32 @@ async def main():
         config.logger.critical(f"Failed to start bot: {e}")
         print(f"ERROR: Failed to start bot: {e}")
 
+# Define the uptime property
+def uptime() -> str:
+    """Calculate the bot's uptime."""
+    delta = datetime.now() - start_time
+    hours, remainder = divmod(delta.seconds, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    days = delta.days
+    
+    if days:
+        return f"{days}d {hours}h {minutes}m {seconds}s"
+    else:
+        return f"{hours}h {minutes}m {seconds}s"
+
 if __name__ == "__main__":
     # Check if token exists
     if not config.TOKEN:
         config.logger.critical("Discord token not found! Please add your bot token to a .env file.")
         print("ERROR: Discord token not found! Please create a .env file with DISCORD_TOKEN=your_token")
         exit(1)
+    
+    # Set up the database
+    try:
+        setup_database()
+    except Exception as e:
+        config.logger.error(f"Database setup error: {e}")
+        print(f"WARNING: Database setup error: {e}")
     
     # Run the bot
     asyncio.run(main())

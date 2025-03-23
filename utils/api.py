@@ -1,26 +1,25 @@
 """
-VRChat API utilities module with completely automatic authentication.
-Handles interactions with the VRChat API and automatically refreshes auth when needed.
+VRChat API utilities module with improved authentication handling.
+Handles interactions with the VRChat API without excessive login attempts.
 """
 import re
 import os
 import time
 import json
-import pyotp
 import logging
 import requests
 from typing import Dict, Any, Optional, List, Tuple
-from datetime import datetime, timedelta
+from datetime import datetime
 import config as config
-from dotenv import load_dotenv, set_key
 
-# Constants for auth management
-AUTH_FILE = "vrchat_auth.json"
-AUTH_EXPIRY_DAYS = 14  # VRChat auth tokens typically last for 14-30 days
+# Import VRChatAuthManager for token handling
+from utils.vrchat_auth_manager import VRChatAuthManager
+
+# Constants
 API_BASE_URL = "https://api.vrchat.cloud/api/1"
 
 class VRChatAPI:
-    """Class to handle VRChat API interactions with automatic authentication."""
+    """Class to handle VRChat API interactions with improved auth handling."""
     
     def __init__(self, auth_token: Optional[str] = None):
         """
@@ -29,8 +28,11 @@ class VRChatAPI:
         Args:
             auth_token: VRChat authentication token (optional, will auto-retrieve if not provided)
         """
-        # Set up auto-auth
-        self.auth_token = auth_token
+        # Set up auth manager
+        self.auth_manager = VRChatAuthManager(logger=config.logger)
+        
+        # Set up auth
+        self.auth_token = auth_token or self.auth_manager.get_auth_token()
         self.api_key = None
         self.auth_expiry = None
         self.last_auth_check = 0
@@ -40,8 +42,8 @@ class VRChatAPI:
         # Create a session for persistent cookies
         self.session = requests.Session()
         
-        # Initialize authentication
-        self._initialize_authentication()
+        # Initialize session headers
+        self._update_session_headers()
         
         # Get API key once during initialization
         self.api_key = self._get_api_key()
@@ -49,104 +51,6 @@ class VRChatAPI:
             config.logger.info(f"Successfully initialized VRChat API with key: {self.api_key}")
         else:
             config.logger.warning("Failed to get API key during initialization")
-    
-    def _initialize_authentication(self) -> None:
-        """Initialize authentication - get a valid token or log in if needed."""
-        # Try to get auth token from different sources
-        self.auth_token = self.auth_token or os.getenv("VRCHAT_AUTH") or self._load_auth_from_file()
-        
-        # Update session headers with auth token
-        self._update_session_headers()
-        
-        # Test auth token and refresh if needed
-        if not self._test_auth_token():
-            config.logger.warning("Auth token invalid or expired, attempting automatic login...")
-            self._auto_login()
-    
-    def _load_auth_from_file(self) -> Optional[str]:
-        """
-        Load authentication token from file.
-        
-        Returns:
-            Auth token or None if not available/valid
-        """
-        try:
-            if os.path.exists(AUTH_FILE):
-                with open(AUTH_FILE, 'r') as f:
-                    auth_data = json.load(f)
-                    
-                    # Check if token is likely expired
-                    if "updated_at" in auth_data:
-                        try:
-                            updated_at = datetime.fromisoformat(auth_data["updated_at"])
-                            expiry_date = updated_at + timedelta(days=AUTH_EXPIRY_DAYS)
-                            
-                            if datetime.now() > expiry_date:
-                                config.logger.warning("Saved auth token is expired")
-                                return None
-                                
-                            # Store expiry for future reference
-                            self.auth_expiry = expiry_date
-                            
-                        except (ValueError, TypeError):
-                            pass
-                    
-                    # Get other user info if available
-                    self.user_id = auth_data.get("user_id")
-                    self.username = auth_data.get("username")
-                    
-                    return auth_data.get("token")
-        except (json.JSONDecodeError, IOError) as e:
-            config.logger.error(f"Failed to load auth data: {e}")
-        
-        return None
-    
-    def _save_auth_to_file(self, token: str, user_id: Optional[str] = None, username: Optional[str] = None) -> None:
-        """
-        Save authentication data to file.
-        
-        Args:
-            token: Auth token to save
-            user_id: User ID (optional)
-            username: Username (optional)
-        """
-        try:
-            # Try to load existing data first
-            auth_data = {}
-            if os.path.exists(AUTH_FILE):
-                try:
-                    with open(AUTH_FILE, 'r') as f:
-                        auth_data = json.load(f)
-                except:
-                    pass
-            
-            # Update with new data
-            auth_data.update({
-                "token": token,
-                "updated_at": datetime.now().isoformat(),
-                "source": "auto"
-            })
-            
-            # Add user info if available
-            if user_id:
-                auth_data["user_id"] = user_id
-            if username:
-                auth_data["username"] = username
-            
-            # Save to file
-            with open(AUTH_FILE, 'w') as f:
-                json.dump(auth_data, f, indent=2)
-                
-            # Also try to update .env file if possible
-            try:
-                if os.path.exists(".env"):
-                    set_key(".env", "VRCHAT_AUTH", token)
-                    config.logger.info("Updated VRCHAT_AUTH in .env file")
-            except Exception as e:
-                config.logger.warning(f"Could not update .env file: {e}")
-                
-        except IOError as e:
-            config.logger.error(f"Failed to save auth data: {e}")
     
     def _update_session_headers(self) -> None:
         """Update session headers with current auth token."""
@@ -162,163 +66,6 @@ class VRChatAPI:
         if self.auth_token:
             self.session.cookies.set("auth", self.auth_token, domain="vrchat.com")
             self.session.cookies.set("auth", self.auth_token, domain="api.vrchat.cloud")
-    
-    def _test_auth_token(self) -> bool:
-        """
-        Test if the current auth token is valid.
-        
-        Returns:
-            True if valid, False otherwise
-        """
-        # Skip if no token
-        if not self.auth_token:
-            return False
-            
-        # Only check once per hour to avoid excessive API calls
-        current_time = time.time()
-        if current_time - self.last_auth_check < 3600 and self.user_id:  # 1 hour
-            return True
-            
-        self.last_auth_check = current_time
-        
-        try:
-            response = self.session.get(f"{API_BASE_URL}/auth/user")
-            
-            if response.status_code == 200:
-                user_data = response.json()
-                self.user_id = user_data.get("id")
-                self.username = user_data.get("displayName")
-                
-                if self.user_id:
-                    config.logger.info(f"Auth token valid for user: {self.username}")
-                    return True
-            
-            config.logger.warning(f"Auth token invalid: HTTP {response.status_code}")
-            return False
-            
-        except Exception as e:
-            config.logger.error(f"Auth test failed: {e}")
-            return False
-    
-    def _auto_login(self) -> bool:
-        """
-        Automatically log in using credentials from environment.
-        
-        Returns:
-            True if login successful, False otherwise
-        """
-        # Get credentials from environment
-        username = os.getenv("VRCHAT_USERNAME")
-        password = os.getenv("VRCHAT_PASSWORD")
-        totp_secret = os.getenv("VRCHAT_2FA_SECRET")
-        
-        # Check if we have credentials
-        if not username or not password:
-            config.logger.error("Cannot auto-login: Missing VRCHAT_USERNAME or VRCHAT_PASSWORD in .env")
-            return False
-        
-        # Get API key if needed
-        if not self.api_key:
-            self.api_key = self._get_api_key()
-            if not self.api_key:
-                config.logger.error("Cannot auto-login: Failed to get API key")
-                return False
-        
-        try:
-            config.logger.info(f"Attempting auto-login as: {username}")
-            
-            # Step 1: Initial authentication with username/password
-            auth = (username, password)
-            params = {"apiKey": self.api_key}
-            
-            response = self.session.get(
-                f"{API_BASE_URL}/auth/user",
-                params=params,
-                auth=auth
-            )
-            
-            if response.status_code != 200:
-                config.logger.error(f"Auto-login failed: HTTP {response.status_code}")
-                return False
-                
-            auth_data = response.json()
-            
-            # Step 2: Handle 2FA if required
-            if auth_data.get("requiresTwoFactorAuth"):
-                config.logger.info("2FA required for auto-login")
-                
-                # Check if we have TOTP secret
-                if not totp_secret:
-                    config.logger.error("Cannot complete auto-login: 2FA required but VRCHAT_2FA_SECRET not in .env")
-                    return False
-                
-                # Generate TOTP code
-                try:
-                    totp = pyotp.TOTP(totp_secret)
-                    totp_code = totp.now()
-                    config.logger.info(f"Generated 2FA code for auto-login: {totp_code}")
-                except Exception as e:
-                    config.logger.error(f"Failed to generate 2FA code: {e}")
-                    return False
-                
-                # Submit 2FA verification
-                response = self.session.post(
-                    f"{API_BASE_URL}/auth/twofactorauth/totp/verify",
-                    params=params,
-                    json={"code": totp_code}
-                )
-                
-                if response.status_code != 200:
-                    config.logger.error(f"2FA verification failed: HTTP {response.status_code}")
-                    return False
-                    
-                verify_response = response.json()
-                if not verify_response.get("verified", False):
-                    config.logger.error("2FA verification failed: Not verified")
-                    return False
-                    
-                config.logger.info("2FA verification successful")
-                
-                # Confirm login after 2FA
-                response = self.session.get(
-                    f"{API_BASE_URL}/auth/user",
-                    params=params
-                )
-                
-                if response.status_code != 200:
-                    config.logger.error(f"Login confirmation failed: HTTP {response.status_code}")
-                    return False
-                    
-                auth_data = response.json()
-            
-            # Extract auth token from cookies
-            for cookie in self.session.cookies:
-                if cookie.name == "auth":
-                    self.auth_token = cookie.value
-                    break
-            
-            if not self.auth_token:
-                config.logger.error("Auto-login failed: Could not extract auth token from cookies")
-                return False
-            
-            # Extract user information
-            self.user_id = auth_data.get("id")
-            self.username = auth_data.get("displayName")
-            
-            if not self.user_id:
-                config.logger.error("Auto-login failed: Could not get user ID")
-                return False
-                
-            config.logger.info(f"Auto-login successful as {self.username} (ID: {self.user_id})")
-            
-            # Save auth data
-            self._save_auth_to_file(self.auth_token, self.user_id, self.username)
-            
-            return True
-            
-        except Exception as e:
-            config.logger.error(f"Auto-login failed with exception: {e}")
-            return False
     
     def _get_api_key(self) -> Optional[str]:
         """Get the API key from VRChat config."""
@@ -365,13 +112,11 @@ class VRChatAPI:
                 if response.status_code == 200:
                     return response.json()
                 elif response.status_code == 401:
-                    # Auth expired, try to refresh once
+                    # Auth expired, but don't try to login - just report the error
                     if attempt == 0:
-                        config.logger.warning("Auth expired during request, attempting refresh...")
-                        if self._auto_login():
-                            continue  # Retry with fresh auth
+                        config.logger.warning("Auth expired during request. Token may need to be manually updated.")
                     
-                    config.logger.error("Authentication failed and refresh attempt didn't help")
+                    config.logger.error("Authentication failed")
                     return None
                 else:
                     config.logger.error(f"API request failed: HTTP {response.status_code}")
@@ -388,8 +133,6 @@ class VRChatAPI:
                 time.sleep(config.API_RETRY_DELAY)
         
         return None
-
-    # Rest of the API methods remain the same as in previous implementations
 
     def get_world_info(self, world_id: str) -> Optional[Dict[str, Any]]:
         """
@@ -497,8 +240,6 @@ class VRChatAPI:
         # Final fallback: Most worlds are PC by default
         return "PC Only"
     
-    # Find this method in utils/api.py
-
     def get_world_size(self, file_id: str) -> str:
         """
         Get the size of a world file.
@@ -646,6 +387,10 @@ def extract_world_id(world_link: str) -> Optional[str]:
     Returns:
         World ID or None if not found
     """
+    # Skip processing if no link provided
+    if not world_link:
+        return None
+        
     # Strip any trailing slashes
     world_link = world_link.rstrip('/')
     
