@@ -13,6 +13,9 @@ _already_migrated = False
 # Track if PostgreSQL was previously unavailable
 _pg_was_unavailable = False
 
+# Define and export IS_POSTGRES
+IS_POSTGRES = hasattr(config, 'DATABASE_URL') and config.DATABASE_URL and config.DATABASE_URL.startswith("postgres")
+
 def get_connection():
     """
     Get the best available database connection with seamless fallback.
@@ -21,9 +24,12 @@ def get_connection():
     Returns:
         Database connection
     """
-    global _already_migrated, _pg_was_unavailable
+    global _already_migrated, _pg_was_unavailable, IS_POSTGRES
     
-    if config.PG_AVAILABLE:
+    # Update IS_POSTGRES status
+    IS_POSTGRES = hasattr(config, 'DATABASE_URL') and config.DATABASE_URL and config.DATABASE_URL.startswith("postgres")
+    
+    if IS_POSTGRES:
         # Try PostgreSQL first
         try:
             # Use our enhanced PostgreSQL handler
@@ -65,6 +71,7 @@ def get_connection():
             config.logger.warning(f"PostgreSQL connection failed, falling back to SQLite: {e}")
             _pg_was_unavailable = True
             config.PG_AVAILABLE = False
+            IS_POSTGRES = False
     
     # SQLite fallback with better settings
     return _get_sqlite_connection()

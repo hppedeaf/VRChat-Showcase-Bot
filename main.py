@@ -62,14 +62,28 @@ class VRChatBot(commands.Bot):
         # Update stats
         guild_count = len(self.guilds)
         
-        # Count worlds across all servers
+        # Count worlds across all servers - use a more efficient approach
         try:
+            # Use a direct database count instead of loading all records
             from database.models import WorldPosts
+            from database.db import get_connection, IS_POSTGRES
+            
             total_worlds = 0
-            for guild in self.guilds:
-                server_worlds = WorldPosts.get_all_posts(guild.id)
-                total_worlds += len(server_worlds)
+            with get_connection() as conn:
+                cursor = conn.cursor()
+                
+                if IS_POSTGRES:
+                    # Use a simpler query that avoids loading all records
+                    cursor.execute("SELECT COUNT(*) FROM thread_world_links")
+                else:
+                    cursor.execute("SELECT COUNT(*) FROM thread_world_links")
+                    
+                result = cursor.fetchone()
+                if result:
+                    total_worlds = result[0]
+                    
             worlds_count = total_worlds
+            config.logger.info(f"Counted {worlds_count} worlds across all servers")
         except Exception as e:
             config.logger.error(f"Error counting worlds: {e}")
         
@@ -203,33 +217,48 @@ class VRChatBot(commands.Bot):
         self.bg_task = self.loop.create_task(self._periodic_guild_update())
     
     async def _periodic_guild_update(self):
-        """Periodically update guild statistics."""
+        """Periodically update guild statistics with improved error handling."""
         await self.wait_until_ready()
         while not self.is_closed():
             try:
                 # Update guild stats
-                from database.models import GuildTracking, ServerChannels, WorldPosts
+                from database.models import GuildTracking, ServerChannels
+                from database.db import get_connection, IS_POSTGRES
                 
-                # Update global stats
+                # Update global stats - count worlds directly from the database
                 global worlds_count
-                total_worlds = 0
                 
+                try:
+                    with get_connection() as conn:
+                        cursor = conn.cursor()
+                        
+                        if IS_POSTGRES:
+                            cursor.execute("SET statement_timeout = 5000")  # 5 second timeout
+                            cursor.execute("SELECT COUNT(*) FROM thread_world_links")
+                        else:
+                            cursor.execute("SELECT COUNT(*) FROM thread_world_links")
+                            
+                        result = cursor.fetchone()
+                        if result:
+                            worlds_count = result[0]
+                except Exception as e:
+                    config.logger.error(f"Error counting worlds: {e}")
+                
+                # Process each guild with individual error handling
                 for guild in self.guilds:
-                    # Update member count
-                    GuildTracking.update_member_count(guild.id, guild.member_count)
-                    
-                    # Check if this guild has a forum channel set up
-                    forum_config = ServerChannels.get_forum_channel(guild.id)
-                    has_forum = forum_config is not None
-                    
-                    # Update forum status
-                    GuildTracking.update_guild_status(guild.id, has_forum)
-                    
-                    # Count worlds
-                    server_worlds = WorldPosts.get_all_posts(guild.id)
-                    total_worlds += len(server_worlds)
+                    try:
+                        # Update member count
+                        GuildTracking.update_member_count(guild.id, guild.member_count)
+                        
+                        # Check if this guild has a forum channel set up
+                        forum_config = ServerChannels.get_forum_channel(guild.id)
+                        has_forum = forum_config is not None
+                        
+                        # Update forum status
+                        GuildTracking.update_guild_status(guild.id, has_forum)
+                    except Exception as guild_error:
+                        config.logger.error(f"Error updating guild {guild.id}: {guild_error}")
                 
-                worlds_count = total_worlds
                 config.logger.info(f"Updated guild stats: {len(self.guilds)} guilds, {worlds_count} worlds")
                 
                 # Check PostgreSQL availability and update flag

@@ -1027,7 +1027,7 @@ class WorldPosts:
     @staticmethod
     def get_all_posts(server_id: int) -> List[Dict[str, Any]]:
         """
-        Get all world posts for a server.
+        Get all world posts for a server with improved error handling and timeout protection.
         
         Args:
             server_id: Discord server ID
@@ -1037,51 +1037,70 @@ class WorldPosts:
         """
         result = []
         
-        # First get data from thread_world_links
-        with get_connection() as conn:
-            cursor = conn.cursor()
-            
-            if IS_POSTGRES:
-                cursor.execute(
-                    "SELECT thread_id, world_id FROM thread_world_links WHERE server_id = %s",
-                    (server_id,)
-                )
-            else:
-                cursor.execute(
-                    "SELECT thread_id, world_id FROM thread_world_links WHERE server_id = ?",
-                    (server_id,)
-                )
+        try:
+            # First get data from thread_world_links
+            with get_connection() as conn:
+                cursor = conn.cursor()
                 
-            thread_worlds = cursor.fetchall()
-            
-            for row in thread_worlds:
-                thread_id = row['thread_id']
-                world_id = row['world_id']
-                
-                # Try to find user data for this world
+                # Add timeout to avoid blocking the main thread for too long
                 if IS_POSTGRES:
+                    cursor.execute("SET statement_timeout = 5000")  # 5 seconds timeout
                     cursor.execute(
-                        "SELECT user_id, world_link, user_choices FROM user_world_links WHERE world_id = %s OR world_link LIKE %s",
-                        (world_id, f"%{world_id}%")
+                        "SELECT thread_id, world_id FROM thread_world_links WHERE server_id = %s LIMIT 1000",
+                        (server_id,)
                     )
                 else:
                     cursor.execute(
-                        "SELECT user_id, world_link, user_choices FROM user_world_links WHERE world_id = ? OR world_link LIKE ?",
-                        (world_id, f"%{world_id}%")
+                        "SELECT thread_id, world_id FROM thread_world_links WHERE server_id = ? LIMIT 1000",
+                        (server_id,)
                     )
                     
-                user_data = cursor.fetchone()
+                thread_worlds = cursor.fetchall()
                 
-                post = {
-                    'server_id': server_id,
-                    'thread_id': thread_id,
-                    'world_id': world_id,
-                    'user_id': user_data['user_id'] if user_data else 0,
-                    'world_link': user_data['world_link'] if user_data else f"https://vrchat.com/home/world/{world_id}",
-                    'user_choices': user_data['user_choices'] if user_data else ""
-                }
-                
-                result.append(post)
+                for row in thread_worlds:
+                    thread_id = row['thread_id']
+                    world_id = row['world_id']
+                    
+                    # Prepare a basic post entry with available data
+                    post = {
+                        'server_id': server_id,
+                        'thread_id': thread_id,
+                        'world_id': world_id,
+                        'user_id': 0,
+                        'world_link': f"https://vrchat.com/home/world/{world_id}",
+                        'user_choices': ""
+                    }
+                    
+                    # Try to find user data for this world with a separate query
+                    # This avoids complex joins that might timeout
+                    try:
+                        if IS_POSTGRES:
+                            cursor.execute(
+                                "SELECT user_id, world_link, user_choices FROM user_world_links WHERE world_id = %s LIMIT 1",
+                                (world_id,)
+                            )
+                        else:
+                            cursor.execute(
+                                "SELECT user_id, world_link, user_choices FROM user_world_links WHERE world_id = ? LIMIT 1",
+                                (world_id,)
+                            )
+                            
+                        user_data = cursor.fetchone()
+                        
+                        if user_data:
+                            # Update post with user data
+                            post['user_id'] = user_data['user_id']
+                            post['world_link'] = user_data['world_link']
+                            post['user_choices'] = user_data['user_choices']
+                            
+                    except Exception as e:
+                        # Log error but continue with basic data
+                        config.logger.error(f"Error fetching user data for world {world_id}: {e}")
+                    
+                    result.append(post)
+        except Exception as e:
+            config.logger.error(f"Error in get_all_posts for server {server_id}: {e}")
+            # Return empty list in case of errors to avoid breaking the bot
         
         return result
 
