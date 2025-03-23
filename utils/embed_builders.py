@@ -19,7 +19,7 @@ def build_world_embed(
     Build a Discord embed for a VRChat world with improved size handling.
     
     Args:
-        world_info: World information dictionary from VRChat API
+        world_info: World information from VRChat API
         world_id: VRChat world ID
         world_size: World size string (e.g., "10.5 MB")
         platform_info: Platform support string
@@ -68,8 +68,26 @@ def build_world_embed(
     if favorites != 'Unknown' and isinstance(favorites, (int, float)):
         favorites = "{:,}".format(favorites)
     
+    # Improved world size handling
+    display_size = "Unknown"
+    if world_size != "Unknown":
+        try:
+            # Check if it's a string of bytes or already formatted
+            if world_size.isdigit():
+                # It's bytes, convert to a readable format
+                display_size = bytes_to_mb(world_size)
+            elif "MB" in world_size or "KB" in world_size or "GB" in world_size:
+                # It's already formatted
+                display_size = world_size
+            else:
+                # Try to convert it anyway
+                display_size = bytes_to_mb(world_size)
+        except Exception as e:
+            config.logger.error(f"Error formatting world size: {e}")
+            display_size = "Unknown"
+
     # Add fields with proper fallbacks
-    embed.add_field(name="World Size", value=world_size, inline=True)
+    embed.add_field(name="World Size", value=display_size, inline=True)
     embed.add_field(name="Platform", value=platform_info, inline=True)
     embed.add_field(name="Capacity", value=capacity, inline=True)
     embed.add_field(name="Published", value=created_at, inline=True)

@@ -33,30 +33,24 @@ def bytes_to_mb(bytes_value: Union[str, int, float]) -> str:
                 if cleaned.isdigit():
                     bytes_value = int(cleaned)
                 else:
-                    # If it's a JSON string or other non-numeric format, just return
-                    return "Unknown"
-            elif not bytes_value.isdigit() and not bytes_value.replace('.', '', 1).isdigit():
-                # Not a valid number string
-                return "Unknown"
+                    # If not a valid number, just return as is
+                    return bytes_value
         
-        # Try different conversion approaches based on type
-        if isinstance(bytes_value, str):
-            if bytes_value.isdigit():
-                bytes_float = float(bytes_value)
-            elif bytes_value.replace('.', '', 1).isdigit():  # Check if it's a float string
-                bytes_float = float(bytes_value)
-            else:
-                return "Unknown"
-        elif isinstance(bytes_value, (int, float)):
-            bytes_float = float(bytes_value)
-        else:
+        # Convert string to integer if needed
+        if isinstance(bytes_value, str) and bytes_value.isdigit():
+            bytes_value = int(bytes_value)
+            
+        # Make sure it's a number
+        if not isinstance(bytes_value, (int, float)):
             return "Unknown"
         
         # Zero bytes should be shown as "0 B"
-        if bytes_float == 0:
+        if bytes_value == 0:
             return "0 B"
             
         # Convert to appropriate size unit
+        bytes_float = float(bytes_value)
+        
         if bytes_float < 1024:
             return f"{bytes_float:.0f} B"
         elif bytes_float < 1024 * 1024:
@@ -72,7 +66,7 @@ def bytes_to_mb(bytes_value: Union[str, int, float]) -> str:
         # Log the error for debugging
         config.logger.error(f"Error converting bytes to MB: {e} (value: {bytes_value}, type: {type(bytes_value)})")
         return "Unknown"
-    
+
 def format_vrchat_date(date_str: Optional[str]) -> str:
     """
     Format a VRChat date string to a more readable format.

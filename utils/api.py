@@ -166,7 +166,7 @@ class VRChatAPI:
                 config.logger.warning("World info is missing 'unityPackages' data")
             elif not world_info["unityPackages"]:
                 config.logger.warning("World has empty 'unityPackages' array")
-                    
+                
         return world_info
     
     def get_file_info(self, file_id: str) -> Optional[Dict[str, Any]]:
@@ -199,7 +199,7 @@ class VRChatAPI:
         if not world_info:
             config.logger.warning("Cannot determine platform: World info is None")
             return "PC Only"  # Default assumption
-                
+            
         # First try using unityPackages data (preferred method)
         unity_packages = world_info.get("unityPackages", [])
         
@@ -219,9 +219,6 @@ class VRChatAPI:
                 return "PC Only"
             elif is_android:
                 return "Quest Only"
-        else:
-            # Log warning but continue with fallback methods
-            config.logger.warning("World has empty 'unityPackages' array")
         
         # Fallback method: Try to use other fields to determine platform
         # Check for platform-specific tags
@@ -233,22 +230,19 @@ class VRChatAPI:
             quest_tags = ["quest", "android", "mobile"]
             pc_tags = ["pc", "pconly", "windows"]
             
-            has_quest_tag = any(tag.lower() for tag in tags if any(q in tag.lower() for q in quest_tags))
-            has_pc_tag = any(tag.lower() for tag in tags if any(p in tag.lower() for p in pc_tags))
-            
-            if has_quest_tag and has_pc_tag:
-                return "Cross-Platform"
-            elif has_quest_tag:
+            if any(tag.lower() for tag in tags if any(q in tag.lower() for q in quest_tags)):
+                if any(tag.lower() for tag in tags if any(p in tag.lower() for p in pc_tags)):
+                    return "Cross-Platform"
                 return "Quest Only"
-            elif has_pc_tag:
+            elif any(tag.lower() for tag in tags if any(p in tag.lower() for p in pc_tags)):
                 return "PC Only"
         
         # Final fallback: Most worlds are PC by default
         return "PC Only"
-        
+    
     def get_world_size(self, file_id: str) -> str:
         """
-        Get the size of a world file based on the exact VRChat API response structure.
+        Get the size of a world file.
         
         Args:
             file_id: VRChat file ID
@@ -262,68 +256,22 @@ class VRChatAPI:
             return "Unknown"
             
         try:
-            # First, try to get file information from /file/{fileId} endpoint
             file_info = self.get_file_info(file_id)
             
-            # Debug log the file info to see its structure
-            config.logger.debug(f"File info for {file_id}: {json.dumps(file_info, indent=2) if file_info else 'None'}")
-            
-            # If no file info returned, we can't determine the size
-            if not file_info:
-                config.logger.warning(f"No file info returned for file_id: {file_id}")
+            # Direct path to size as in the original code
+            if file_info and "versions" in file_info and file_info["versions"]:
+                size_bytes = file_info["versions"][-1]["file"]["sizeInBytes"]
+                return str(size_bytes)
+            else:
+                config.logger.warning(f"No size information available for file_id: {file_id}")
                 return "Unknown"
-            
-            # Strategy 1: Look for size in versions array (preferred method from API docs)
-            if "versions" in file_info and isinstance(file_info["versions"], list) and file_info["versions"]:
-                # Try each version starting from the most recent (last in array)
-                for version in reversed(file_info["versions"]):
-                    if not isinstance(version, dict):
-                        continue
-                        
-                    # Check for file object with sizeInBytes
-                    if "file" in version and isinstance(version["file"], dict):
-                        if "sizeInBytes" in version["file"]:
-                            size_bytes = version["file"]["sizeInBytes"]
-                            config.logger.info(f"Found world size in versions[].file.sizeInBytes: {size_bytes} bytes")
-                            return str(size_bytes)
-            
-            # Strategy 2: Look for size in any object that might contain size information
-            def search_for_size(obj, path=""):
-                """Recursively search for size in nested dictionaries"""
-                if isinstance(obj, dict):
-                    for key, value in obj.items():
-                        # Look for size-related keys
-                        if isinstance(value, (int, float)) and any(size_key in key.lower() for size_key in ["size", "bytes"]):
-                            config.logger.info(f"Found size at {path}.{key}: {value}")
-                            return value
-                        # Recursively search nested dictionaries
-                        elif isinstance(value, (dict, list)):
-                            result = search_for_size(value, f"{path}.{key}")
-                            if result:
-                                return result
-                elif isinstance(obj, list):
-                    for i, item in enumerate(obj):
-                        result = search_for_size(item, f"{path}[{i}]")
-                        if result:
-                            return result
-                return None
-            
-            # Try to find size information anywhere in the response
-            size_value = search_for_size(file_info)
-            if size_value:
-                return str(size_value)
-                
-            # If all else fails
-            config.logger.warning(f"Could not find size information for file {file_id}")
-            return "Unknown"
-            
         except Exception as e:
             config.logger.error(f"Error getting world size: {e}")
             return "Unknown"
-        
+    
     def get_file_rest_id(self, world_info: Dict[str, Any]) -> str:
         """
-        Extract the file ID from world information with debug logging.
+        Extract the file ID from world information.
         
         Args:
             world_info: World information dictionary from VRChat API
@@ -335,37 +283,7 @@ class VRChatAPI:
             config.logger.warning("Cannot extract file ID: World info is None")
             return "Not specified"
         
-        # Debug log the world info structure
-        config.logger.debug(f"Extracting file ID from world info: {json.dumps(world_info, indent=2)}")
-        
-        # Method 1: Check unityPackages array first (most reliable)
-        if "unityPackages" in world_info and world_info["unityPackages"] and isinstance(world_info["unityPackages"], list):
-            # Get the latest unity package (typically the last in the array)
-            latest_package = None
-            for package in world_info["unityPackages"]:
-                # Skip packages without necessary data
-                if not isinstance(package, dict) or "assetUrl" not in package:
-                    continue
-                    
-                # Track the latest package
-                if latest_package is None or (
-                    "created_at" in package and "created_at" in latest_package and 
-                    package["created_at"] > latest_package["created_at"]
-                ):
-                    latest_package = package
-            
-            # Use the latest package if found
-            if latest_package and "assetUrl" in latest_package:
-                asset_url = latest_package["assetUrl"]
-                config.logger.debug(f"Found assetUrl in latest unityPackage: {asset_url}")
-                
-                # Extract file ID from URL
-                file_id = self._extract_file_id_from_url(asset_url)
-                if file_id:
-                    config.logger.info(f"Found file ID in unityPackage: {file_id}")
-                    return file_id
-        
-        # Method 2: Try direct assetUrl in world_info
+        # Method 1: Try direct assetUrl in world_info
         if "assetUrl" in world_info and world_info["assetUrl"]:
             asset_url = world_info["assetUrl"]
             config.logger.debug(f"Found assetUrl in world_info: {asset_url}")
@@ -373,30 +291,60 @@ class VRChatAPI:
             # Extract file ID from URL
             file_id = self._extract_file_id_from_url(asset_url)
             if file_id:
-                config.logger.info(f"Found file ID in assetUrl: {file_id}")
                 return file_id
         
-        # Method 3: Check assetVersion for a specific fileId
-        if "assetVersion" in world_info and isinstance(world_info["assetVersion"], dict):
-            if "fileId" in world_info["assetVersion"]:
-                file_id = world_info["assetVersion"]["fileId"]
+        # Method 2: Try unity packages
+        if "unityPackages" in world_info and world_info["unityPackages"]:
+            unity_packages = world_info["unityPackages"]
+            config.logger.debug(f"Found {len(unity_packages)} unity packages")
+            
+            # Try each package, starting from the last one (usually most recent)
+            for package in reversed(unity_packages):
+                if "assetUrl" in package and package["assetUrl"]:
+                    asset_url = package["assetUrl"]
+                    config.logger.debug(f"Found assetUrl in unity package: {asset_url}")
+                    
+                    # Extract file ID from URL
+                    file_id = self._extract_file_id_from_url(asset_url)
+                    if file_id:
+                        return file_id
+        
+        # Method 3: Try assetUrlObject
+        if "assetUrlObject" in world_info and world_info["assetUrlObject"]:
+            asset_obj = world_info["assetUrlObject"]
+            if isinstance(asset_obj, dict) and "fileName" in asset_obj:
+                file_name = asset_obj["fileName"]
+                config.logger.debug(f"Found fileName in assetUrlObject: {file_name}")
+                
+                # Try to extract file ID from fileName
+                import re
+                match = re.search(r'file_[a-f0-9-]+', file_name)
+                if match:
+                    return match.group(0)
+        
+        # NEW METHOD 4: Try to extract from imageUrl or thumbnailImageUrl
+        # This addresses the issue seen in the logs where file IDs are only in image URLs
+        for image_key in ['imageUrl', 'thumbnailImageUrl']:
+            if image_key in world_info and world_info[image_key]:
+                image_url = world_info[image_key]
+                file_id = self._extract_file_id_from_url(image_url)
                 if file_id:
-                    config.logger.info(f"Found file ID in assetVersion: {file_id}")
+                    config.logger.info(f"Found file ID in {image_key}: {file_id}")
                     return file_id
         
-        # Method 4: Check for file_version.unitypackage.signature
-        if "version" in world_info and isinstance(world_info["version"], dict):
-            if "file" in world_info["version"] and isinstance(world_info["version"]["file"], dict):
-                if "fileId" in world_info["version"]["file"]:
-                    file_id = world_info["version"]["file"]["fileId"]
-                    config.logger.info(f"Found file ID in version.file: {file_id}")
-                    return file_id
-        
-        # Final fallback: Look for file ID patterns in any field
+        # Method 5: Try to search through all properties for a file ID pattern
         for key, value in world_info.items():
             if isinstance(value, str) and value.startswith("file_") and len(value) > 10:
-                config.logger.info(f"Found potential file ID in field {key}: {value}")
+                config.logger.debug(f"Found potential file ID in {key}: {value}")
                 return value
+        
+        # Method 6: Fall back to searching for file ID in version info
+        if "version" in world_info and isinstance(world_info["version"], dict):
+            version = world_info["version"]
+            for key, value in version.items():
+                if isinstance(value, str) and value.startswith("file_") and len(value) > 10:
+                    config.logger.debug(f"Found potential file ID in version.{key}: {value}")
+                    return value
         
         config.logger.warning("Could not find file ID in world info")
         return "Not specified"
@@ -414,21 +362,16 @@ class VRChatAPI:
         if not url:
             return None
             
-        # Debug log the URL
-        config.logger.debug(f"Extracting file ID from URL: {url}")
-            
         # Method 1: Standard URL parsing
         parts = url.split("/")
         for part in parts:
             if part.startswith("file_") and len(part) > 10:
-                config.logger.debug(f"Found file ID in URL part: {part}")
                 return part
         
         # Method 2: Regex pattern matching
         import re
         match = re.search(r'file_[a-f0-9-]+', url)
         if match:
-            config.logger.debug(f"Found file ID via regex: {match.group(0)}")
             return match.group(0)
         
         return None
