@@ -51,6 +51,9 @@ else:
 # This flag will be updated at runtime based on actual connection attempts
 PG_AVAILABLE = DATABASE_URL is not None
 
+# PostgreSQL correction setting - set to False to disable automatic migration/correction
+ATTEMPT_PG_CORRECTION = os.getenv("ATTEMPT_PG_CORRECTION", "TRUE").upper() == "TRUE"
+
 # Setup SQLite database as fallback
 DATABASE_PATH = Path("database") / "vrchat_worlds.db"
 DATABASE_FILE = str(DATABASE_PATH)
@@ -120,7 +123,7 @@ FORUM_NAME = "VRChat-World"      # Default name for forum channel
 
 # UI timeouts (in seconds)
 BUTTON_TIMEOUT = None     # No timeout for persistent buttons
-TAG_VIEW_TIMEOUT = 300    # 5 minutes for tag selection
+TAG_VIEW_TIMEOUT = 120    # 2 minutes for tag selection
 
 # API settings
 VRC_API_BASE_URL = "https://api.vrchat.cloud/api/1"

@@ -29,6 +29,8 @@ def get_connection():
     # Update IS_POSTGRES status
     IS_POSTGRES = hasattr(config, 'DATABASE_URL') and config.DATABASE_URL and config.DATABASE_URL.startswith("postgres")
     
+    attempt_correction = getattr(config, 'ATTEMPT_PG_CORRECTION', True)
+
     if IS_POSTGRES:
         # Try PostgreSQL first
         try:
@@ -38,13 +40,13 @@ def get_connection():
             
             # If PostgreSQL was previously unavailable but is now available,
             # and we haven't migrated data yet, do a one-time migration
-            if _pg_was_unavailable and not _already_migrated:
+            if attempt_correction and _pg_was_unavailable and not _already_migrated:
                 _pg_was_unavailable = False
                 
                 # Check if SQLite database exists and has data
                 if os.path.exists(config.DATABASE_FILE):
                     config.logger.info("PostgreSQL is now available after being offline. Checking for data to migrate...")
-                    
+                
                     sqlite_conn = _get_sqlite_connection()
                     if sqlite_conn:
                         # Check if SQLite has newer data than PostgreSQL
@@ -212,6 +214,16 @@ def setup_database(force_rebuild=False) -> bool:
     
     is_postgres = hasattr(config, 'DATABASE_URL') and config.DATABASE_URL and config.DATABASE_URL.startswith("postgres")
     
+    # Inside setup_database():
+    # Migrate data from SQLite if correction is enabled
+    if getattr(config, 'ATTEMPT_PG_CORRECTION', True):
+        try:
+            _check_and_migrate_from_sqlite()
+        except Exception as migrate_error:
+            config.logger.warning(f"Migration error (continuing anyway): {migrate_error}")
+    else:
+        config.logger.info("Automatic PostgreSQL correction is disabled. Skipping migration.")
+    
     try:
         if is_postgres:
             # Use our enhanced PostgreSQL setup with timeout handling
@@ -263,8 +275,14 @@ def _check_and_migrate_from_sqlite():
     # 1. We're using PostgreSQL
     # 2. SQLite database exists
     # 3. PostgreSQL tables are empty
+    # 4. ATTEMPT_PG_CORRECTION is True
     
     if not hasattr(config, 'DATABASE_URL') or not config.DATABASE_URL or not config.DATABASE_URL.startswith("postgres"):
+        return
+    
+    # Check if automatic correction is disabled
+    if hasattr(config, 'ATTEMPT_PG_CORRECTION') and not config.ATTEMPT_PG_CORRECTION:
+        config.logger.info("Automatic PostgreSQL correction is disabled. Skipping migration check.")
         return
     
     # Check if SQLite database exists
